@@ -675,6 +675,31 @@ hr.div{border:none;border-top:1px solid var(--border);margin:14px 0;}
   .navbtn{font-size:10px;padding:5px 8px;}
 }
 
+
+/* ══════ جداول الجوال ══════ */
+@media(max-width:768px){
+  /* جدول الرخص - إخفاء أعمدة ثانوية */
+  #lic-thead th:nth-child(1),#lic-tbody td:nth-child(1),
+  #lic-thead th:nth-child(5),#lic-tbody td:nth-child(5),
+  #lic-thead th:nth-child(7),#lic-tbody td:nth-child(7) { display:none; }
+
+  /* جداول أجير - إخفاء أعمدة ثانوية وإبقاء الأهم */
+  #tc-clean thead th:nth-child(1),#tc-clean tbody td:nth-child(1),
+  #tc-serv  thead th:nth-child(1),#tc-serv  tbody td:nth-child(1),
+  #tc-clean thead th:nth-child(5),#tc-clean tbody td:nth-child(5),
+  #tc-serv  thead th:nth-child(5),#tc-serv  tbody td:nth-child(5),
+  #tc-clean thead th:nth-child(6),#tc-clean tbody td:nth-child(6),
+  #tc-serv  thead th:nth-child(6),#tc-serv  tbody td:nth-child(6) { display:none; }
+  
+  /* تصغير الخط في الجداول */
+  .twrap td, .twrap th { font-size:11px; padding:5px 4px; }
+  td.wname, td.wcompany { font-size:11px; }
+  
+  /* أزرار الإجراءات أصغر */
+  .twrap .btn.sm { font-size:10px; padding:3px 6px; }
+  .twrap .iconbtn { width:26px; height:26px; font-size:12px; }
+}
+
 </style>
 
 <!-- Firebase Realtime Database -->
@@ -752,7 +777,7 @@ window.addEventListener('unhandledrejection', function(e){
       <select class="fsel" id="lf-status" onchange="renderLic()"><option value="">كل الحالات</option><option value="ساري">ساري</option><option value="على وشك">على وشك</option><option value="منتهي">منتهي</option></select>
       <input class="finput" id="lf-q" placeholder="🔍 بحث في اسم الرخصة..." oninput="renderLic()">
     </div>
-    <div class="twrap lic-twrap"><table class="lic-table"><thead><tr><th>#</th><th>المركز</th><th>الرخصة / الشهادة</th><th>تاريخ الإنتهاء</th><th>الأيام المتبقية</th><th>الحالة</th><th>ملاحظات</th><th>إجراءات</th></tr></thead><tbody id="lic-tbody"></tbody></table></div>
+    <div class="twrap lic-twrap"><table class="lic-table"><thead id="lic-thead"><tr><th>#</th><th>المركز</th><th>الرخصة / الشهادة</th><th>تاريخ الإنتهاء</th><th>الأيام المتبقية</th><th>الحالة</th><th>ملاحظات</th><th>إجراءات</th></tr></thead><tbody id="lic-tbody"></tbody></table></div>
   </div>
 
   <!-- Cleaning -->
@@ -767,7 +792,7 @@ window.addEventListener('unhandledrejection', function(e){
       <select class="fsel" id="clf-aj-status" onchange="renderClean()"><option value="">أجير - كل الحالات</option><option value="ساري">أجير ساري</option><option value="على وشك">أجير على وشك</option><option value="منتهي">أجير منتهية</option></select>
       <input class="finput" id="clf-q" placeholder="🔍 اسم العامل أو رقم الإقامة..." oninput="renderClean()">
     </div>
-    <div class="twrap"><table><thead><tr><th style="width:30px">#</th><th>المركز</th><th>اسم العامل</th><th style="width:110px">رقم الإقامة</th><th style="width:100px">المهنة</th><th style="min-width:160px">الشركة</th><th style="width:100px">نهاية الإقامة</th><th style="width:55px">أيام</th><th style="width:80px">حالة</th><th style="width:100px">نهاية أجير</th><th style="width:55px">أيام</th><th style="width:80px">حالة</th><th style="width:80px">إجراءات</th></tr></thead><tbody id="clean-tbody"></tbody></table></div>
+    <div class="twrap"><table><thead><tr><th style="width:30px">#</th><th>المركز</th><th>اسم العامل</th><th style="width:110px">رقم الإقامة</th><th style="width:100px">المهنة</th><th style="min-width:160px">الشركة</th><th style="width:100px">نهاية الإقامة</th><th style="width:55px">أيام</th><th style="width:80px">حالة</th><th style="width:100px">نهاية أجير</th><th style="width:55px">أيام</th><th style="width:80px">حالة</th><th style="width:80px">إجراءات</th></tr></thead><tbody id="clean-tbody" data-table="clean"></tbody></table></div>
   </div>
 
   <!-- Services -->
