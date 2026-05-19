@@ -595,6 +595,86 @@ hr.div{border:none;border-top:1px solid var(--border);margin:14px 0;}
 #user-badge .ubname{font-weight:700;}
 #user-badge .ubrole{opacity:.7;font-size:11px;}
 
+
+/* ══════════════════ MOBILE RESPONSIVE ══════════════════ */
+@media(max-width:768px){
+  /* Header */
+  .header{padding:10px 12px;}
+  .htitle{font-size:16px;}
+  .hsub{font-size:11px;}
+  .hlogo{width:38px;height:38px;font-size:14px;}
+  
+  /* Nav buttons - scrollable */
+  .hactions{flex-wrap:nowrap;overflow-x:auto;gap:4px;padding-bottom:4px;-webkit-overflow-scrolling:touch;}
+  .navbtn{font-size:11px;padding:6px 10px;white-space:nowrap;flex-shrink:0;}
+  
+  /* KPI cards - 2 columns */
+  .kpi-grid{grid-template-columns:1fr 1fr !important;}
+  .kpi-value{font-size:28px;}
+  .kpi-label{font-size:11px;}
+  
+  /* Insights grid - 1 column */
+  .insights-grid{grid-template-columns:1fr !important;}
+  
+  /* Container padding */
+  .container{padding:12px;}
+  
+  /* Action strip - wrap */
+  .action-strip{flex-wrap:wrap;gap:6px;}
+  .action-strip .btn{font-size:12px;padding:7px 10px;}
+  
+  /* Filter bar - wrap */
+  .fbar{flex-wrap:wrap;gap:6px;}
+  .fsel,.fselect{font-size:12px;}
+  
+  /* Tables - horizontal scroll */
+  .twrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table{min-width:600px;}
+  td,th{padding:6px 5px;font-size:12px;}
+  
+  /* Alert cards - 1 column */
+  .alert-grid{grid-template-columns:1fr !important;}
+  .alert-card-grid{grid-template-columns:1fr !important;}
+  .alert-summary-grid{grid-template-columns:1fr 1fr !important;}
+  
+  /* Modal - full width */
+  .modal{max-width:100% !important;margin:8px;max-height:95vh;}
+  .frow{grid-template-columns:1fr !important;}
+  .mbody{padding:14px;}
+  
+  /* Login box */
+  .login-box{padding:24px 20px;margin:12px;}
+  .login-title{font-size:17px;}
+  
+  /* User badge */
+  #user-badge{padding:4px 8px;font-size:11px;}
+  
+  /* Tabs */
+  .tabbtn{font-size:11px;padding:6px 8px;}
+  
+  /* Section headers */
+  .sec-hd{flex-direction:column;align-items:flex-start;gap:8px;}
+  
+  /* Timeline */
+  .timeline{grid-template-columns:1fr 1fr !important;}
+  
+  /* Reports grid */
+  #reports-grid{grid-template-columns:1fr !important;}
+  
+  /* Users table */
+  #users-list table{min-width:500px;}
+  #roles-list table{min-width:400px;}
+}
+
+@media(max-width:480px){
+  .kpi-grid{grid-template-columns:1fr 1fr !important;}
+  .kpi-value{font-size:24px;}
+  .timeline{grid-template-columns:1fr !important;}
+  .alert-summary-grid{grid-template-columns:1fr !important;}
+  .hactions{gap:3px;}
+  .navbtn{font-size:10px;padding:5px 8px;}
+}
+
 </style>
 
 <!-- Firebase Realtime Database -->
