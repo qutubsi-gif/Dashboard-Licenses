@@ -3059,9 +3059,10 @@ function systemSelfCheck(){
 
 // ════════ INIT ════════
 const tdEl=document.getElementById('today-date'); if(tdEl){
-    const dayAr    = today.toLocaleDateString('ar-SA',{weekday:'long'});
-    const hijri    = today.toLocaleDateString('ar-SA-u-ca-islamic-umalqura',{day:'numeric',month:'long',year:'numeric'});
-    const greg     = today.toLocaleDateString('ar-SA',{day:'numeric',month:'long',year:'numeric',calendar:'gregory'}).replace(/[٠-٩]/g, d=>'0123456789'['٠١٢٣٤٥٦٧٨٩'.indexOf(d)]);
+    const dayAr  = today.toLocaleDateString('ar-SA',{weekday:'long'});
+    const hijri  = today.toLocaleDateString('ar-SA-u-ca-islamic-umalqura',{day:'numeric',month:'long',year:'numeric'});
+    const months = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+    const greg   = `${today.getDate()} ${months[today.getMonth()]} ${today.getFullYear()}`;
     tdEl.innerHTML = `${dayAr} | ${hijri} | ${greg}`;
   }
 // load() يُستدعى بعد تسجيل الدخول من hideLoginScreen → refreshAll()
