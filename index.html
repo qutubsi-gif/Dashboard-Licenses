@@ -1,0 +1,3839 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>متابعة الرخص والعمالة — ALJ Toyota</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f0f4f8; --surface:#ffffff; --surface2:#e8eef5; --border:#d1dce8;
+  --accent:#b8860b; --accent2:#d4a017;
+  --red:#dc2626; --orange:#ea580c; --green:#16a34a; --blue:#2563eb;
+  --text:#1e293b; --muted:#64748b; --card-shadow:0 4px 24px rgba(0,0,0,.1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;direction:rtl;}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#1e3a5f,#1a3050,#1e3a5f);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
+.hbrand{display:flex;align-items:center;gap:12px;}
+.hlogo{width:42px;height:42px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#0a0e1a;flex-shrink:0;}
+.htitle{font-size:18px;font-weight:900;color:#ffffff;text-shadow:0 2px 8px rgba(0,0,0,.45);}
+.hsub{font-size:12px;color:#dbeafe;font-weight:600;}
+.hactions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.hdate{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:11px;color:var(--muted);}
+.hdate span{color:var(--accent);font-weight:700;}
+.navbtn{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 13px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;}
+.navbtn:hover,.navbtn.active{background:var(--accent);color:#0a0e1a;border-color:var(--accent);}
+
+/* LAYOUT */
+.container{max-width:1440px;margin:0 auto;padding:22px 20px;}
+.page{display:none;}.page.active{display:block;}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:22px;}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;position:relative;overflow:hidden;transition:transform .2s;animation:fadeUp .4s ease both;}
+.kpi-card:hover{transform:translateY(-2px);}
+.kpi-card::after{content:'';position:absolute;top:0;right:0;width:65px;height:65px;border-radius:0 14px 0 65px;opacity:.07;}
+.kpi-card.total::after{background:var(--blue);}.kpi-card.valid::after{background:var(--green);}
+.kpi-card.warning::after{background:var(--orange);}.kpi-card.expired::after{background:var(--red);}
+.kpi-card.workers::after{background:var(--accent);}
+.kpi-icon{font-size:22px;background:var(--surface2);border-radius:7px;padding:6px 8px;display:inline-block;margin-bottom:9px;}
+.kpi-value{font-size:30px;font-weight:900;line-height:1;margin-bottom:4px;}
+.kpi-card.total .kpi-value{color:var(--blue);}.kpi-card.valid .kpi-value{color:var(--green);}
+.kpi-card.warning .kpi-value{color:var(--orange);}.kpi-card.expired .kpi-value{color:var(--red);}
+.kpi-card.workers .kpi-value{color:var(--accent);}
+.kpi-label{font-size:12px;color:var(--muted);font-weight:500;}
+
+/* TABS */
+.tabs{display:flex;gap:5px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:5px;margin-bottom:18px;overflow-x:auto;}
+.tabbtn{flex:1;min-width:110px;background:transparent;border:none;border-radius:8px;padding:9px 12px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap;}
+.tabbtn.active{background:var(--accent);color:#0a0e1a;}
+.tabbtn:hover:not(.active){background:var(--surface2);color:var(--text);}
+.tabcontent{display:none;}.tabcontent.active{display:block;}
+
+/* SECTION */
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;}
+.sec-title{font-size:15px;font-weight:800;display:flex;align-items:center;gap:7px;}
+.sec-title .dot{width:3px;height:17px;background:var(--accent);border-radius:2px;display:inline-block;}
+.badge{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:12px;color:var(--muted);}
+
+/* FILTERS */
+.fbar{display:flex;gap:7px;align-items:center;margin-bottom:12px;flex-wrap:wrap;}
+.fsel,.finput{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:7px 11px;font-family:'Tajawal',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .2s;}
+.fsel:focus,.finput:focus{border-color:var(--accent);}
+.finput{flex:1;min-width:150px;}
+.btn{background:var(--accent);border:none;border-radius:8px;padding:7px 14px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;color:#0a0e1a;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+.btn:hover{background:var(--accent2);}
+.btn.ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
+.btn.ghost:hover{border-color:var(--accent);color:var(--accent);}
+.btn.danger{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25);}
+.btn.danger:hover{background:rgba(239,68,68,.22);}
+.btn.sm{padding:4px 7px;font-size:11px;border-radius:6px;}
+
+/* TABLE */
+.twrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--card-shadow);}
+table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;}
+thead tr{background:var(--surface2);border-bottom:2px solid var(--border);}
+th{padding:8px 7px;text-align:right;font-weight:700;color:var(--muted);font-size:10px;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+tbody tr{border-bottom:1px solid var(--border);transition:background .12s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:rgba(255,255,255,.022);}
+td{padding:7px 7px;vertical-align:middle;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}td.wname{white-space:normal;word-break:break-word;overflow:visible;text-overflow:unset;line-height:1.4;}td.wcompany{white-space:normal;word-break:break-word;overflow:visible;text-overflow:unset;min-width:160px;}
+.empty{text-align:center;padding:32px;color:var(--muted);font-size:13px;}
+.cname{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:2px 6px;font-size:10px;font-weight:800;color:var(--accent);white-space:nowrap;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;}
+.iq{font-family:monospace;font-size:10px;background:rgba(59,130,246,.1);color:#60a5fa;border:1px solid rgba(59,130,246,.2);border-radius:4px;padding:2px 5px;}
+.rn{background:var(--surface2);color:var(--muted);border-radius:3px;padding:1px 5px;font-size:11px;font-weight:700;}
+.sbadge{display:inline-flex;align-items:center;gap:3px;border-radius:20px;padding:2px 7px;font-size:10px;font-weight:800;white-space:nowrap;}
+.sbadge::before{content:'';width:5px;height:5px;border-radius:50%;display:inline-block;}
+.sv{background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.25);}.sv::before{background:#4ade80;box-shadow:0 0 5px #4ade80;}
+.sw{background:rgba(249,115,22,.12);color:#fb923c;border:1px solid rgba(249,115,22,.25);}.sw::before{background:#fb923c;box-shadow:0 0 5px #fb923c;}
+.se{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25);}.se::before{background:#f87171;box-shadow:0 0 5px #f87171;}
+.sn{background:rgba(148,163,184,.1);color:var(--muted);border:1px solid rgba(148,163,184,.2);}.sn::before{background:var(--muted);}
+.dp{font-weight:800;font-size:12px;}
+
+
+
+/* كروت التنبيهات المنفصلة */
+.alert-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-bottom:18px;}
+.alert-summary-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--card-shadow);}
+.alert-summary-label{font-size:12px;color:var(--muted);font-weight:800;margin-bottom:7px;}
+.alert-summary-value{font-size:28px;font-weight:900;color:var(--accent);line-height:1;}
+.alert-summary-value.danger{color:var(--red);}
+.alert-summary-value.warning{color:var(--orange);}
+.alert-summary-sub{font-size:11px;color:var(--muted);margin-top:8px;}
+.alert-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:12px;}
+.alert-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:var(--card-shadow);position:relative;overflow:hidden;min-height:122px;}
+.alert-card::before{content:'';position:absolute;top:0;right:0;width:5px;height:100%;}
+.alert-card.high::before{background:var(--red);}
+.alert-card.warning::before{background:var(--orange);}
+.alert-card .risk{position:absolute;left:16px;top:16px;font-weight:900;font-size:15px;}
+.alert-card.high .risk{color:#f87171;}
+.alert-card.warning .risk{color:#fb923c;}
+.alert-card-title{font-size:16px;font-weight:900;margin-left:80px;white-space:normal;word-break:break-word;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.alert-card-meta{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.6;}
+.alert-card-line{font-size:12px;color:var(--muted);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.alert-card-days{font-weight:900;}
+.alert-card.high .alert-card-days{color:#f87171;}
+.alert-card.warning .alert-card-days{color:#fb923c;}
+.alert-card-actions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap;}
+.alert-tag{display:inline-flex;align-items:center;border-radius:18px;padding:2px 8px;font-size:11px;font-weight:800;background:var(--surface2);border:1px solid var(--border);color:var(--muted);margin-inline-start:5px;}
+@media(max-width:600px){
+  .alert-card-grid{grid-template-columns:1fr;}
+  .alert-card-title{margin-left:0;padding-left:70px;}
+}
+
+/* جداول التنبيهات المنفصلة */
+#page-alerts-lic table th:nth-child(1),#page-alerts-lic table td:nth-child(1){width:4%;}
+#page-alerts-lic table th:nth-child(2),#page-alerts-lic table td:nth-child(2){width:16%;}
+#page-alerts-lic table th:nth-child(3),#page-alerts-lic table td:nth-child(3){width:30%;}
+#page-alerts-lic table th:nth-child(4),#page-alerts-lic table td:nth-child(4){width:13%;}
+#page-alerts-lic table th:nth-child(5),#page-alerts-lic table td:nth-child(5){width:8%;}
+#page-alerts-lic table th:nth-child(6),#page-alerts-lic table td:nth-child(6){width:10%;}
+#page-alerts-lic table th:nth-child(7),#page-alerts-lic table td:nth-child(7){width:19%;}
+
+#page-alerts-ajer table th:nth-child(1),#page-alerts-ajer table td:nth-child(1){width:3%;}
+#page-alerts-ajer table th:nth-child(2),#page-alerts-ajer table td:nth-child(2){width:6%;}
+#page-alerts-ajer table th:nth-child(3),#page-alerts-ajer table td:nth-child(3){width:10%;}
+#page-alerts-ajer table th:nth-child(4),#page-alerts-ajer table td:nth-child(4){width:12%;}
+#page-alerts-ajer table th:nth-child(5),#page-alerts-ajer table td:nth-child(5){width:9%;}
+#page-alerts-ajer table th:nth-child(6),#page-alerts-ajer table td:nth-child(6){width:10%;}
+#page-alerts-ajer table th:nth-child(7),#page-alerts-ajer table td:nth-child(7){width:13%;}
+#page-alerts-ajer table th:nth-child(8),#page-alerts-ajer table td:nth-child(8){width:11%;}
+#page-alerts-ajer table th:nth-child(9),#page-alerts-ajer table td:nth-child(9){width:7%;}
+#page-alerts-ajer table th:nth-child(10),#page-alerts-ajer table td:nth-child(10){width:9%;}
+
+/* ضغط جداول أجير لعرض البيانات في سطر واحد قدر الإمكان */
+#tc-clean table th:nth-child(1),#tc-clean table td:nth-child(1),
+#tc-serv table th:nth-child(1),#tc-serv table td:nth-child(1){width:3%;}
+#tc-clean table th:nth-child(2),#tc-clean table td:nth-child(2),
+#tc-serv table th:nth-child(2),#tc-serv table td:nth-child(2){width:9%;}
+#tc-clean table th:nth-child(3),#tc-clean table td:nth-child(3),
+#tc-serv table th:nth-child(3),#tc-serv table td:nth-child(3){width:11%;}
+#tc-clean table th:nth-child(4),#tc-clean table td:nth-child(4),
+#tc-serv table th:nth-child(4),#tc-serv table td:nth-child(4){width:8%;}
+#tc-clean table th:nth-child(5),#tc-clean table td:nth-child(5),
+#tc-serv table th:nth-child(5),#tc-serv table td:nth-child(5){width:8%;}
+#tc-clean table th:nth-child(6),#tc-clean table td:nth-child(6),
+#tc-serv table th:nth-child(6),#tc-serv table td:nth-child(6){width:9%;}
+#tc-clean table th:nth-child(7),#tc-clean table td:nth-child(7),
+#tc-serv table th:nth-child(7),#tc-serv table td:nth-child(7){width:7%;}
+#tc-clean table th:nth-child(8),#tc-clean table td:nth-child(8),
+#tc-serv table th:nth-child(8),#tc-serv table td:nth-child(8){width:5%;}
+#tc-clean table th:nth-child(9),#tc-clean table td:nth-child(9),
+#tc-serv table th:nth-child(9),#tc-serv table td:nth-child(9){width:7%;}
+#tc-clean table th:nth-child(10),#tc-clean table td:nth-child(10),
+#tc-serv table th:nth-child(10),#tc-serv table td:nth-child(10){width:7%;}
+#tc-clean table th:nth-child(11),#tc-clean table td:nth-child(11),
+#tc-serv table th:nth-child(11),#tc-serv table td:nth-child(11){width:5%;}
+#tc-clean table th:nth-child(12),#tc-clean table td:nth-child(12),
+#tc-serv table th:nth-child(12),#tc-serv table td:nth-child(12){width:7%;}
+#tc-clean table th:nth-child(13),#tc-clean table td:nth-child(13),
+#tc-serv table th:nth-child(13),#tc-serv table td:nth-child(13){width:9%;}
+#tc-clean td:last-child,#tc-serv td:last-child{overflow:visible;}
+
+.dp.g{color:#4ade80;}.dp.o{color:#fb923c;}.dp.r{color:#f87171;}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);}
+.overlay.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.6);animation:mIn .22s ease;}
+@keyframes mIn{from{opacity:0;transform:scale(.95)translateY(8px)}to{opacity:1;transform:none}}
+.mhd{padding:18px 20px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.mtitle{font-size:15px;font-weight:800;}
+.mclose{background:var(--surface2);border:1px solid var(--border);border-radius:7px;width:30px;height:30px;cursor:pointer;color:var(--muted);font-size:17px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.mclose:hover{color:var(--red);border-color:var(--red);}
+.mbody{padding:18px 20px;}
+.mfoot{padding:12px 20px 18px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--border);}
+
+/* FORM */
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.frow.full{grid-template-columns:1fr;}
+.fg{display:flex;flex-direction:column;gap:4px;}
+.flbl{font-size:11px;font-weight:700;color:var(--muted);}
+.finp,.fselect{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 11px;font-family:'Tajawal',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .2s;width:100%;}
+.finp:focus,.fselect:focus{border-color:var(--accent);}
+.finp::placeholder{color:var(--muted);}
+
+/* SETTINGS */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:860px){.sgrid{grid-template-columns:1fr;}}
+.scard{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.schd{background:var(--surface2);padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.sctitle{font-size:13px;font-weight:800;display:flex;align-items:center;gap:7px;}
+.scbody{padding:14px 16px;}
+.slist{display:flex;flex-direction:column;gap:7px;}
+.sitem{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 11px;display:flex;align-items:center;justify-content:space-between;}
+.sname{font-size:13px;font-weight:600;}
+.ssub{font-size:11px;color:var(--muted);margin-top:1px;}
+.sacts{display:flex;gap:5px;}
+
+/* COLORS */
+.tsec{margin-bottom:16px;}
+.tsec-title{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:9px;text-transform:uppercase;letter-spacing:.05em;}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(115px,1fr));gap:8px;}
+.citem{display:flex;flex-direction:column;gap:5px;}
+.clbl{font-size:11px;color:var(--muted);font-weight:600;}
+.cwrap{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:5px 9px;cursor:pointer;transition:border-color .2s;}
+.cwrap:hover{border-color:var(--accent);}
+.cswatch{width:18px;height:18px;border-radius:4px;border:2px solid rgba(255,255,255,.2);flex-shrink:0;}
+.chex{font-size:11px;font-family:monospace;color:var(--text);}
+input[type=color]{position:absolute;opacity:0;width:0;height:0;}
+
+/* PRESETS */
+.pgrid{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;}
+.pbtn{border:2px solid var(--border);border-radius:9px;padding:7px 11px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;transition:all .2s;background:var(--surface2);display:flex;align-items:center;gap:7px;color:var(--text);}
+.pbtn:hover,.pbtn.active{border-color:var(--accent);color:var(--accent);}
+.pbtn.active{background:rgba(232,160,32,.08);}
+.pdots{display:flex;gap:3px;}
+.pdot{width:9px;height:9px;border-radius:50%;}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#1e293b;border:1px solid var(--border);border-radius:9px;padding:10px 18px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:2000;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;display:flex;align-items:center;gap:7px;white-space:nowrap;}
+.toast.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(-4px);}
+hr.div{border:none;border-top:1px solid var(--border);margin:14px 0;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+
+/* V2 ENHANCEMENTS */
+.insights-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:0 0 18px;}
+.insight-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:var(--card-shadow);}
+.insight-title{font-size:12px;color:var(--muted);font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.insight-value{font-size:24px;font-weight:900;color:var(--accent);line-height:1.1;}
+.insight-sub{font-size:12px;color:var(--muted);margin-top:5px;}
+.progress{height:8px;background:var(--surface2);border:1px solid var(--border);border-radius:30px;overflow:hidden;margin-top:8px;}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:30px;}
+.action-strip{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.alert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:10px;}
+.alert-card{background:var(--surface);border:1px solid var(--border);border-right:4px solid var(--orange);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px;}
+.alert-card.expired{border-right-color:var(--red);}
+.alert-card.ok{border-right-color:var(--green);}
+.alert-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;}
+.alert-name{font-size:13px;font-weight:900;white-space:normal;word-break:break-word;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.alert-meta{font-size:11px;color:var(--muted);}
+.risk-high{color:#f87171;font-weight:900}.risk-med{color:#fb923c;font-weight:900}.risk-low{color:#4ade80;font-weight:900}
+.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;}
+.month-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;min-height:90px;}
+.month-title{font-size:12px;font-weight:900;color:var(--accent);margin-bottom:8px;}
+.month-item{font-size:11px;color:var(--muted);padding:4px 0;border-bottom:1px dashed var(--border);}
+.month-item:last-child{border-bottom:none;}
+.log-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px;display:flex;justify-content:space-between;gap:10px;}
+.log-title{font-size:13px;font-weight:800}.log-time{font-size:11px;color:var(--muted);white-space:nowrap}.log-detail{font-size:11px;color:var(--muted);margin-top:3px}
+@media(max-width:720px){
+  .header{position:static;align-items:flex-start;gap:12px;flex-direction:column;padding:12px}.hactions{width:100%}.navbtn{flex:1;justify-content:center}.container{padding:14px 10px}.kpi-grid{grid-template-columns:repeat(2,1fr);gap:8px}.kpi-card{padding:12px}.kpi-value{font-size:24px}.tabs{position:sticky;top:0;z-index:50}.fbar>*{width:100%;flex:auto}.twrap{overflow:visible;border:none;background:transparent;box-shadow:none}table,thead,tbody,th,td,tr{display:block}thead{display:none}tbody tr{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;padding:8px}td{display:flex;justify-content:space-between;gap:12px;padding:7px 6px;border-bottom:1px dashed var(--border)}td:last-child{border-bottom:none}td::before{content:attr(data-label);color:var(--muted);font-size:11px;font-weight:800;min-width:95px}.sgrid{grid-template-columns:1fr}.insights-grid{grid-template-columns:1fr}.action-strip .btn{flex:1;justify-content:center}
+}
+
+
+.toast .tico{font-size:18px;font-weight:900;line-height:1;}
+.toast .tmsg{font-size:14px;font-weight:700;letter-spacing:.01em;}
+
+
+/* ===== FINAL TOAST OVERRIDE - high contrast ===== */
+.toast,
+#toast{
+  background:linear-gradient(135deg,#064e3b,#047857) !important;
+  color:#ffffff !important;
+  border:1px solid rgba(167,243,208,.75) !important;
+  box-shadow:0 14px 36px rgba(0,0,0,.42) !important;
+  border-radius:14px !important;
+  padding:13px 20px !important;
+  font-size:14px !important;
+  font-weight:900 !important;
+  text-shadow:none !important;
+  min-width:280px !important;
+  justify-content:center !important;
+}
+.toast.show,
+#toast.show{
+  opacity:1 !important;
+  transform:translateX(-50%) translateY(-4px) !important;
+}
+.toast.error,
+#toast.error{
+  background:linear-gradient(135deg,#7f1d1d,#dc2626) !important;
+  border-color:rgba(254,202,202,.75) !important;
+  color:#ffffff !important;
+}
+.toast.info,
+#toast.info{
+  background:linear-gradient(135deg,#1e3a8a,#2563eb) !important;
+  border-color:rgba(191,219,254,.75) !important;
+  color:#ffffff !important;
+}
+.toast.success,
+#toast.success{
+  background:linear-gradient(135deg,#064e3b,#16a34a) !important;
+  border-color:rgba(187,247,208,.75) !important;
+  color:#ffffff !important;
+}
+
+
+/* Firebase live sync status */
+.cloud-live{
+  position:fixed;
+  bottom:10px;
+  left:10px;
+  z-index:4000;
+  background:#0f172a;
+  color:#fff;
+  border-radius:10px;
+  padding:6px 10px;
+  font-size:11px;
+  font-weight:700;
+  border:1px solid rgba(255,255,255,.08);
+}
+
+
+/* ===== V35 NOTES COLUMN FINAL ALIGNMENT ===== */
+
+/* Center all headers */
+#tc-lic table th{
+  text-align:center !important;
+  vertical-align:middle !important;
+}
+
+/* Center all cells */
+#tc-lic table td{
+  vertical-align:middle !important;
+  text-align:center !important;
+}
+
+/* Notes column separate and centered */
+#tc-lic .lic-notes,
+#tc-lic table td:nth-child(7),
+#tc-lic table th:nth-child(7){
+  width:220px !important;
+  min-width:180px !important;
+  max-width:260px !important;
+  text-align:center !important;
+  white-space:normal !important;
+  overflow-wrap:break-word !important;
+  line-height:1.4 !important;
+}
+
+/* Actions column fixed at far left */
+#tc-lic .lic-actions,
+#tc-lic table td:nth-child(8),
+#tc-lic table th:nth-child(8){
+  width:78px !important;
+  min-width:78px !important;
+  max-width:78px !important;
+  text-align:center !important;
+  padding:4px !important;
+  white-space:nowrap !important;
+}
+
+#tc-lic .lic-actions-box{
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  gap:4px !important;
+  width:100% !important;
+}
+
+/* Keep notes before actions visually */
+#tc-lic table tr td:nth-child(7){
+  border-left:1px solid var(--border) !important;
+}
+
+/* Improve row readability */
+#tc-lic table tbody tr{
+  height:52px !important;
+}
+
+
+/* ===== V36 FORCE NOTES COLUMN VISIBLE ===== */
+
+/* Force fixed table layout so notes column doesn't collapse */
+#tc-lic table{
+  table-layout:fixed !important;
+  width:100% !important;
+}
+
+/* Explicit widths */
+#tc-lic table th:nth-child(1),
+#tc-lic table td:nth-child(1){width:42px !important;}
+
+#tc-lic table th:nth-child(2),
+#tc-lic table td:nth-child(2){width:160px !important;}
+
+#tc-lic table th:nth-child(3),
+#tc-lic table td:nth-child(3){width:260px !important;}
+
+#tc-lic table th:nth-child(4),
+#tc-lic table td:nth-child(4){width:120px !important;}
+
+#tc-lic table th:nth-child(5),
+#tc-lic table td:nth-child(5){width:150px !important;}
+
+#tc-lic table th:nth-child(6),
+#tc-lic table td:nth-child(6){width:110px !important;}
+
+/* NOTES COLUMN */
+#tc-lic table th:nth-child(7),
+#tc-lic table td:nth-child(7){
+  width:220px !important;
+  min-width:220px !important;
+  max-width:220px !important;
+  display:table-cell !important;
+  visibility:visible !important;
+  text-align:center !important;
+  white-space:normal !important;
+  background:rgba(255,255,255,.02);
+}
+
+/* ACTIONS */
+#tc-lic table th:nth-child(8),
+#tc-lic table td:nth-child(8){
+  width:90px !important;
+  min-width:90px !important;
+  max-width:90px !important;
+  text-align:center !important;
+}
+
+/* Show placeholder if notes empty */
+#tc-lic table td:nth-child(7):empty::before{
+  content:"—";
+  opacity:.5;
+}
+
+
+/* ===== V37 REAL NOTES COLUMN ===== */
+#tc-lic table{
+  table-layout:fixed !important;
+  width:100% !important;
+}
+
+#tc-lic table th,
+#tc-lic table td{
+  text-align:center !important;
+  vertical-align:middle !important;
+}
+
+#tc-lic .lic-notes{
+  display:table-cell !important;
+  width:200px !important;
+  min-width:200px !important;
+  max-width:200px !important;
+  white-space:normal !important;
+  overflow-wrap:break-word !important;
+}
+
+#tc-lic table th:nth-child(7){
+  width:200px !important;
+}
+
+
+/* ===== V38 LICENSE TABLE ORDER & LAYOUT FIX ===== */
+#tc-lic .lic-table{
+  width:100% !important;
+  table-layout:fixed !important;
+  border-collapse:collapse !important;
+}
+
+#tc-lic .lic-table th,
+#tc-lic .lic-table td{
+  text-align:center !important;
+  vertical-align:middle !important;
+  box-sizing:border-box !important;
+}
+
+/* Column widths based on content */
+#tc-lic .lic-table th:nth-child(1), #tc-lic .lic-table td:nth-child(1){width:42px !important;}
+#tc-lic .lic-table th:nth-child(2), #tc-lic .lic-table td:nth-child(2){width:145px !important;}
+#tc-lic .lic-table th:nth-child(3), #tc-lic .lic-table td:nth-child(3){width:260px !important;}
+#tc-lic .lic-table th:nth-child(4), #tc-lic .lic-table td:nth-child(4){width:120px !important;}
+#tc-lic .lic-table th:nth-child(5), #tc-lic .lic-table td:nth-child(5){width:140px !important;}
+#tc-lic .lic-table th:nth-child(6), #tc-lic .lic-table td:nth-child(6){width:105px !important;}
+#tc-lic .lic-table th:nth-child(7), #tc-lic .lic-table td:nth-child(7){width:180px !important;}
+#tc-lic .lic-table th:nth-child(8), #tc-lic .lic-table td:nth-child(8){width:82px !important;}
+
+/* Notes column */
+#tc-lic .lic-notes{
+  white-space:normal !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  line-height:1.35 !important;
+  text-align:center !important;
+}
+
+/* Actions column only */
+#tc-lic .lic-actions{
+  padding:4px !important;
+  overflow:visible !important;
+  white-space:nowrap !important;
+}
+
+#tc-lic .lic-actions-box{
+  display:flex !important;
+  flex-direction:row !important;
+  justify-content:center !important;
+  align-items:center !important;
+  gap:4px !important;
+  width:100% !important;
+}
+
+#tc-lic .lic-actions .iconbtn{
+  width:28px !important;
+  height:28px !important;
+  min-width:28px !important;
+  max-width:28px !important;
+  padding:0 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border-radius:7px !important;
+  font-size:12px !important;
+}
+
+/* Keep text neat */
+#tc-lic .lic-name{
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+
+/* ===== V39 CLEAN NOTES SEPARATION ===== */
+#tc-lic .lic-name{
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+#tc-lic .lic-notes{
+  color:#6b7280 !important;
+  font-size:12px !important;
+  text-align:center !important;
+  white-space:normal !important;
+}
+
+
+/* ===== V46 WORKERS TABLE DISPLAY FIX ===== */
+#tc-clean table, #tc-serv table{
+  width:100% !important;
+  table-layout:fixed !important;
+}
+#tc-clean th, #tc-clean td, #tc-serv th, #tc-serv td{
+  text-align:center !important;
+  vertical-align:middle !important;
+}
+.worker-actions{
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  gap:4px !important;
+}
+.worker-actions .iconbtn{
+  width:28px !important;
+  height:28px !important;
+  min-width:28px !important;
+  padding:0 !important;
+  justify-content:center !important;
+}
+
+
+/* ══════════════════ LOGIN SCREEN ══════════════════ */
+#login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#1e3a5f,#1a3050,#0d1b2e);display:flex;align-items:center;justify-content:center;z-index:9999;direction:rtl;}
+.login-box{background:#fff;border-radius:20px;padding:40px;width:420px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,.4);}
+.login-logo{width:56px;height:56px;background:linear-gradient(135deg,#b8860b,#d4a017);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff;margin:0 auto 16px;}
+.login-title{text-align:center;font-size:20px;font-weight:900;color:#1e293b;margin-bottom:4px;}
+.login-sub{text-align:center;font-size:13px;color:#64748b;margin-bottom:28px;}
+.login-field{margin-bottom:16px;}
+.login-field label{display:block;font-size:13px;font-weight:700;color:#374151;margin-bottom:6px;}
+.login-field input{width:100%;padding:10px 14px;border:1.5px solid #d1d5db;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:14px;color:#1e293b;outline:none;transition:.2s;}
+.login-field input:focus{border-color:#b8860b;box-shadow:0 0 0 3px rgba(184,134,11,.15);}
+.login-btn{width:100%;padding:12px;background:linear-gradient(135deg,#b8860b,#d4a017);border:none;border-radius:10px;color:#fff;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:.2s;margin-top:8px;}
+.login-btn:hover{opacity:.9;}
+.login-btn:disabled{opacity:.6;cursor:not-allowed;}
+.login-err{color:#dc2626;font-size:13px;text-align:center;margin-top:10px;min-height:20px;}
+/* ══════════════════ USER BADGE ══════════════════ */
+#user-badge{display:flex;align-items:center;gap:8px;background:#e8eef5;border:1px solid #d1dce8;border-radius:8px;padding:5px 10px;cursor:pointer;font-size:12px;color:#1e293b;}
+#user-badge:hover{background:#d1dce8;}
+#user-badge .ubname{font-weight:700;}
+#user-badge .ubrole{opacity:.7;font-size:11px;}
+
+</style>
+
+<!-- Firebase Realtime Database -->
+<script>
+window.onerror = function(msg, src, line, col, err){
+  const d = document.getElementById('li-err');
+  if(d) d.textContent = '⚠️ ' + msg + (src?' | '+src.split('/').pop():'') + (line?' L'+line:'');
+  console.error('Global error:', msg, src, line, err);
+  return false;
+};
+window.addEventListener('unhandledrejection', function(e){
+  const d = document.getElementById('li-err');
+  if(d) d.textContent = '⚠️ ' + (e.reason?.message || String(e.reason));
+  console.error('Unhandled promise:', e.reason);
+});
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js" crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js" crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js" crossorigin="anonymous"></script>
+
+
+<!-- SheetJS XLSX -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header" id="main-header" style="display:none">
+  <div class="hbrand">
+    <div class="hlogo">ALJ</div>
+    <div><div class="htitle">متابعة الرخص والعمالة <span style="font-size:10px;color:var(--accent);border:1px solid var(--border);border-radius:12px;padding:1px 6px">V2</span></div><div class="hsub">شركة عبد اللطيف جميل - منطقة المدينة المنورة</div></div>
+  </div>
+  <div class="hactions">
+  <div id="user-badge" onclick="showUserMenu()" title="المستخدم الحالي">
+    <span>👤</span>
+    <div><div class="ubname" id="ub-name">—</div><div class="ubrole" id="ub-role">—</div></div>
+    <span style="opacity:.5">▾</span>
+  </div>
+    <div class="hdate">📅 <span id="today-date">—</span></div>
+    <button class="navbtn active" onclick="showPage('dashboard',this)">🏠 الرئيسية</button>
+    <button class="navbtn" onclick="showPage('alerts',this)">🔔 التنبيهات</button>
+    <button class="navbtn" onclick="showPage('reports',this)">📊 التقارير</button>
+    
+    <button class="navbtn" onclick="showPage('alerts-lic',this)">🚨 تنبيهات الرخص</button>
+    <button class="navbtn" onclick="showPage('alerts-ajer',this)">👷 تنبيهات الإقامات وأجير</button>
+    <button class="navbtn" id="nav-settings" onclick="goSettings(this)" style="display:none">⚙️ الإعدادات</button>
+    <button class="navbtn" id="nav-users" onclick="go('users')" style="display:none">👥 المستخدمون</button>
+  </div>
+</div>
+
+<!-- ══ DASHBOARD ══ -->
+<div class="container page active" id="page-dashboard">
+  <div class="kpi-grid" id="kpi-grid"></div>
+  <div class="action-strip">
+    <button class="btn" onclick="showPage('alerts',document.querySelector('.navbtn[onclick*=alerts]'))">🔔 عرض التنبيهات الحرجة</button>
+    <button class="btn ghost" onclick="exportCurrentTabExcel()">⬇️ تصدير التبويب الحالي Excel</button>
+    
+  </div>
+  <div class="insights-grid" id="insights-grid"></div>
+  <div class="tabs">
+    <button class="tabbtn active" onclick="swTab('lic',this)">📋 الرخص والتراخيص</button>
+    <button class="tabbtn" onclick="swTab('clean',this)">🧹 أجير النظافة</button>
+    <button class="tabbtn" onclick="swTab('serv',this)">🔧 أجير الخدمات</button>
+  </div>
+
+  <!-- Licenses -->
+  <div class="tabcontent active" id="tc-lic">
+    <div class="sec-hd">
+      <div class="sec-title"><span class="dot"></span> سجل الرخص والتراخيص</div>
+      <div style="display:flex;gap:7px;align-items:center"><span class="badge" id="lic-count">—</span><button class="btn sm" id="btn-add-lic" onclick="openAddLic()">＋ رخصة جديدة</button></div>
+    </div>
+    <div class="fbar">
+      <select class="fsel" id="lf-center" onchange="renderLic();buildKPI();buildInsights()"><option value="">كل المراكز</option></select>
+      <select class="fsel" id="lf-status" onchange="renderLic()"><option value="">كل الحالات</option><option value="ساري">ساري</option><option value="على وشك">على وشك</option><option value="منتهي">منتهي</option></select>
+      <input class="finput" id="lf-q" placeholder="🔍 بحث في اسم الرخصة..." oninput="renderLic()">
+    </div>
+    <div class="twrap lic-twrap"><table class="lic-table"><thead><tr><th>#</th><th>المركز</th><th>الرخصة / الشهادة</th><th>تاريخ الإنتهاء</th><th>الأيام المتبقية</th><th>الحالة</th><th>ملاحظات</th><th>إجراءات</th></tr></thead><tbody id="lic-tbody"></tbody></table></div>
+  </div>
+
+  <!-- Cleaning -->
+  <div class="tabcontent" id="tc-clean">
+    <div class="sec-hd">
+      <div class="sec-title"><span class="dot"></span> إقامات عمال شركة النظافة</div>
+      <div style="display:flex;gap:7px;align-items:center"><span class="badge" id="clean-count">—</span><button class="btn sm" id="btn-add-clean" onclick="openAddWorker('cleaning')">＋ عامل جديد</button></div>
+    </div>
+    <div class="fbar">
+      <select class="fsel" id="clf-center" onchange="renderClean();buildKPI();buildInsights()"><option value="">كل المراكز</option></select>
+      <select class="fsel" id="clf-iq-status" onchange="renderClean()"><option value="">الإقامة - كل الحالات</option><option value="ساري">إقامة ساري</option><option value="على وشك">إقامة على وشك</option><option value="منتهي">إقامة منتهية</option></select>
+      <select class="fsel" id="clf-aj-status" onchange="renderClean()"><option value="">أجير - كل الحالات</option><option value="ساري">أجير ساري</option><option value="على وشك">أجير على وشك</option><option value="منتهي">أجير منتهية</option></select>
+      <input class="finput" id="clf-q" placeholder="🔍 اسم العامل أو رقم الإقامة..." oninput="renderClean()">
+    </div>
+    <div class="twrap"><table><thead><tr><th style="width:30px">#</th><th>المركز</th><th>اسم العامل</th><th style="width:110px">رقم الإقامة</th><th style="width:100px">المهنة</th><th style="min-width:160px">الشركة</th><th style="width:100px">نهاية الإقامة</th><th style="width:55px">أيام</th><th style="width:80px">حالة</th><th style="width:100px">نهاية أجير</th><th style="width:55px">أيام</th><th style="width:80px">حالة</th><th style="width:80px">إجراءات</th></tr></thead><tbody id="clean-tbody"></tbody></table></div>
+  </div>
+
+  <!-- Services -->
+  <div class="tabcontent" id="tc-serv">
+    <div class="sec-hd">
+      <div class="sec-title"><span class="dot"></span> إقامات عمال شركة الخدمات</div>
+      <div style="display:flex;gap:7px;align-items:center"><span class="badge" id="serv-count">—</span><button class="btn sm" id="btn-add-serv" onclick="openAddWorker('services')">＋ عامل جديد</button></div>
+    </div>
+    <div class="fbar">
+      <select class="fsel" id="svf-center" onchange="renderServ();buildKPI();buildInsights()"><option value="">كل المراكز</option></select>
+      <select class="fsel" id="svf-iq-status" onchange="renderServ()"><option value="">الإقامة - كل الحالات</option><option value="ساري">إقامة ساري</option><option value="على وشك">إقامة على وشك</option><option value="منتهي">إقامة منتهية</option></select>
+      <select class="fsel" id="svf-aj-status" onchange="renderServ()"><option value="">أجير - كل الحالات</option><option value="ساري">أجير ساري</option><option value="على وشك">أجير على وشك</option><option value="منتهي">أجير منتهية</option></select>
+      <input class="finput" id="svf-q" placeholder="🔍 اسم العامل أو رقم الإقامة..." oninput="renderServ()">
+    </div>
+    <div class="twrap"><table><thead><tr><th style="width:30px">#</th><th>المركز</th><th>اسم العامل</th><th style="width:110px">رقم الإقامة</th><th style="width:100px">المهنة</th><th style="min-width:160px">الشركة</th><th style="width:100px">نهاية الإقامة</th><th style="width:55px">أيام</th><th style="width:80px">حالة</th><th style="width:100px">نهاية أجير</th><th style="width:55px">أيام</th><th style="width:80px">حالة</th><th style="width:80px">إجراءات</th></tr></thead><tbody id="serv-tbody"></tbody></table></div>
+  </div>
+</div>
+
+
+<!-- ══ ALERTS ══ -->
+<div class="container page" id="page-alerts">
+  <div class="sec-hd">
+    <div class="sec-title"><span class="dot"></span> مركز التنبيهات والمخاطر</div>
+    <div class="action-strip" style="margin:0">
+      <button class="btn sm ghost" onclick="renderAlerts()">↻ تحديث</button>
+      <button class="btn sm" onclick="exportMainAlertsExcel()">⬇️ تصدير Excel</button>
+      <button class="btn sm ghost" onclick="copyFullAlertReport()">📋 نسخ تقرير شامل</button>
+    </div>
+  </div>
+  <div class="fbar" style="margin-bottom:14px">
+    <select class="fsel" id="maf-center" onchange="renderAlerts()" style="min-width:180px"><option value="">كل المراكز</option></select>
+    <select class="fsel" id="maf-type" onchange="renderAlerts()">
+      <option value="">كل الأنواع</option>
+      <option value="licenses">الرخص</option>
+      <option value="cleaning">عمال نظافة</option>
+      <option value="services">عمال خدمات</option>
+    </select>
+    <select class="fsel" id="maf-status" onchange="renderAlerts()">
+      <option value="">كل الحالات</option>
+      <option value="منتهي">منتهي الصلاحية</option>
+      <option value="وشك">على وشك</option>
+    </select>
+  </div>
+  <div class="insights-grid" id="alert-summary"></div>
+  <div class="alert-grid" id="alerts-list"></div>
+</div>
+
+<!-- ══ REPORTS ══ -->
+<div class="container page" id="page-reports">
+  <div class="sec-hd">
+    <div class="sec-title"><span class="dot"></span> التقارير التنفيذية</div>
+    <button class="btn sm ghost" onclick="clearAuditLog()">🧹 مسح سجل التغييرات</button>
+  </div>
+  <div class="insights-grid" id="reports-grid"></div>
+  <div class="sec-hd" style="margin-top:18px"><div class="sec-title"><span class="dot"></span> خط زمني للانتهاءات القادمة</div></div>
+  <div class="fbar" style="margin-bottom:14px">
+    <select class="fsel" id="tl-center" onchange="renderTimeline()" style="min-width:180px">
+      <option value="">كل المراكز</option>
+    </select>
+    <select class="fsel" id="tl-type" onchange="renderTimeline()">
+      <option value="">كل الأنواع</option>
+      <option value="lic">📋 الرخص</option>
+      <option value="iqama">👷 الإقامات</option>
+      <option value="ajer">🏢 شهادات أجير</option>
+    </select>
+  </div>
+  <div id="tl-lic-wrap">
+    <div style="margin-bottom:8px;font-size:13px;font-weight:700;color:var(--accent)">📋 الرخص والتراخيص</div>
+    <div class="timeline" id="expiry-timeline-lic"></div>
+  </div>
+  <div id="tl-iqama-wrap">
+    <div style="margin:14px 0 8px;font-size:13px;font-weight:700;color:var(--accent)">👷 إقامات العمال</div>
+    <div class="timeline" id="expiry-timeline-iqama"></div>
+  </div>
+  <div id="tl-ajer-wrap">
+    <div style="margin:14px 0 8px;font-size:13px;font-weight:700;color:var(--accent)">🏢 شهادات أجير</div>
+    <div class="timeline" id="expiry-timeline-ajer"></div>
+  </div>
+  <div class="sec-hd" style="margin-top:18px"><div class="sec-title"><span class="dot"></span> سجل التغييرات Audit Log</div></div>
+  <div id="audit-log"></div>
+</div>
+
+
+
+<!-- ══ LICENSE ALERTS ══ -->
+<div class="container page" id="page-alerts-lic">
+  <div class="sec-hd">
+    <div class="sec-title"><span class="dot"></span> تنبيهات الرخص والتراخيص</div>
+    <div style="display:flex;gap:7px;align-items:center">
+      <span class="badge" id="lic-alert-count">—</span>
+      <button class="btn sm ghost" onclick="renderLicenseAlerts()">↻ تحديث</button>
+      <button class="btn sm ghost" onclick="exportAlertsExcel('licenses')">⬇️ تصدير Excel</button>
+      <button class="btn sm ghost" onclick="copyLicAlertsReport()">📋 نسخ تقرير</button>
+    </div>
+  </div>
+
+  <div class="alert-summary-grid">
+    <div class="alert-summary-card">
+      <div class="alert-summary-label">إجمالي تنبيهات الرخص</div>
+      <div class="alert-summary-value" id="lic-alert-total">0</div>
+      <div class="alert-summary-sub">حسب حد التحذير للرخص</div>
+    </div>
+    <div class="alert-summary-card">
+      <div class="alert-summary-label">رخص منتهية</div>
+      <div class="alert-summary-value danger" id="lic-alert-expired">0</div>
+      <div class="alert-summary-sub">تحتاج إجراء فوري</div>
+    </div>
+    <div class="alert-summary-card">
+      <div class="alert-summary-label">رخص على وشك</div>
+      <div class="alert-summary-value warning" id="lic-alert-warning">0</div>
+      <div class="alert-summary-sub">قبل انتهاء الصلاحية</div>
+    </div>
+  </div>
+
+  <div class="fbar">
+    <select class="fsel" id="laf-center" onchange="renderLicenseAlerts()"><option value="">كل المراكز</option></select>
+    <select class="fsel" id="laf-status" onchange="renderLicenseAlerts()">
+      <option value="">كل الحالات</option>
+      <option value="على وشك">على وشك</option>
+      <option value="منتهي">منتهي</option>
+    </select>
+    <input class="finput" id="laf-q" placeholder="🔍 بحث في الرخصة أو المركز..." oninput="renderLicenseAlerts()">
+  </div>
+
+  <div class="alert-card-grid" id="lic-alert-cards"></div>
+</div>
+
+
+<!-- ══ AJER ALERTS ══ -->
+<div class="container page" id="page-alerts-ajer">
+  <div class="sec-hd">
+    <div class="sec-title"><span class="dot"></span> تنبيهات الإقامات وشهادات أجير</div>
+    <div style="display:flex;gap:7px;align-items:center">
+      <span class="badge" id="ajer-alert-count">—</span>
+      <button class="btn sm ghost" onclick="renderAjerAlerts()">↻ تحديث</button>
+      <button class="btn sm ghost" onclick="exportAlertsExcel('ajer')">⬇️ تصدير Excel</button>
+      <button class="btn sm ghost" onclick="copyAjerAlertsReport()">📋 نسخ تقرير</button>
+    </div>
+  </div>
+
+  <div class="alert-summary-grid">
+    <div class="alert-summary-card">
+      <div class="alert-summary-label">إجمالي تنبيهات أجير</div>
+      <div class="alert-summary-value" id="ajer-alert-total">0</div>
+      <div class="alert-summary-sub">حسب حد تحذير أجير</div>
+    </div>
+    <div class="alert-summary-card">
+      <div class="alert-summary-label">إقامات</div>
+      <div class="alert-summary-value danger" id="ajer-alert-iqama">0</div>
+      <div class="alert-summary-sub">منتهية أو على وشك</div>
+    </div>
+    <div class="alert-summary-card">
+      <div class="alert-summary-label">شهادات أجير</div>
+      <div class="alert-summary-value warning" id="ajer-alert-cert">0</div>
+      <div class="alert-summary-sub">منتهية أو على وشك</div>
+    </div>
+  </div>
+
+  <div class="fbar">
+    <select class="fsel" id="aaf-center" onchange="renderAjerAlerts()"><option value="">كل المراكز</option></select>
+    <select class="fsel" id="aaf-type" onchange="renderAjerAlerts()">
+      <option value="">كل الأنواع</option>
+      <option value="إقامة">إقامة</option>
+      <option value="أجير">أجير</option>
+    </select>
+    <select class="fsel" id="aaf-status" onchange="renderAjerAlerts()">
+      <option value="">كل الحالات</option>
+      <option value="على وشك">على وشك</option>
+      <option value="منتهي">منتهي</option>
+    </select>
+    <input class="finput" id="aaf-q" placeholder="🔍 اسم العامل / الإقامة / الشركة..." oninput="renderAjerAlerts()">
+  </div>
+
+  <div class="alert-card-grid" id="ajer-alert-cards"></div>
+</div>
+
+<!-- ══ SETTINGS ══ -->
+
+<div class="container page" id="page-settings">
+  <div class="sec-hd" style="margin-bottom:18px"><div class="sec-title"><span class="dot"></span> الإعدادات العامة</div></div>
+  <div class="sgrid">
+
+    <!-- Centers -->
+    <div class="scard">
+      <div class="schd"><div class="sctitle">🏢 إدارة المراكز</div><button class="btn sm" onclick="openAddCenter()">＋ إضافة</button></div>
+      <div class="scbody"><div class="slist" id="centers-list"></div></div>
+    </div>
+
+    <!-- Companies -->
+    <div class="scard">
+      <div class="schd"><div class="sctitle">🏭 شركات الأجير</div><button class="btn sm" onclick="openAddCompany()">＋ إضافة</button></div>
+      <div class="scbody"><div class="slist" id="companies-list"></div></div>
+    </div>
+
+    <!-- Professions -->
+    <div class="scard">
+      <div class="schd"><div class="sctitle">🧰 قائمة المهن</div><button class="btn sm" onclick="openAddProfession()">＋ إضافة</button></div>
+      <div class="scbody"><div class="slist" id="professions-list"></div></div>
+    </div>
+
+    <!-- License Types -->
+    <div class="scard">
+      <div class="schd"><div class="sctitle">📄 أنواع الرخص الشائعة</div><button class="btn sm" onclick="openAddLicType()">＋ إضافة</button></div>
+      <div class="scbody"><div class="slist" id="lictypes-list"></div></div>
+    </div>
+
+    <!-- App Config -->
+    <div class="scard">
+      <div class="schd"><div class="sctitle">⚙️ إعدادات النظام</div></div>
+      <div class="scbody" style="display:flex;flex-direction:column;gap:10px">
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:700">حد التحذير للرخص قبل انتهاء الصلاحية</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input class="finp" type="number" id="warn-inp" value="60" min="1" max="365" style="width:75px;padding:6px 9px" onchange="saveWarnDays()">
+            <span style="font-size:12px;color:var(--muted)">يوم</span>
+          </div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:700">حد التحذير للإقامات وشهادات أجير</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input class="finp" type="number" id="ajer-warn-inp" value="60" min="1" max="365" style="width:75px;padding:6px 9px" onchange="saveAjerWarnDays()">
+            <span style="font-size:12px;color:var(--muted)">يوم</span>
+          </div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:700">إجمالي السجلات المحفوظة</div>
+          <span id="info-total" style="font-weight:900;font-size:22px;color:var(--accent)">—</span>
+        </div>
+        <button class="btn danger sm" onclick="confirmClearAll()">🗑️ مسح جميع البيانات وإعادة التهيئة</button>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+
+<!-- ══ MODALS ══ -->
+
+<!-- License Modal -->
+<div class="overlay" id="mo-lic">
+  <div class="modal">
+    <div class="mhd"><div class="mtitle" id="mo-lic-title">إضافة رخصة</div><button class="mclose" onclick="cm('mo-lic')">×</button></div>
+    <div class="mbody">
+      <input type="hidden" id="le-idx">
+      <div class="frow">
+        <div class="fg"><label class="flbl">المركز *</label><select class="fselect" id="lf-center-inp"></select></div>
+        <div class="fg"><label class="flbl">اسم الرخصة / الشهادة *</label><input class="finp" id="lf-name" placeholder="مثال: رخصة البلدية"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="flbl">أو اختر من الأنواع الشائعة</label><select class="fselect" id="lf-type" onchange="fillLicType()"><option value="">— اختر —</option></select></div>
+        <div class="fg">
+          <label class="flbl">تاريخ الإنتهاء
+            <span style="display:inline-flex;gap:4px;margin-right:8px;vertical-align:middle">
+              <button type="button" id="btn-cal-miladi" onclick="setDateMode('miladi')"
+                style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid #b8860b;background:#b8860b;color:#fff;cursor:pointer">ميلادي</button>
+              <button type="button" id="btn-cal-hijri" onclick="setDateMode('hijri')"
+                style="font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid #b8860b;background:transparent;color:#b8860b;cursor:pointer">هجري</button>
+            </span>
+          </label>
+          <input class="finp" type="date" id="lf-expiry" style="display:block">
+          <div id="lf-hijri-picker" style="display:none;gap:6px;display:none">
+            <select class="fselect" id="lf-hijri-d" onchange="onHijriPickerChange()" style="width:70px"></select>
+            <select class="fselect" id="lf-hijri-m" onchange="onHijriPickerChange()" style="flex:1"></select>
+            <select class="fselect" id="lf-hijri-y" onchange="onHijriPickerChange()" style="width:90px"></select>
+          </div>
+          <input type="hidden" id="lf-date-mode" value="miladi">
+        </div>
+      </div>
+      <div class="frow full"><div class="fg"><label class="flbl">ملاحظات</label><input class="finp" id="lf-notes" placeholder="أي ملاحظات..."></div></div>
+    </div>
+    <div class="mfoot"><button class="btn ghost" onclick="cm('mo-lic')">إلغاء</button><button class="btn" onclick="saveLic()">💾 حفظ</button></div>
+  </div>
+</div>
+
+<!-- Worker Modal -->
+<div class="overlay" id="mo-worker">
+  <div class="modal">
+    <div class="mhd"><div class="mtitle" id="mo-worker-title">إضافة عامل</div><button class="mclose" onclick="cm('mo-worker')">×</button></div>
+    <div class="mbody">
+      <input type="hidden" id="we-type"><input type="hidden" id="we-idx">
+      <div class="frow">
+        <div class="fg"><label class="flbl">المركز *</label><select class="fselect" id="wf-center"></select></div>
+        <div class="fg"><label class="flbl">اسم العامل *</label><input class="finp" id="wf-name" placeholder="الاسم الكامل"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="flbl">رقم الإقامة *</label><input class="finp" id="wf-iqama" placeholder="2XXXXXXXXX"></div>
+        <div class="fg"><label class="flbl">المهنة في الإقامة</label><select class="fselect" id="wf-profession"></select></div>
+
+        <div class="fg"><label class="flbl">الشركة *</label><select class="fselect" id="wf-company"></select></div>
+      </div>
+      <div class="frow"><div class="fg"><label class="flbl">نهاية الإقامة</label><input class="finp" type="date" id="wf-expiry"></div><div class="fg"><label class="flbl">نهاية أجير</label><input class="finp" type="date" id="wf-ajer-expiry"></div></div>
+    </div>
+    <div class="mfoot"><button class="btn ghost" onclick="cm('mo-worker')">إلغاء</button><button class="btn" onclick="saveWorker()">💾 حفظ</button></div>
+  </div>
+</div>
+
+<!-- Center Modal -->
+<div class="overlay" id="mo-center">
+  <div class="modal" style="max-width:380px">
+    <div class="mhd"><div class="mtitle" id="mo-center-title">إضافة مركز</div><button class="mclose" onclick="cm('mo-center')">×</button></div>
+    <div class="mbody">
+      <input type="hidden" id="ce-idx">
+      <div class="fg" style="margin-bottom:10px"><label class="flbl">اسم المركز *</label><input class="finp" id="cf-name" placeholder="مثال: مركز ينبع"></div>
+      <div class="fg" style="margin-bottom:10px"><label class="flbl">المنطقة *</label><input class="finp" id="cf-region" placeholder="مثال: المدينة المنورة"></div>
+      <div class="fg"><label class="flbl">الموقع</label><input class="finp" id="cf-loc" placeholder="مثال: ينبع"></div>
+    </div>
+    <div class="mfoot"><button class="btn ghost" onclick="cm('mo-center')">إلغاء</button><button class="btn" onclick="saveCenter()">💾 حفظ</button></div>
+  </div>
+</div>
+
+<!-- Company Modal -->
+<div class="overlay" id="mo-company">
+  <div class="modal" style="max-width:360px">
+    <div class="mhd"><div class="mtitle" id="mo-company-title">إضافة شركة</div><button class="mclose" onclick="cm('mo-company')">×</button></div>
+    <div class="mbody">
+      <input type="hidden" id="cpe-idx">
+      <div class="fg"><label class="flbl">اسم الشركة *</label><input class="finp" id="cpf-name" placeholder="اسم الشركة"></div>
+    </div>
+    <div class="mfoot"><button class="btn ghost" onclick="cm('mo-company')">إلغاء</button><button class="btn" onclick="saveCompany()">💾 حفظ</button></div>
+  </div>
+</div>
+
+
+<!-- Profession Modal -->
+<div class="overlay" id="mo-profession">
+  <div class="modal" style="max-width:360px">
+    <div class="mhd"><div class="mtitle" id="mo-profession-title">إضافة مهنة</div><button class="mclose" onclick="cm('mo-profession')">×</button></div>
+    <div class="mbody">
+      <input type="hidden" id="pe-idx">
+      <div class="fg"><label class="flbl">اسم المهنة *</label><input class="finp" id="pf-name" placeholder="مثال: عامل نظافة"></div>
+    </div>
+    <div class="mfoot"><button class="btn ghost" onclick="cm('mo-profession')">إلغاء</button><button class="btn" onclick="saveProfession()">💾 حفظ</button></div>
+  </div>
+</div>
+
+<!-- LicType Modal -->
+<div class="overlay" id="mo-lictype">
+  <div class="modal" style="max-width:360px">
+    <div class="mhd"><div class="mtitle">إضافة نوع رخصة</div><button class="mclose" onclick="cm('mo-lictype')">×</button></div>
+    <div class="mbody"><div class="fg"><label class="flbl">اسم النوع *</label><input class="finp" id="ltf-name" placeholder="مثال: شهادة السلامة"></div></div>
+    <div class="mfoot"><button class="btn ghost" onclick="cm('mo-lictype')">إلغاء</button><button class="btn" onclick="saveLicType()">💾 حفظ</button></div>
+  </div>
+</div>
+
+<!-- Confirm -->
+<div class="overlay" id="mo-confirm">
+  <div class="modal" style="max-width:360px">
+    <div class="mhd"><div class="mtitle" style="color:#f87171">⚠️ تأكيد</div><button class="mclose" onclick="cm('mo-confirm')">×</button></div>
+    <div class="mbody">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:5px">هل أنت متأكد من حذف:</p>
+      <p style="font-size:14px;font-weight:700" id="conf-name">—</p>
+      <p style="font-size:11px;color:var(--muted);margin-top:7px">لا يمكن التراجع عن هذا الإجراء.</p>
+    </div>
+    <div class="mfoot"><button class="btn ghost" onclick="cm('mo-confirm')">إلغاء</button><button class="btn danger" id="conf-ok">🗑️ حذف</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">✅</div>
+
+<script>
+
+
+// ════════ FIREBASE ARRAY NORMALIZER ════════
+function fbToArray(value){
+  if(value === null || value === undefined) return [];
+  if(Array.isArray(value)) return value.filter(v => v !== null && v !== undefined);
+  if(typeof value === 'object'){
+    return Object.keys(value)
+      .sort((a,b)=>{
+        const na=Number(a), nb=Number(b);
+        if(!Number.isNaN(na) && !Number.isNaN(nb)) return na-nb;
+        return String(a).localeCompare(String(b));
+      })
+      .map(k => value[k])
+      .filter(v => v !== null && v !== undefined);
+  }
+  return [];
+}
+
+function safeText(v){return (v===null||v===undefined||v==='')?'—':String(v);}
+// ════════ FIREBASE CLOUD SYNC ════════
+const firebaseConfig = {
+  apiKey: "AIzaSyBw94GNolE0yW5GbSDHp1pm2V9MpC1mO1c",
+  authDomain: "dashboard-licenses.firebaseapp.com",
+  databaseURL: "https://dashboard-licenses-default-rtdb.firebaseio.com",
+  projectId: "dashboard-licenses",
+  storageBucket: "dashboard-licenses.firebasestorage.app",
+  messagingSenderId: "972594052092",
+  appId: "1:972594052092:web:68c6860bc307fccc66d079"
+};
+
+let db = null;
+let cloudReady = false;
+let isApplyingCloud = false;
+let cloudListenersStarted = false;
+
+try{
+  if(window.firebase && !firebase.apps.length){
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    cloudReady = true;
+  }
+}catch(e){ console.error("Firebase init error:", e); }
+
+const CLOUD_PATHS = {
+  alj_lics:"licenses",
+  alj_cleaning:"cleaningWorkers",
+  alj_services:"servicesWorkers",
+  alj_centers:"centers",
+  alj_companies:"companies",
+  alj_lictypes:"licenseTypes",
+  alj_professions:"professions",
+  alj_warn:"settings/warnDays",
+  alj_ajer_warn:"settings/ajerWarnDays",
+  // alj_theme removed
+};
+
+function cloudSet(localKey,value){
+  if(!cloudReady || !db || isApplyingCloud) return;
+  const path=CLOUD_PATHS[localKey];
+  if(!path) return;
+  db.ref(path).set(value).catch(err=>{
+    console.error("Cloud save failed:", localKey, err);
+    if(typeof toast==="function") toast("تعذر حفظ البيانات في السحابة","error");
+  });
+}
+
+function applyCloudValue(localKey,value){
+  if(value===null || value===undefined) return;
+  isApplyingCloud=true;
+  try{
+    if(localKey==="alj_warn"){
+      WARN=parseInt(value)||60;
+      localStorage.setItem(localKey,String(WARN));
+      const el=document.getElementById("warn-inp"); if(el) el.value=WARN;
+    }else if(localKey==="alj_ajer_warn"){
+      AJER_WARN=parseInt(value)||60;
+      localStorage.setItem(localKey,String(AJER_WARN));
+      const el=document.getElementById("ajer-warn-inp"); if(el) el.value=AJER_WARN;
+    }else if(localKey==="alj_theme"){
+      localStorage.setItem(localKey,JSON.stringify(value));
+      if(typeof applyVars==="function") applyVars(value);
+    }else{
+      const arr=fbToArray(value);
+      if((localKey==="alj_cleaning" || localKey==="alj_services") && arr.length===0){
+        const current = localKey==="alj_cleaning" ? CLEANING : SERVICES;
+        if(Array.isArray(current) && current.length>0){
+          isApplyingCloud=false;
+          return;
+        }
+      }
+      localStorage.setItem(localKey,JSON.stringify(arr));
+      if(localKey==="alj_lics") LICS=arr;
+      if(localKey==="alj_cleaning") CLEANING=arr;
+      if(localKey==="alj_services") SERVICES=arr;
+      if(localKey==="alj_centers") CENTERS=arr;
+      if(localKey==="alj_companies") COMPANIES=arr;
+      if(localKey==="alj_lictypes") LICTYPES=arr;
+      if(localKey==="alj_professions") PROFESSIONS=arr;
+    }
+  }finally{ isApplyingCloud=false; }
+}
+
+function refreshAfterCloud(){
+  if(typeof normalizeWorkerRecords==="function") normalizeWorkerRecords();
+  if(typeof refreshAll==="function") refreshAll();
+  if(document.getElementById("page-settings")?.classList.contains("active") && typeof renderSettings==="function") renderSettings();
+  if(typeof renderLicenseAlerts==="function") renderLicenseAlerts();
+  if(typeof renderAjerAlerts==="function") renderAjerAlerts();
+}
+
+function syncLocalToCloudOnce(){
+  if(!cloudReady || !db) return;
+  const payload={};
+  Object.entries(CLOUD_PATHS).forEach(([localKey,path])=>{
+    const raw=localStorage.getItem(localKey);
+    if(raw===null) return;
+    try{
+      payload[path]=(localKey==="alj_warn"||localKey==="alj_ajer_warn") ? (parseInt(raw)||60) : JSON.parse(raw);
+    }catch(e){}
+  });
+  if(Object.keys(payload).length) db.ref().update(payload);
+}
+
+function startCloudListeners(){
+  if(!cloudReady || !db || cloudListenersStarted) return;
+  cloudListenersStarted = true;
+
+  let loadedCount = 0;
+  const total = Object.keys(CLOUD_PATHS).length;
+
+  Object.entries(CLOUD_PATHS).forEach(([localKey,path])=>{
+    db.ref(path).on("value",snap=>{
+      const value=snap.val();
+
+      if(value!==null && value!==undefined){
+        applyCloudValue(localKey,value);
+      }
+
+      loadedCount++;
+      if(loadedCount >= total){
+        cloudInitialLoadDone = true;
+      }
+
+      refreshAfterCloud();
+      if(localKey==='alj_cleaning' && typeof renderClean==='function') renderClean();
+      if(localKey==='alj_services' && typeof renderServ==='function') renderServ();
+    }, err=>{
+      console.error('Cloud listener error:', path, err);
+      if(typeof toast==='function') toast('خطأ في قراءة Firebase: '+(err?.message||err),'error');
+    });
+  });
+}
+
+function showCloudStatus(){
+  const box=document.createElement("div");
+  box.style.cssText="position:fixed;bottom:12px;right:12px;z-index:3000;background:rgba(17,24,39,.96);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:10px;font-size:11px;font-weight:800;box-shadow:var(--card-shadow)";
+  box.textContent=cloudReady ? "☁️ متصل بالسحابة" : "⚠️ غير متصل بالسحابة";
+  document.body.appendChild(box);
+  setTimeout(()=>box.remove(),3500);
+}
+
+// ════════ DEFAULT DATA ════════
+const D_PROFESSIONS=[];
+const D_CENTERS=[];
+const D_COMPANIES=[];
+const D_LICTYPES=[];
+const D_LICS=[];
+const D_CLEANING=[];
+const D_SERVICES=[];
+
+
+// ===== CLOUD FIRST LOAD PROTECTION =====
+let cloudInitialLoadDone = false;
+
+function waitForInitialCloudLoad(){
+  return new Promise(resolve=>{
+    if(cloudInitialLoadDone) return resolve();
+    const timer=setInterval(()=>{
+      if(cloudInitialLoadDone){
+        clearInterval(timer);
+        resolve();
+      }
+    },200);
+    setTimeout(()=>{
+      clearInterval(timer);
+      resolve();
+    },8000);
+  });
+}
+
+
+
+function safeParseJSON(raw, fallback){
+  try{
+    if(raw === null || raw === undefined || raw === '') return fallback;
+    const v = JSON.parse(raw);
+    return v ?? fallback;
+  }catch(e){
+    console.warn('Bad localStorage JSON ignored:', e);
+    return fallback;
+  }
+}
+function normalizeCentersRegion(){
+  if(!Array.isArray(CENTERS)) return;
+  CENTERS = CENTERS.map(c=>{
+    if(typeof c === 'string') return {name:c, loc:'', region:'المدينة المنورة'};
+    return {...c, region: c.region || c.loc || 'المدينة المنورة'};
+  });
+}
+
+// ════════ STATE ════════
+let LICS=[],CLEANING=[],SERVICES=[],CENTERS=[],COMPANIES=[],LICTYPES=[],PROFESSIONS=[],WARN=60,AJER_WARN=60;
+function load(){
+  LICS     =safeParseJSON(localStorage.getItem('alj_lics'), D_LICS.map(r=>({...r})));
+  CLEANING =safeParseJSON(localStorage.getItem('alj_cleaning'), D_CLEANING.map(r=>({...r})));
+  SERVICES =safeParseJSON(localStorage.getItem('alj_services'), D_SERVICES.map(r=>({...r})));
+  CENTERS  =safeParseJSON(localStorage.getItem('alj_centers'), D_CENTERS.map(r=>({...r})));
+  COMPANIES=safeParseJSON(localStorage.getItem('alj_companies'), D_COMPANIES.map(r=>({...r})));
+  LICTYPES =safeParseJSON(localStorage.getItem('alj_lictypes'), [...D_LICTYPES]);
+  PROFESSIONS=safeParseJSON(localStorage.getItem('alj_professions'), [...D_PROFESSIONS]);
+  WARN     =parseInt(localStorage.getItem('alj_warn')||'60');
+  AJER_WARN=parseInt(localStorage.getItem('alj_ajer_warn')||'60');
+  normalizeCentersRegion();
+  const warnEl=document.getElementById('warn-inp'); if(warnEl) warnEl.value=WARN;
+  const awEl=document.getElementById('ajer-warn-inp'); if(awEl) awEl.value=AJER_WARN;
+}
+const sv=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));cloudSet(k,v);};
+
+// ════════ THEME ════════
+function applyVars(v){const r=document.documentElement;Object.entries(v).forEach(([k,val])=>r.style.setProperty(k,val));}
+function loadTheme(){const s=localStorage.getItem('alj_theme');if(s)applyVars(JSON.parse(s));}
+function saveTheme(){const v={};Object.keys(CLABELS).forEach(k=>{v[k]=getComputedStyle(document.documentElement).getPropertyValue(k).trim();});localStorage.setItem('alj_theme',JSON.stringify(v));}
+function resetTheme(){localStorage.removeItem('alj_theme');applyVars(PRESETS[0].vars);renderColorGrid();renderPresets();toast('تم إعادة تعيين الألوان','success');}
+function applyPreset(k){const p=PRESETS.find(x=>x.key===k);applyVars(p.vars);saveTheme();renderColorGrid();renderPresets();toast('تم تطبيق الثيم: '+p.name,'success');}
+function renderPresets(){
+  document.getElementById('preset-grid').innerHTML=PRESETS.map(p=>`
+    <button class="pbtn" onclick="applyPreset('${p.key}')">
+      <div class="pdots">${p.dots.map(d=>`<div class="pdot" style="background:${d}"></div>`).join('')}</div>${p.name}
+    </button>`).join('');
+}
+function renderColorGrid(){
+  document.getElementById('color-grid').innerHTML=Object.entries(CLABELS).map(([k,lbl])=>{
+    const cur=(getComputedStyle(document.documentElement).getPropertyValue(k)||'').trim();
+    const hex=cur.startsWith('#')?cur:'#000000';
+    const id='ci_'+k.replace(/--/g,'').replace(/-/g,'');
+    return `<div class="citem">
+      <div class="clbl">${lbl}</div>
+      <div class="cwrap" onclick="document.getElementById('${id}').click()">
+        <div class="cswatch" id="cs_${id}" style="background:${cur||hex}"></div>
+        <span class="chex" id="ch_${id}">${hex}</span>
+        <input type="color" id="${id}" value="${hex}" oninput="updateColor('${k}',this.value,'${id}')">
+      </div>
+    </div>`;
+  }).join('');
+}
+function updateColor(k,v,id){
+  document.documentElement.style.setProperty(k,v);
+  document.getElementById('cs_'+id).style.background=v;
+  document.getElementById('ch_'+id).textContent=v;
+  saveTheme();
+}
+
+
+function normalizeLicenseTypes(){
+  if(!Array.isArray(LICS)||!Array.isArray(LICTYPES))return;
+  let changed=false;
+  LICS=LICS.map(r=>{
+    if(!r.licType && LICTYPES.includes(r.name)){
+      changed=true;
+      return {...r,licType:r.name};
+    }
+    return r;
+  });
+  if(changed)sv('alj_lics',LICS);
+}
+
+
+// ════════ AJER DATA RECOVERY GUARD ════════
+
+function restoreAjerDefaults(uploadToCloud=true, force=false){
+  const cleanEmpty = !Array.isArray(CLEANING) || CLEANING.length === 0;
+  const servEmpty  = !Array.isArray(SERVICES) || SERVICES.length === 0;
+
+  if(force || cleanEmpty){
+    CLEANING = Array.isArray(D_CLEANING) ? JSON.parse(JSON.stringify(D_CLEANING)) : [];
+    localStorage.setItem('alj_cleaning', JSON.stringify(CLEANING));
+    if(uploadToCloud && typeof cloudSet === 'function') cloudSet('alj_cleaning', CLEANING);
+  }
+
+  if(force || servEmpty){
+    SERVICES = Array.isArray(D_SERVICES) ? JSON.parse(JSON.stringify(D_SERVICES)) : [];
+    localStorage.setItem('alj_services', JSON.stringify(SERVICES));
+    if(uploadToCloud && typeof cloudSet === 'function') cloudSet('alj_services', SERVICES);
+  }
+
+  // تأكد من وجود الشركات المستخدمة داخل السجلات
+  const companyNames = [...new Set([...(CLEANING||[]), ...(SERVICES||[])].map(r=>r.company).filter(Boolean))];
+  companyNames.forEach(n=>{
+    if(!COMPANIES.some(c=>c.name===n)) COMPANIES.push({name:n});
+  });
+  localStorage.setItem('alj_companies', JSON.stringify(COMPANIES));
+  if(uploadToCloud && typeof cloudSet === 'function') cloudSet('alj_companies', COMPANIES);
+
+  if(typeof normalizeWorkerRecords === 'function') normalizeWorkerRecords();
+
+  // Reset filters that may hide rows
+  ['clf-center','clf-iq-status','clf-aj-status','clf-q','svf-center','svf-iq-status','svf-aj-status','svf-q'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.value='';
+  });
+
+  if(typeof refreshAll === 'function') refreshAll();
+  if(typeof renderClean === 'function') renderClean();
+  if(typeof renderServ === 'function') renderServ();
+  if(typeof renderAjerAlerts === 'function') renderAjerAlerts();
+
+  if(typeof toast === 'function'){
+    toast(force ? 'تمت إعادة تحميل بيانات أجير ورفعها للسحابة' : 'تمت استعادة بيانات أجير', 'success');
+  }
+}
+
+
+function guardAjerCloudData(){
+  // فحص بعد تحميل السحابة — لو الاثنين فارغين استعد الافتراضي
+  waitForInitialCloudLoad().then(()=>{
+    const cleanEmpty = !Array.isArray(CLEANING) || CLEANING.length === 0;
+    const servEmpty  = !Array.isArray(SERVICES) || SERVICES.length === 0;
+    if(cleanEmpty && servEmpty) restoreAjerDefaults(true);
+  });
+}
+
+
+// ════════ COMPANY NAME REPAIR ════════
+function repairCompanyNames(oldName='عبدالله الحركان', newName='شركة عبد الله الحركان'){
+  let changed=false;
+
+  CLEANING = (CLEANING||[]).map(r=>{
+    if(r.company===oldName){changed=true; return {...r,company:newName};}
+    return r;
+  });
+
+  SERVICES = (SERVICES||[]).map(r=>{
+    if(r.company===oldName){changed=true; return {...r,company:newName};}
+    return r;
+  });
+
+  if(!COMPANIES.some(c=>c.name===newName)){
+    COMPANIES.push({name:newName});
+    changed=true;
+  }
+
+  if(changed){
+    localStorage.setItem('alj_cleaning',JSON.stringify(CLEANING));
+    localStorage.setItem('alj_services',JSON.stringify(SERVICES));
+    localStorage.setItem('alj_companies',JSON.stringify(COMPANIES));
+
+    if(typeof cloudSet==='function'){
+      cloudSet('alj_cleaning',CLEANING);
+      cloudSet('alj_services',SERVICES);
+      cloudSet('alj_companies',COMPANIES);
+    }
+
+    refreshAll();
+    if(typeof renderSettings==='function')renderSettings();
+    toast('تم إصلاح اسم الشركة في سجلات أجير','success');
+  }else{
+    toast('لا توجد سجلات تحتاج إصلاح','info');
+  }
+}
+
+
+function clearAjerFilters(){
+  ['clf-center','clf-iq-status','clf-aj-status','clf-q','svf-center','svf-iq-status','svf-aj-status','svf-q'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value='';
+  });
+  if(typeof renderClean==='function') renderClean();
+  if(typeof renderServ==='function') renderServ();
+  if(typeof toast==='function') toast('تم مسح فلاتر أجير', 'success');
+}
+
+
+function debugAjerData(){
+  console.log('CLEANING', CLEANING);
+  console.log('SERVICES', SERVICES);
+  toast(`أجير النظافة: ${(CLEANING||[]).length} | أجير الخدمات: ${(SERVICES||[]).length}`, 'info');
+}
+
+
+// ════════ DIRECT AJER FIREBASE RELOAD ════════
+
+async function reloadAjerFromFirebase(silent=false){
+  if(!db){ console.warn('reloadAjerFromFirebase: db not ready'); return; }
+  try{
+    const cleanSnap = await db.ref('cleaningWorkers').once('value');
+    const servSnap  = await db.ref('servicesWorkers').once('value');
+
+    const newClean = fbToArray(cleanSnap.val());
+    const newServ  = fbToArray(servSnap.val());
+
+    // لا تمسح البيانات لو Firebase رجع فارغ (حماية)
+    if(newClean.length > 0 || CLEANING.length === 0) CLEANING = newClean;
+    if(newServ.length  > 0 || SERVICES.length === 0) SERVICES = newServ;
+
+    localStorage.setItem('alj_cleaning', JSON.stringify(CLEANING));
+    localStorage.setItem('alj_services', JSON.stringify(SERVICES));
+
+    if(typeof normalizeWorkerRecords === 'function') normalizeWorkerRecords();
+    if(typeof refreshAll === 'function') refreshAll();
+    if(typeof renderAjerAlerts === 'function') renderAjerAlerts();
+
+  }catch(e){
+    console.error('reloadAjerFromFirebase failed', e);
+    // رسالة خطأ بس لو مش silent
+    if(!silent && typeof toast==='function')
+      toast('تعذّر الاتصال بالسحابة، يعمل على البيانات المحلية', 'info');
+  }
+}
+
+
+function showPage(id,btn){
+  document.getElementById('page-users').style.display='none';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='settings')renderSettings();
+  if(id==='alerts')renderAlerts();
+  if(id==='reports')buildReports();
+  if(id==='alerts-lic')renderLicenseAlerts();
+  if(id==='alerts-ajer')renderAjerAlerts();
+}
+function swTab(id,btn){
+  document.querySelectorAll('.tabcontent').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tabbtn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tc-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(typeof buildKPI==='function') buildKPI();
+  if(typeof buildInsights==='function') buildInsights();
+}
+
+// ════════ UTILS ════════
+const today=new Date();today.setHours(0,0,0,0);
+function dl(d){if(!d)return null;const x=new Date(d);x.setHours(0,0,0,0);if(isNaN(x))return null;return Math.ceil((x-today)/86400000);}
+function st(d){const n=dl(d);if(n===null||n<0)return"منتهي الصلاحية";if(n<=WARN)return"على وشك";return"ساري الصلاحية";}
+function fd(d){if(!d)return'—';const x=new Date(d);if(isNaN(x))return'—';return x.toLocaleDateString('ar-SA',{year:'numeric',month:'short',day:'numeric'});}
+function sc(s){if(!s)return'sn';if(s.includes('ساري'))return'sv';if(s.includes('وشك'))return'sw';if(s.includes('منتهي'))return'se';return'sn';}
+function dh(n){if(n===null)return'<span class="dp r">—</span>';if(n<0)return`<span class="dp r">منتهي منذ ${Math.abs(n)} يوم</span>`;if(n<=WARN)return`<span class="dp o">${n} يوم</span>`;return`<span class="dp g">${n} يوم</span>`;}
+function pf(id,arr,k='center'){
+  const s=document.getElementById(id);const cur=s.value;
+  s.innerHTML=s.options[0].outerHTML;
+  const allowed = getUserAllowedCenters ? getUserAllowedCenters() : null;
+  const vals = [...new Set(arr.map(r=>r[k]).filter(Boolean))];
+  const filtered = allowed ? vals.filter(v=>allowed.includes(v)) : vals;
+  filtered.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;if(v===cur)o.selected=true;s.appendChild(o);});
+}
+function ps(id,arr,vk='name'){
+  const s=document.getElementById(id);const cur=s.value;s.innerHTML='';
+  arr.forEach(item=>{const v=typeof item==='string'?item:item[vk];const o=document.createElement('option');o.value=v;o.textContent=v;if(v===cur)o.selected=true;s.appendChild(o);});
+}
+
+// ════════ MISSING UTILS ════════
+
+function stAjer(d){
+  const n=dl(d);
+  if(n===null||n<0) return 'منتهي الصلاحية';
+  if(n<=(typeof AJER_WARN!=='undefined'?AJER_WARN:60)) return 'على وشك';
+  return 'ساري الصلاحية';
+}
+
+function shortStatus(s){
+  if(!s) return '—';
+  const str=String(s);
+  if(str.includes('منتهي')) return 'منتهي';
+  if(str.includes('وشك')) return 'على وشك';
+  if(str.includes('ساري')) return 'ساري';
+  return str;
+}
+
+function shortDays(n){
+  if(n===null) return '<span class="dp r">—</span>';
+  if(n<0) return `<span class="dp r">${Math.abs(n)} يوم</span>`;
+  if(n<=(typeof WARN!=='undefined'?WARN:60)) return `<span class="dp o">${n} يوم</span>`;
+  return `<span class="dp g">${n} يوم</span>`;
+}
+
+function shortDaysAjer(n){
+  if(n===null) return '<span class="dp r">—</span>';
+  if(n<0) return `<span class="dp r">${Math.abs(n)} يوم</span>`;
+  if(n<=(typeof AJER_WARN!=='undefined'?AJER_WARN:60)) return `<span class="dp o">${n} يوم</span>`;
+  return `<span class="dp g">${n} يوم</span>`;
+}
+
+function fdShort(d){
+  if(!d) return '—';
+  const x=new Date(d);
+  if(isNaN(x)) return '—';
+  return x.toLocaleDateString('ar-SA',{year:'numeric',month:'2-digit',day:'2-digit'});
+}
+
+function normalizeWorkerRecords(){
+  const fix=(arr)=>arr.map(r=>({
+    ...r,
+    profession: r.profession||'',
+    company: r.company||'',
+    ajerExpiry: r.ajerExpiry||''
+  }));
+  CLEANING=fix(CLEANING||[]);
+  SERVICES=fix(SERVICES||[]);
+}
+
+// ════════ KPI ════════
+function buildKPI(){
+  const {source, center} = getActiveTabInfo();
+  const allowed = typeof getUserAllowedCenters==='function' ? getUserAllowedCenters() : null;
+
+  // فلترة حسب صلاحية المستخدم أولاً ثم المركز النشط
+  const baseLics  = allowed ? LICS.filter(r=>allowed.includes(r.center))     : LICS;
+  const baseClean = allowed ? CLEANING.filter(r=>allowed.includes(r.center)) : CLEANING;
+  const baseServ  = allowed ? SERVICES.filter(r=>allowed.includes(r.center)) : SERVICES;
+
+  const lics  = center ? baseLics.filter(r=>r.center===center)   : baseLics;
+  const clean = center ? baseClean.filter(r=>r.center===center)  : baseClean;
+  const serv  = center ? baseServ.filter(r=>r.center===center)   : baseServ;
+
+  const lv=lics.filter(l=>st(l.expiry).includes('ساري')).length;
+  const lw=lics.filter(l=>st(l.expiry).includes('وشك')).length;
+  const le=lics.filter(l=>st(l.expiry).includes('منتهي')).length;
+  const tw=[...clean,...serv].length;
+  const workers=[...clean,...serv];
+  // إقامات
+  const iqExp=workers.filter(w=>stAjer(w.expiry).includes('منتهي')).length;
+  const iqWarn=workers.filter(w=>stAjer(w.expiry).includes('وشك')).length;
+  // أجير
+  const ajExp=workers.filter(w=>w.ajerExpiry&&stAjer(w.ajerExpiry).includes('منتهي')).length;
+  const ajWarn=workers.filter(w=>w.ajerExpiry&&stAjer(w.ajerExpiry).includes('وشك')).length;
+
+  document.getElementById('kpi-grid').innerHTML=[
+    {c:'total',   i:'📋', v:lics.length, l:'إجمالي الرخص'},
+    {c:'valid',   i:'✅', v:lv,          l:'ساري الصلاحية'},
+    {c:'warning', i:'⚠️', v:lw,          l:'على وشك'},
+    {c:'expired', i:'🚫', v:le,          l:'منتهي الصلاحية'},
+    {c:'workers', i:'👷', v:tw,          l:`إجمالي العمال<br><span style="font-size:11px;opacity:.8">إقامة: ${iqExp} منتهية - ${iqWarn} على وشك</span>`},
+    {c:'workers', i:'🏢', v:'',          l:`شهادات أجير<br><span style="font-size:11px;opacity:.8">منتهية: ${ajExp} - على وشك: ${ajWarn}</span>`},
+  ].map((k,i)=>`<div class="kpi-card ${k.c}" style="animation-delay:${i*.07}s"><div class="kpi-icon">${k.i}</div><div class="kpi-value">${k.v}</div><div class="kpi-label">${k.l}</div></div>`).join('');
+  document.getElementById('info-total').textContent=lics.length+tw;
+}
+
+// ════════ RENDER LICENSES ════════
+
+function renderLic(){
+  const allowed=typeof getUserAllowedCenters==='function'?getUserAllowedCenters():null;
+  const LICS_FILTERED = allowed ? LICS.filter(r=>allowed.includes(r.center)) : LICS;
+  const cf=document.getElementById('lf-center').value;
+  const sf=document.getElementById('lf-status').value;
+  const q=document.getElementById('lf-q').value.trim();
+
+  const data=LICS_FILTERED.filter((r)=>{
+    const s=st(r.expiry);
+    if(cf && r.center!==cf) return false;
+    if(sf==='ساري' && !String(s).includes('ساري')) return false;
+    if((sf==='على وشك'||sf==='وشك') && !String(s).includes('وشك')) return false;
+    if(sf==='منتهي' && !String(s).includes('منتهي')) return false;
+    if(q && !String(r.name||'').includes(q) && !String(r.center||'').includes(q) && !String(r.notes||'').includes(q)) return false;
+    return true;
+  }).sort((a,b)=>{
+    const cc=(a.center||'').localeCompare(b.center||'','ar');
+    if(cc!==0) return cc;
+    return (a.name||'').localeCompare(b.name||'','ar');
+  });
+
+  document.getElementById('lic-count').textContent=data.length+' سجل';
+  const tb=document.getElementById('lic-tbody');
+
+  if(!data.length){
+    tb.innerHTML='<tr><td colspan="8" class="empty">لا توجد نتائج — تأكد من مسح الفلاتر</td></tr>';
+    return;
+  }
+
+  tb.innerHTML=data.map((r,i)=>{
+    const oi=LICS.findIndex(l=>l.name===r.name && l.center===r.center);
+    const d=dl(r.expiry);
+    const s=st(r.expiry);
+    const statusText=(typeof shortStatus==='function')?shortStatus(s):s;
+    const daysHtml=(typeof shortDays==='function')?shortDays(d):dh(d);
+    const dateText=(typeof fdShort==='function')?fdShort(r.expiry):fd(r.expiry);
+    const safeName=String(r.name||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return `
+      <tr>
+        <td class="lic-num"><span class="rn">${i+1}</span></td>
+        <td class="lic-center"><span class="cname">${r.center||'—'}</span></td>
+        <td class="lic-name wname">${r.name||"—"}</td>
+        <td class="lic-date">${dateText}</td>
+        <td class="lic-days">${daysHtml}</td>
+        <td class="lic-status"><span class="sbadge ${sc(s)}">${statusText}</span></td>
+        <td class="lic-notes">${r.notes||'—'}</td>
+        <td class="lic-actions">
+          <div class="lic-actions-box">
+            ${canUserEdit()?`<button class="btn sm ghost iconbtn" title="تعديل" onclick="openEditLic(${oi})">✏️</button>
+            <button class="btn sm danger iconbtn" title="حذف" onclick="confDel('lic',${oi},'${safeName}')">🗑️</button>`:''}
+          </div>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+// ════════ RENDER WORKERS ════════
+
+
+// ════════ RENDER WORKERS - FIXED ════════
+function workerStatus(dateValue){
+  return stAjer(dateValue); // alias for stAjer
+}
+
+function workerDaysHtml(n){
+  if(typeof shortDaysAjer === 'function') return shortDaysAjer(n);
+  if(typeof shortDays === 'function') return shortDays(n);
+  if(n === null) return '<span class="dp r">—</span>';
+  if(n < 0) return `<span class="dp r">${n}</span>`;
+  if(n <= (typeof AJER_WARN !== 'undefined' ? AJER_WARN : 60)) return `<span class="dp o">${n}</span>`;
+  return `<span class="dp g">${n}</span>`;
+}
+
+function renderW(type){
+  const isClean = type === 'cleaning';
+  const source = isClean ? CLEANING : SERVICES;
+  const rawArr = fbToArray(source);
+  const allowed = typeof getUserAllowedCenters==='function'?getUserAllowedCenters():null;
+  // لا تعدّل CLEANING/SERVICES الأصلية — استخدم نسخة مفلترة للعرض فقط
+  const arr = allowed ? rawArr.filter(r=>allowed.includes(r.center)) : rawArr;
+
+  const tbId = isClean ? 'clean-tbody' : 'serv-tbody';
+  const countId = isClean ? 'clean-count' : 'serv-count';
+  const centerId  = isClean ? 'clf-center'    : 'svf-center';
+  const iqStatId  = isClean ? 'clf-iq-status' : 'svf-iq-status';
+  const ajStatId  = isClean ? 'clf-aj-status' : 'svf-aj-status';
+  const qId       = isClean ? 'clf-q'         : 'svf-q';
+
+  const cf   = document.getElementById(centerId)?.value  || '';
+  const iqSf = document.getElementById(iqStatId)?.value  || '';
+  const ajSf = document.getElementById(ajStatId)?.value  || '';
+  const q    = (document.getElementById(qId)?.value || '').trim();
+
+  const data = arr.filter(r=>{
+    const iqStatus = shortStatus(stAjer(r.expiry));
+    const ajStatus = r.ajerExpiry ? shortStatus(stAjer(r.ajerExpiry)) : '';
+
+    if(cf && r.center !== cf) return false;
+    if(iqSf && iqStatus !== iqSf) return false;
+    if(ajSf && ajStatus !== ajSf) return false;
+
+    if(q){
+      const haystack=[r.name,r.iqama,r.profession,r.company,r.center].map(x=>String(x||'')).join(' ');
+      if(!haystack.includes(q)) return false;
+    }
+    return true;
+  });
+
+  const countEl = document.getElementById(countId);
+  if(countEl) countEl.textContent = data.length + ' عامل';
+
+  // سورت: أولاً المركز ثم الاسم
+  data.sort((a,b)=>{
+    const cc=(a.center||'').localeCompare(b.center||'','ar');
+    if(cc!==0) return cc;
+    return (a.name||'').localeCompare(b.name||'','ar');
+  });
+
+  const tb = document.getElementById(tbId);
+  if(!tb) return;
+
+  if(!data.length){
+    tb.innerHTML = `<tr><td colspan="13" class="empty">لا توجد نتائج — عدد السجلات المقروءة من Firebase: ${arr.length}</td></tr>`;
+    return;
+  }
+
+  tb.innerHTML = data.map((r,i)=>{
+    // استخدم رقم الإقامة كمعرف بدل الـ index لتجنب مشاكل الفلترة
+    const safeIqama = String(r.iqama||'').replace(/'/g,"\'");
+    const iqDays = dl(r.expiry);
+    const iqStatus = stAjer(r.expiry);
+    const ajDays = dl(r.ajerExpiry);
+    const ajStatus = r.ajerExpiry ? stAjer(r.ajerExpiry) : '';
+    const safeNameForJs = String(r.name||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+
+    return `
+      <tr>
+        <td data-label="#"><span class="rn">${i+1}</span></td>
+        <td data-label="المركز"><span class="cname">${safeText(r.center)}</span></td>
+        <td class="wname" data-label="اسم العامل">${safeText(r.name)}</td>
+        <td data-label="رقم الإقامة"><span class="iq">${safeText(r.iqama)}</span></td>
+        <td data-label="المهنة">${safeText(r.profession)}</td>
+        <td class="wcompany" data-label="الشركة">${safeText(r.company)}</td>
+        <td data-label="نهاية الإقامة">${fdShort(r.expiry)}</td>
+        <td data-label="أيام">${workerDaysHtml(iqDays)}</td>
+        <td data-label="حالة"><span class="sbadge ${sc(iqStatus)}">${shortStatus(iqStatus)}</span></td>
+        <td data-label="نهاية أجير">${fdShort(r.ajerExpiry)}</td>
+        <td data-label="أيام">${workerDaysHtml(ajDays)}</td>
+        <td data-label="حالة"><span class="sbadge ${sc(ajStatus)}">${shortStatus(ajStatus)}</span></td>
+        <td data-label="إجراءات">
+          <div class="worker-actions">
+            ${canUserEdit()?`<button class="btn sm ghost iconbtn" title="تعديل" onclick="openEditWorkerByIqama('${type}','${safeIqama}')">✏️</button>
+            <button class="btn sm danger iconbtn" title="حذف" onclick="confDelByIqama('${type}','${safeIqama}','${safeNameForJs}')">🗑️</button>`:''}
+          </div>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+function renderClean(){ renderW('cleaning'); }
+function renderServ(){ renderW('services'); }
+
+// ════════ LICENSE CRUD ════════
+function openAddLic(){
+  document.getElementById('mo-lic-title').textContent='إضافة رخصة جديدة';
+  document.getElementById('le-idx').value='';
+  document.getElementById('lf-name').value='';
+  if(document.getElementById('lf-type'))document.getElementById('lf-type').value='';
+  document.getElementById('lf-expiry').value='';
+  setDateMode('miladi');
+  document.getElementById('lf-notes').value='';
+  ps('lf-center-inp',getAllowedCentersForInput());
+  ps('lf-type',[{name:'— اختر نوع شائع —'},...LICTYPES.map(t=>({name:t}))]);
+  document.getElementById('lf-type').options[0].value='';
+  document.getElementById('lf-type').value='';
+  om('mo-lic');
+}
+function openEditLic(idx){
+  const r=LICS[idx];
+  document.getElementById('mo-lic-title').textContent='تعديل / تجديد الرخصة';
+  document.getElementById('le-idx').value=idx;
+  ps('lf-center-inp',getAllowedCentersForInput());
+  ps('lf-type',[{name:'— اختر نوع شائع —'},...LICTYPES.map(t=>({name:t}))]);
+  document.getElementById('lf-type').options[0].value='';
+  document.getElementById('lf-center-inp').value=r.center;
+  document.getElementById('lf-name').value=r.name;
+  if(document.getElementById('lf-type')){
+    const savedType=r.licType||r.name||'';
+    const typeEl=document.getElementById('lf-type');
+    const hasOpt=[...typeEl.options].some(o=>o.value===savedType);
+    typeEl.value=hasOpt?savedType:'';
+  }
+  const savedMode = r.dateMode || (r.hijri && !r.expiry ? 'hijri' : 'miladi');
+  document.getElementById('lf-expiry').value=r.expiry||'';
+  setDateMode(savedMode);
+  if(savedMode==='hijri' && r.hijri){ setTimeout(()=>setHijriPickerValue(r.hijri),50); }
+  document.getElementById('lf-notes').value=r.notes||'';
+  om('mo-lic');
+}
+function fillLicType(){
+  const el=document.getElementById('lf-type');
+  if(!el) return;
+  const v = el.value;
+  // تجاهل الـ placeholder
+  if(!v || v==='— اختر نوع شائع —') return;
+  document.getElementById('lf-name').value = v;
+  // إرجاع الـ select للـ placeholder حتى لا يبدو محدداً
+  setTimeout(()=>{ el.value='— اختر نوع شائع —'; }, 50);
+}
+
+// ════════ HIJRI ↔ MILADI CONVERSION ════════
+function miladiToHijri(dateStr){
+  if(!dateStr) return '';
+  try{
+    const d = new Date(dateStr);
+    if(isNaN(d)) return '';
+    return d.toLocaleDateString('ar-SA-u-ca-islamic-umalqura',{year:'numeric',month:'2-digit',day:'2-digit'}).replace(/‏/g,'');
+  }catch(e){return '';}
+}
+
+function hijriToMiladi(hijriStr){
+  if(!hijriStr) return '';
+  const parts = hijriStr.trim().split(/[\/\-\.]/);
+  if(parts.length !== 3) return '';
+  const [y,m,d] = parts.map(Number);
+  if(!y||!m||!d) return '';
+  const JD = Math.floor((11*y+3)/30)+354*y+30*m-Math.floor((m-1)/2)+d+1948440-385;
+  const l=JD+68569,n=Math.floor(4*l/146097),ll=l-Math.floor((146097*n+3)/4);
+  const i=Math.floor(4000*(ll+1)/1461001),lll=ll-Math.floor(1461*i/4)+31;
+  const j=Math.floor(80*lll/2447),day=lll-Math.floor(2447*j/80),k=Math.floor(j/11);
+  const month=j+2-12*k,year=100*(n-49)+i+k;
+  return `${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+}
+
+// أسماء الشهور الهجرية
+const HIJRI_MONTHS = ['محرم','صفر','ربيع الأول','ربيع الآخر','جمادى الأولى','جمادى الآخرة','رجب','شعبان','رمضان','شوال','ذو القعدة','ذو الحجة'];
+
+function initHijriPicker(){
+  const yEl = document.getElementById('lf-hijri-y');
+  const mEl = document.getElementById('lf-hijri-m');
+  const dEl = document.getElementById('lf-hijri-d');
+  if(!yEl) return;
+  // سنوات 1440-1460
+  yEl.innerHTML = '';
+  for(let y=1440;y<=1460;y++){const o=document.createElement('option');o.value=y;o.textContent=y+' هـ';yEl.appendChild(o);}
+  // شهور
+  mEl.innerHTML = '';
+  HIJRI_MONTHS.forEach((name,i)=>{const o=document.createElement('option');o.value=i+1;o.textContent=(i+1<10?'0'+(i+1):(i+1))+' - '+name;mEl.appendChild(o);});
+  // أيام
+  dEl.innerHTML = '';
+  for(let d=1;d<=30;d++){const o=document.createElement('option');o.value=d;o.textContent=d<10?'0'+d:d;dEl.appendChild(o);}
+  // افتراضي: اليوم الهجري الحالي
+  const todayH = miladiToHijri(new Date().toISOString().slice(0,10));
+  const parts = todayH.replace(/[^\d\/]/g,'').split('/');
+  if(parts.length===3){
+    yEl.value=parts[0]; mEl.value=parseInt(parts[1]); dEl.value=parseInt(parts[2]);
+  }
+  onHijriPickerChange();
+}
+
+function onHijriPickerChange(){
+  const y=document.getElementById('lf-hijri-y').value;
+  const m=document.getElementById('lf-hijri-m').value;
+  const d=document.getElementById('lf-hijri-d').value;
+  if(!y||!m||!d) return;
+  const hijriStr = y+'/'+String(m).padStart(2,'0')+'/'+String(d).padStart(2,'0');
+  const miladi = hijriToMiladi(hijriStr);
+  if(miladi) document.getElementById('lf-expiry').value = miladi;
+}
+
+function setHijriPickerValue(hijriStr){
+  if(!hijriStr) return;
+  const parts = hijriStr.replace(/[^\d\/]/g,'').split('/');
+  if(parts.length!==3) return;
+  const yEl=document.getElementById('lf-hijri-y');
+  const mEl=document.getElementById('lf-hijri-m');
+  const dEl=document.getElementById('lf-hijri-d');
+  if(yEl) yEl.value=parts[0];
+  if(mEl) mEl.value=parseInt(parts[1]);
+  if(dEl) dEl.value=parseInt(parts[2]);
+}
+
+function getHijriPickerValue(){
+  const y=document.getElementById('lf-hijri-y').value;
+  const m=document.getElementById('lf-hijri-m').value;
+  const d=document.getElementById('lf-hijri-d').value;
+  if(!y||!m||!d) return '';
+  return y+'/'+String(m).padStart(2,'0')+'/'+String(d).padStart(2,'0');
+}
+
+function setDateMode(mode){
+  document.getElementById('lf-date-mode').value=mode;
+  const mi=document.getElementById('lf-expiry');
+  const hp=document.getElementById('lf-hijri-picker');
+  const bM=document.getElementById('btn-cal-miladi');
+  const bH=document.getElementById('btn-cal-hijri');
+  if(mode==='miladi'){
+    mi.style.display='block'; hp.style.display='none';
+    bM.style.background='#b8860b'; bM.style.color='#fff';
+    bH.style.background='transparent'; bH.style.color='#b8860b';
+  } else {
+    mi.style.display='none'; hp.style.display='flex';
+    bH.style.background='#b8860b'; bH.style.color='#fff';
+    bM.style.background='transparent'; bM.style.color='#b8860b';
+    initHijriPicker();
+  }
+}
+
+function syncHijriFromMiladi(){}
+function syncMiladiFromHijri(){}
+function onHijriInput(){}
+
+function saveLic(){
+  if(!canUserEdit()){toast('ليس لديك صلاحية التعديل','error');return;}
+  const center=document.getElementById('lf-center-inp').value;
+  const name=document.getElementById('lf-name').value.trim();
+  const expiry=document.getElementById('lf-expiry').value;
+  const hijri=document.getElementById('lf-date-mode').value==='hijri'?getHijriPickerValue():miladiToHijri(document.getElementById('lf-expiry').value);
+  const dateMode=document.getElementById('lf-date-mode').value||'miladi';
+  const notes=document.getElementById('lf-notes').value.trim();
+  if(!center||!name){toast('الرجاء تعبئة المركز والاسم','error');return;}
+  const idx=document.getElementById('le-idx').value;
+  // منع التكرار — نفس الاسم لنفس المركز
+  const dupIdx=LICS.findIndex(l=>l.name.trim()===name && l.center===center);
+  if(dupIdx!==-1 && (idx==='' || +idx!==dupIdx)){
+    toast(`الرخصة "${name}" مسجلة مسبقاً لـ ${center}`,'error');
+    return;
+  }
+  if(idx==='')LICS.push({center,name,expiry,hijri,dateMode,notes});
+  else LICS[+idx]={center,name,expiry,hijri,dateMode,notes};
+  sv('alj_lics',LICS);addAudit(idx===''?'إضافة رخصة':'تعديل رخصة', name+' — '+center);cm('mo-lic');refreshAll();
+  toast(idx===''?'تمت إضافة الرخصة بنجاح':'تم تحديث الرخصة بنجاح','success');
+}
+
+// ════════ WORKER CRUD ════════
+function openAddWorker(type){
+  document.getElementById('we-type').value=type;
+  document.getElementById('we-idx').value='';
+  document.getElementById('mo-worker-title').textContent='إضافة عامل جديد';
+  document.getElementById('wf-name').value='';
+  document.getElementById('wf-iqama').value='';
+  document.getElementById('wf-expiry').value='';
+  ps('wf-center',getAllowedCentersForInput());ps('wf-company',COMPANIES);ps('wf-profession',PROFESSIONS.map(p=>({name:p})));
+  if(PROFESSIONS.length)document.getElementById('wf-profession').value=PROFESSIONS[0];
+  om('mo-worker');
+}
+function openEditWorkerByIqama(type, iqama){
+  const arr = type==='cleaning' ? CLEANING : SERVICES;
+  const idx = arr.findIndex(r=>String(r.iqama||'')===String(iqama));
+  if(idx === -1){ toast('تعذّر إيجاد السجل','error'); return; }
+  openEditWorker(type, idx);
+}
+
+function confDelByIqama(type, iqama, name){
+  const arr = type==='cleaning' ? CLEANING : SERVICES;
+  const idx = arr.findIndex(r=>String(r.iqama||'')===String(iqama));
+  if(idx === -1){ toast('تعذّر إيجاد السجل','error'); return; }
+  confDel(type, idx, name);
+}
+
+function openEditWorker(type,idx){
+  const arr=type==='cleaning'?CLEANING:SERVICES;const r=arr[idx];
+  document.getElementById('we-type').value=type;
+  document.getElementById('we-idx').value=idx;
+  document.getElementById('mo-worker-title').textContent='تعديل / تجديد إقامة العامل';
+  ps('wf-center',CENTERS);ps('wf-company',COMPANIES);ps('wf-profession',PROFESSIONS.map(p=>({name:p})));
+  document.getElementById('wf-center').value=r.center;
+  document.getElementById('wf-name').value=r.name;
+  document.getElementById('wf-iqama').value=r.iqama;
+  document.getElementById('wf-company').value=r.company;
+  if(r.profession && !PROFESSIONS.includes(r.profession)){PROFESSIONS.push(r.profession);localStorage.setItem('alj_professions',JSON.stringify(PROFESSIONS));cloudSet('alj_professions',PROFESSIONS);ps('wf-profession',PROFESSIONS.map(p=>({name:p})));}
+  document.getElementById('wf-profession').value=r.profession||'';
+  document.getElementById('wf-expiry').value=r.expiry||'';
+  document.getElementById('wf-ajer-expiry').value=r.ajerExpiry||'';
+  om('mo-worker');
+}
+function saveWorker(){
+  if(!canUserEdit()){toast('ليس لديك صلاحية التعديل','error');return;}
+  const type=document.getElementById('we-type').value;
+  const center=document.getElementById('wf-center').value;
+  const name=document.getElementById('wf-name').value.trim();
+  const iqama=document.getElementById('wf-iqama').value.trim();
+  const company=document.getElementById('wf-company').value;
+  const profession=document.getElementById('wf-profession').value.trim();
+  const expiry=document.getElementById('wf-expiry').value;
+  const ajerExpiry=document.getElementById('wf-ajer-expiry').value;
+  if(!center||!name||!iqama){toast('الرجاء تعبئة الحقول المطلوبة','error');return;}
+  const arr=type==='cleaning'?CLEANING:SERVICES;
+  const idx=document.getElementById('we-idx').value;
+  // منع التكرار — تحقق من رقم الإقامة في النظافة والخدمات معاً
+  const allWorkers=[...CLEANING,...SERVICES];
+  const dupIdx=allWorkers.findIndex(w=>w.iqama===iqama);
+  if(dupIdx!==-1){
+    const existing=allWorkers[dupIdx];
+    // تجاهل لو نفس السجل (تعديل)
+    const editingIdx=parseInt(idx);
+    const currentArr=type==='cleaning'?CLEANING:SERVICES;
+    const isSameRecord=idx!=='' && currentArr[editingIdx]?.iqama===iqama;
+    if(!isSameRecord){
+      toast(`رقم الإقامة ${iqama} مسجل مسبقاً للعامل: ${existing.name}`,'error');
+      return;
+    }
+  }
+  const rec={center,name,iqama,profession,company,expiry,ajerExpiry};
+  if(idx==='')arr.push(rec);else arr[+idx]=rec;
+  sv(type==='cleaning'?'alj_cleaning':'alj_services',arr);
+  addAudit(idx===''?'إضافة عامل':'تعديل عامل', name+' — '+center);
+  cm('mo-worker');refreshAll();
+  toast(idx===''?'تمت إضافة العامل':'تم تحديث بيانات العامل','success');
+}
+
+// ════════ DELETE ════════
+function confDel(type,idx,name){
+  document.getElementById('conf-name').textContent=name;
+  document.getElementById('conf-ok').onclick=()=>{doDel(type,idx);cm('mo-confirm');};
+  om('mo-confirm');
+}
+function doDel(type,idx){
+  if(!canUserEdit()){toast('ليس لديك صلاحية الحذف','error');return;}
+  if(type==='lic'){LICS.splice(idx,1);sv('alj_lics',LICS);}
+  else if(type==='cleaning'){CLEANING.splice(idx,1);sv('alj_cleaning',CLEANING);}
+  else if(type==='services'){SERVICES.splice(idx,1);sv('alj_services',SERVICES);}
+  addAudit('حذف سجل', type+' #'+idx);refreshAll();toast('تم الحذف','success');
+}
+
+
+
+function copyText(txt){
+  try{
+    navigator.clipboard.writeText(txt);
+    toast('تم نسخ الرسالة','success');
+  }catch(e){
+    const ta=document.createElement('textarea');
+    ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
+    toast('تم نسخ الرسالة','success');
+  }
+}
+
+// ════════ SEPARATED ALERTS ════════
+function isAlertStatus(status){
+  const s=String(status||'');
+  return s.includes('منتهي') || s.includes('وشك');
+}
+function alertSort(a,b){
+  const da = a.days===null ? -99999 : a.days;
+  const db = b.days===null ? -99999 : b.days;
+  return da - db;
+}
+function getLicenseAlertRows(){
+  return LICS.map((r,i)=>{
+    const days=dl(r.expiry), status=st(r.expiry);
+    return {idx:i,center:r.center,name:r.name,expiry:r.expiry,days,status,notes:r.notes||''};
+  }).filter(r=>isAlertStatus(r.status)).sort(alertSort);
+}
+function getAjerAlertRows(){
+  const all=[];
+  [...CLEANING.map(r=>({...r,group:'cleaning'})),...SERVICES.map(r=>({...r,group:'services'}))].forEach((r,i)=>{
+    const iqDays=dl(r.expiry), iqStatus=stAjer(r.expiry);
+    if(isAlertStatus(iqStatus)){
+      all.push({type:'إقامة',center:r.center,name:r.name,iqama:r.iqama,profession:r.profession||'—',company:r.company,expiry:r.expiry,days:iqDays,status:iqStatus});
+    }
+    const ajDays=dl(r.ajerExpiry), ajStatus=stAjer(r.ajerExpiry);
+    if(isAlertStatus(ajStatus)){
+      all.push({type:'أجير',center:r.center,name:r.name,iqama:r.iqama,profession:r.profession||'—',company:r.company,expiry:r.ajerExpiry,days:ajDays,status:ajStatus});
+    }
+  });
+  return all.sort(alertSort);
+}
+
+function renderLicenseAlerts(){
+  const center=document.getElementById('laf-center')?.value||'';
+  const status=document.getElementById('laf-status')?.value||'';
+  const q=(document.getElementById('laf-q')?.value||'').trim();
+
+  const allRows=getLicenseAlertRows().filter(r=>filterByPermission([r]).length>0);
+  const filtered=allRows.filter(r=>{
+    const ss=shortStatus(r.status);
+    if(center&&r.center!==center)return false;
+    if(status&&ss!==status)return false;
+    if(q&&!r.name.includes(q)&&!r.center.includes(q)&&!(r.notes||'').includes(q))return false;
+    return true;
+  });
+
+  const expired=filtered.filter(r=>shortStatus(r.status)==='منتهي').length;
+  const warning=filtered.filter(r=>shortStatus(r.status)==='على وشك').length;
+
+  const cnt=document.getElementById('lic-alert-count'); if(cnt)cnt.textContent=filtered.length+' تنبيه';
+  const total=document.getElementById('lic-alert-total'); if(total)total.textContent=filtered.length;
+  const exp=document.getElementById('lic-alert-expired'); if(exp)exp.textContent=expired;
+  const war=document.getElementById('lic-alert-warning'); if(war)war.textContent=warning;
+
+  const box=document.getElementById('lic-alert-cards'); if(!box)return;
+  if(!filtered.length){box.innerHTML='<div class="empty" style="grid-column:1/-1">لا توجد تنبيهات للرخص حالياً</div>';return;}
+
+  box.innerHTML=filtered.map(r=>{
+    const ss=shortStatus(r.status);
+    const high=ss==='منتهي';
+    const cls=high?'high':'warning';
+    const risk=high?'عالي':'على وشك';
+    const daysText=r.days===null?'—':(r.days<0?`منتهي منذ ${Math.abs(r.days)} يوم`:`متبقي ${r.days} يوم`);
+    const msg=`تنبيه: ${r.name} في ${r.center} - الحالة: ${ss} - تاريخ الانتهاء: ${fdShort(r.expiry)} - ${daysText}`;
+    return `
+      <div class="alert-card ${cls}">
+        <div class="risk">${risk}</div>
+        <div class="alert-card-title">${r.name}</div>
+        <div class="alert-card-meta">
+          <span class="alert-tag">رخصة</span>
+          <span>${r.center}</span>
+        </div>
+        <div class="alert-card-line">تاريخ الانتهاء: ${fdShort(r.expiry)} | <span class="alert-card-days">${daysText}</span></div>
+        <div class="alert-card-line">الحالة: <span class="sbadge ${sc(r.status)}">${ss}</span> ${r.notes?`| ${r.notes}`:''}</div>
+        <div class="alert-card-actions">
+          <button class="btn sm ghost" onclick="copyText('${msg.replace(/'/g,"\\'")}')">نسخ رسالة</button>
+          <button class="btn sm" onclick="openEditLic(${r.idx})">تجديد سريع</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+
+function renderAjerAlerts(){
+  const center=document.getElementById('aaf-center')?.value||'';
+  const type=document.getElementById('aaf-type')?.value||'';
+  const status=document.getElementById('aaf-status')?.value||'';
+  const q=(document.getElementById('aaf-q')?.value||'').trim();
+
+  const allRows=getAjerAlertRows().filter(r=>filterByPermission([r]).length>0);
+  const filtered=allRows.filter(r=>{
+    const ss=shortStatus(r.status);
+    if(center&&r.center!==center)return false;
+    if(type&&r.type!==type)return false;
+    if(status&&ss!==status)return false;
+    if(q&&!r.name.includes(q)&&!String(r.iqama).includes(q)&&!(r.profession||'').includes(q)&&!(r.company||'').includes(q))return false;
+    return true;
+  });
+
+  const iqama=filtered.filter(r=>r.type==='إقامة').length;
+  const cert=filtered.filter(r=>r.type==='أجير').length;
+
+  const cnt=document.getElementById('ajer-alert-count'); if(cnt)cnt.textContent=filtered.length+' تنبيه';
+  const total=document.getElementById('ajer-alert-total'); if(total)total.textContent=filtered.length;
+  const iq=document.getElementById('ajer-alert-iqama'); if(iq)iq.textContent=iqama;
+  const ce=document.getElementById('ajer-alert-cert'); if(ce)ce.textContent=cert;
+
+  const box=document.getElementById('ajer-alert-cards'); if(!box)return;
+  if(!filtered.length){box.innerHTML='<div class="empty" style="grid-column:1/-1">لا توجد تنبيهات للإقامات أو شهادات أجير حالياً</div>';return;}
+
+  box.innerHTML=filtered.map(r=>{
+    const ss=shortStatus(r.status);
+    const high=ss==='منتهي';
+    const cls=high?'high':'warning';
+    const risk=high?'عالي':'على وشك';
+    const daysText=r.days===null?'—':(r.days<0?`منتهي منذ ${Math.abs(r.days)} يوم`:`متبقي ${r.days} يوم`);
+    const msg=`تنبيه: ${r.type} للعامل ${r.name} - ${r.center} - الشركة: ${r.company||'—'} - الحالة: ${ss} - تاريخ الانتهاء: ${fdShort(r.expiry)} - ${daysText}`;
+    return `
+      <div class="alert-card ${cls}">
+        <div class="risk">${risk}</div>
+        <div class="alert-card-title">${r.name}</div>
+        <div class="alert-card-meta">
+          <span class="alert-tag">${r.type}</span>
+          <span>${r.center} - ${r.company||'—'}</span>
+        </div>
+        <div class="alert-card-line">رقم الإقامة: ${r.iqama||'—'} | المهنة: ${r.profession||'—'}</div>
+        <div class="alert-card-line">تاريخ الانتهاء: ${fdShort(r.expiry)} | <span class="alert-card-days">${daysText}</span></div>
+        <div class="alert-card-line">الحالة: <span class="sbadge ${sc(r.status)}">${ss}</span></div>
+        <div class="alert-card-actions">
+          <button class="btn sm ghost" onclick="copyText('${msg.replace(/'/g,"\\'")}')">نسخ رسالة</button>
+          <button class="btn sm" onclick="openAddWorker('${r.type==='إقامة'?'cleaning':'services'}')">إضافة / تحديث</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+
+
+function openAddCenter(){document.getElementById('mo-center-title').textContent='إضافة مركز';document.getElementById('ce-idx').value='';document.getElementById('cf-name').value='';document.getElementById('cf-region').value='';document.getElementById('cf-loc').value='';om('mo-center');}
+function openEditCenter(idx){const r=CENTERS[idx];document.getElementById('mo-center-title').textContent='تعديل المركز';document.getElementById('ce-idx').value=idx;document.getElementById('cf-name').value=r.name;document.getElementById('cf-region').value=r.region||'';document.getElementById('cf-loc').value=r.loc||'';om('mo-center');}
+function saveCenter(){
+  const name=document.getElementById('cf-name').value.trim();
+  const region=document.getElementById('cf-region').value.trim();
+  const loc=document.getElementById('cf-loc').value.trim();
+  if(!name){toast('أدخل اسم المركز','error');return;}
+  if(!region){toast('أدخل اسم المنطقة','error');return;}
+  const idx=document.getElementById('ce-idx').value;
+  if(idx==='')CENTERS.push({name,region,loc});else CENTERS[+idx]={name,region,loc};
+  sv('alj_centers',CENTERS);cm('mo-center');renderCentersList();toast('تم حفظ المركز','success');
+}
+function delCenter(idx){
+  document.getElementById('conf-name').textContent=CENTERS[idx].name;
+  document.getElementById('conf-ok').onclick=()=>{CENTERS.splice(idx,1);sv('alj_centers',CENTERS);cm('mo-confirm');renderCentersList();toast('تم الحذف','success');};
+  om('mo-confirm');
+}
+function renderCentersList(){
+  document.getElementById('centers-list').innerHTML=CENTERS.length?CENTERS.map((c,i)=>`
+    <div class="sitem"><div><div class="sname">${c.name}</div><div class="ssub">${c.region ? "📍 "+c.region : ""} ${c.loc ? "| "+c.loc : ""}</div></div>
+    <div class="sacts"><button class="btn sm ghost" onclick="openEditCenter(${i})">✏️</button><button class="btn sm danger" onclick="delCenter(${i})">🗑️</button></div></div>`).join('')
+  :'<div class="empty">لا توجد مراكز</div>';
+}
+
+// ════════ SETTINGS: COMPANIES ════════
+function openAddCompany(){document.getElementById('mo-company-title').textContent='إضافة شركة';document.getElementById('cpe-idx').value='';document.getElementById('cpf-name').value='';om('mo-company');}
+function openEditCompany(idx){document.getElementById('mo-company-title').textContent='تعديل الشركة';document.getElementById('cpe-idx').value=idx;document.getElementById('cpf-name').value=COMPANIES[idx].name;om('mo-company');}
+
+function saveCompany(){
+  const name=document.getElementById('cpf-name').value.trim();
+  if(!name){toast('أدخل اسم الشركة','error');return;}
+
+  const idx=document.getElementById('cpe-idx').value;
+  let oldName='';
+
+  if(idx===''){
+    if(COMPANIES.some(c=>c.name===name)){toast('الشركة موجودة مسبقاً','error');return;}
+    COMPANIES.push({name});
+  }else{
+    oldName = COMPANIES[+idx]?.name || '';
+    COMPANIES[+idx]={name};
+
+    // تحديث اسم الشركة داخل سجلات أجير المرتبطة بالاسم القديم
+    if(oldName && oldName !== name){
+      CLEANING = (CLEANING||[]).map(r => r.company === oldName ? {...r, company:name} : r);
+      SERVICES = (SERVICES||[]).map(r => r.company === oldName ? {...r, company:name} : r);
+
+      localStorage.setItem('alj_cleaning', JSON.stringify(CLEANING));
+      localStorage.setItem('alj_services', JSON.stringify(SERVICES));
+
+      if(typeof cloudSet === 'function'){
+        cloudSet('alj_cleaning', CLEANING);
+        cloudSet('alj_services', SERVICES);
+      }
+    }
+  }
+
+  sv('alj_companies',COMPANIES);
+  cm('mo-company');
+  renderCompaniesList();
+  refreshAll();
+
+  if(oldName && oldName !== name){
+    toast('تم تحديث اسم الشركة في الإعدادات وسجلات أجير','success');
+  }else{
+    toast('تم حفظ الشركة','success');
+  }
+}
+
+
+function delCompany(idx){
+  document.getElementById('conf-name').textContent=COMPANIES[idx].name;
+  document.getElementById('conf-ok').onclick=()=>{COMPANIES.splice(idx,1);sv('alj_companies',COMPANIES);cm('mo-confirm');renderCompaniesList();toast('تم الحذف','success');};
+  om('mo-confirm');
+}
+function renderCompaniesList(){
+  document.getElementById('companies-list').innerHTML=COMPANIES.length?COMPANIES.map((c,i)=>`
+    <div class="sitem"><div class="sname">${c.name}</div>
+    <div class="sacts"><button class="btn sm ghost" onclick="openEditCompany(${i})">✏️</button><button class="btn sm danger" onclick="delCompany(${i})">🗑️</button></div></div>`).join('')
+  :'<div class="empty">لا توجد شركات</div>';
+}
+
+
+// ════════ SETTINGS: PROFESSIONS ════════
+function openAddProfession(){
+  document.getElementById('mo-profession-title').textContent='إضافة مهنة';
+  document.getElementById('pe-idx').value='';
+  document.getElementById('pf-name').value='';
+  om('mo-profession');
+}
+function openEditProfession(idx){
+  document.getElementById('mo-profession-title').textContent='تعديل المهنة';
+  document.getElementById('pe-idx').value=idx;
+  document.getElementById('pf-name').value=PROFESSIONS[idx]||'';
+  om('mo-profession');
+}
+function saveProfession(){
+  const name=document.getElementById('pf-name').value.trim();
+  if(!name){toast('أدخل اسم المهنة','error');return;}
+  const idx=document.getElementById('pe-idx').value;
+  if(idx===''){
+    if(PROFESSIONS.includes(name)){toast('المهنة موجودة مسبقاً','error');return;}
+    PROFESSIONS.push(name);
+  }else{
+    PROFESSIONS[+idx]=name;
+  }
+  localStorage.setItem('alj_professions',JSON.stringify(PROFESSIONS));cloudSet('alj_professions',PROFESSIONS);
+  cm('mo-profession');
+  renderProfessionsList();
+  toast('تم حفظ المهنة','success');
+}
+function delProfession(idx){
+  document.getElementById('conf-name').textContent=PROFESSIONS[idx];
+  document.getElementById('conf-ok').onclick=()=>{
+    PROFESSIONS.splice(idx,1);
+    localStorage.setItem('alj_professions',JSON.stringify(PROFESSIONS));cloudSet('alj_professions',PROFESSIONS);
+    cm('mo-confirm');
+    renderProfessionsList();
+    toast('تم حذف المهنة','success');
+  };
+  om('mo-confirm');
+}
+function renderProfessionsList(){
+  const el=document.getElementById('professions-list');
+  if(!el)return;
+  el.innerHTML=PROFESSIONS.length?PROFESSIONS.map((p,i)=>`
+    <div class="sitem"><div class="sname">${p}</div>
+    <div class="sacts"><button class="btn sm ghost" onclick="openEditProfession(${i})">✏️</button><button class="btn sm danger" onclick="delProfession(${i})">🗑️</button></div></div>`).join('')
+  :'<div class="empty">لا توجد مهن</div>';
+}
+
+// ════════ SETTINGS: LIC TYPES ════════
+function openAddLicType(){document.getElementById('ltf-name').value='';om('mo-lictype');}
+function saveLicType(){
+  const name=document.getElementById('ltf-name').value.trim();
+  if(!name){toast('أدخل اسم النوع','error');return;}
+  LICTYPES.push(name);sv('alj_lictypes',LICTYPES);cm('mo-lictype');renderLicTypesList();toast('تم الإضافة','success');
+}
+function delLicType(idx){LICTYPES.splice(idx,1);sv('alj_lictypes',LICTYPES);renderLicTypesList();}
+function renderLicTypesList(){
+  document.getElementById('lictypes-list').innerHTML=LICTYPES.length?LICTYPES.map((t,i)=>`
+    <div class="sitem"><div class="sname">${t}</div>
+    <div class="sacts"><button class="btn sm danger" onclick="delLicType(${i})">🗑️</button></div></div>`).join('')
+  :'<div class="empty">لا توجد أنواع</div>';
+}
+
+function renderSettings(){
+  renderCentersList();renderCompaniesList();renderProfessionsList();renderLicTypesList();
+  // إخفاء أزرار التعديل في الإعدادات للمستخدمين غير الأدمن
+  const isAdmin = currentProfile?.role==='admin';
+  document.querySelectorAll('#page-settings .btn:not(.ghost)').forEach(btn=>{
+    if(!isAdmin && (btn.textContent.includes('+') || btn.onclick?.toString().includes('open')))
+      btn.style.display='none';
+  });
+}
+
+// ════════ WARN DAYS ════════
+function saveWarnDays(){
+  WARN=parseInt(document.getElementById('warn-inp').value)||60;
+  localStorage.setItem('alj_warn',WARN);cloudSet('alj_warn',WARN);refreshAll();
+  toast('تم تحديث حد تحذير الرخص إلى '+WARN+' يوم','success');
+}
+function saveAjerWarnDays(){
+  AJER_WARN=parseInt(document.getElementById('ajer-warn-inp').value)||60;
+  localStorage.setItem('alj_ajer_warn',AJER_WARN);cloudSet('alj_ajer_warn',AJER_WARN);refreshAll();
+  toast('تم تحديث حد تحذير أجير إلى '+AJER_WARN+' يوم','success');
+}
+
+// ════════ CLEAR ALL ════════
+function confirmClearAll(){
+  document.getElementById('conf-name').textContent='جميع البيانات المحفوظة (لا رجعة)';
+  document.getElementById('conf-ok').onclick=()=>{
+    ['alj_lics','alj_cleaning','alj_services','alj_centers','alj_companies','alj_lictypes','alj_professions','alj_warn','alj_ajer_warn',''].forEach(k=>localStorage.removeItem(k));
+    if(cloudReady&&db){db.ref().remove();} cm('mo-confirm');load();refreshAll();renderSettings();toast('تمت إعادة التهيئة','success');
+  };
+  om('mo-confirm');
+}
+
+// ════════ MODAL HELPERS ════════
+function om(id){document.getElementById(id).classList.add('open');}
+function cm(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+// ════════ TOAST ════════
+let tt;
+function toast(msg,type='success'){
+  const t=document.getElementById('toast');
+  t.className='toast '+type;
+  t.innerHTML=(type==='success'?'✅ ':type==='error'?'❌ ':'ℹ️ ')+msg;
+  clearTimeout(tt);
+  requestAnimationFrame(()=>t.classList.add('show'));
+  tt=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ════════ REFRESH ════════
+function refreshAll(){
+  buildKPI();
+  pf('lf-center',LICS);pf('clf-center',CLEANING);pf('svf-center',SERVICES);
+  if(document.getElementById('laf-center'))pf('laf-center',LICS);
+  if(document.getElementById('aaf-center'))pf('aaf-center',[...CLEANING,...SERVICES]);
+  renderLic();renderClean();renderServ();buildInsights();
+  if(document.getElementById('lic-alert-tbody'))renderLicenseAlerts();
+  if(document.getElementById('ajer-alert-tbody'))renderAjerAlerts();
+  setTimeout(addMobileLabels,0);
+}
+
+
+
+// ════════ V2: ANALYTICS / ALERTS / EXPORT / AUDIT ════════
+function allRecords(){
+  const all = [
+    ...LICS.map((r,i)=>({...r,cat:'رخصة',idx:i,source:'licenses'})),
+    ...CLEANING.map((r,i)=>({...r,cat:'عامل نظافة',idx:i,source:'cleaning'})),
+    ...SERVICES.map((r,i)=>({...r,cat:'عامل خدمات',idx:i,source:'services'})),
+  ];
+  return filterByPermission(all);
+}
+
+// التبويب النشط وفلتر المركز الخاص فيه
+function getActiveTabInfo(){
+  const licTab  = document.getElementById('tc-lic');
+  const cleanTab= document.getElementById('tc-clean');
+  const servTab = document.getElementById('tc-serv');
+  if(licTab   && licTab.classList.contains('active'))
+    return {source:'licenses', center: document.getElementById('lf-center')?.value  || ''};
+  if(cleanTab && cleanTab.classList.contains('active'))
+    return {source:'cleaning', center: document.getElementById('clf-center')?.value || ''};
+  if(servTab  && servTab.classList.contains('active'))
+    return {source:'services', center: document.getElementById('svf-center')?.value || ''};
+  return {source:'licenses', center:''};
+}
+
+// السجلات مفلترة بنوع التبويب والمركز النشط فقط
+function allRecordsFiltered(){
+  const {source, center} = getActiveTabInfo();
+  const all = allRecords().filter(r => r.source === source);
+  return center ? all.filter(r => r.center === center) : all;
+}
+function riskLevel(r){
+  const d=dl(r.expiry);
+  if(d===null || d<0) return {label:'عالي',cls:'risk-high',score:100};
+  if(d<=7) return {label:'عالي',cls:'risk-high',score:90};
+  if(d<=30) return {label:'متوسط',cls:'risk-med',score:60};
+  if(d<=WARN) return {label:'منخفض',cls:'risk-low',score:30};
+  return {label:'منخفض',cls:'risk-low',score:10};
+}
+function compliancePct(){
+  const all=allRecordsFiltered();
+  if(!all.length) return 100;
+  const ok=all.filter(r=>{
+    if(r.source==='licenses'){
+      // رخصة: الإقامة سارية فقط
+      const d=dl(r.expiry);
+      return d!==null && d>=0;
+    } else {
+      // عامل: الإقامة وأجير كلاهما ساريين
+      const dIq=dl(r.expiry);
+      const dAj=r.ajerExpiry ? dl(r.ajerExpiry) : null;
+      const iqOk = dIq!==null && dIq>=0;
+      const ajOk = dAj===null || dAj>=0; // لو ما في تاريخ أجير نتجاهله
+      return iqOk && ajOk;
+    }
+  }).length;
+  return Math.round((ok/all.length)*100);
+}
+function buildInsights(){
+  const all=allRecordsFiltered();
+  const expired=all.filter(r=>{const d=dl(r.expiry);return d===null||d<0}).length;
+  const warn=all.filter(r=>{const d=dl(r.expiry);return d!==null&&d>=0&&d<=WARN}).length;
+  const next=all.filter(r=>dl(r.expiry)!==null && dl(r.expiry)>=0).sort((a,b)=>dl(a.expiry)-dl(b.expiry))[0];
+  const pct=compliancePct();
+  document.getElementById('insights-grid').innerHTML=`
+    <div class="insight-card"><div class="insight-title">🛡️ نسبة الالتزام</div><div class="insight-value">${pct}%</div><div class="progress"><span style="width:${pct}%"></span></div><div class="insight-sub">السجلات السليمة بعد حد التحذير</div></div>
+    <div class="insight-card"><div class="insight-title">🚨 سجلات حرجة</div><div class="insight-value">${expired+warn}</div><div class="insight-sub">${expired} منتهي + ${warn} داخل حد التحذير</div></div>
+    <div class="insight-card"><div class="insight-title">⏱️ أقرب انتهاء</div><div class="insight-value" style="font-size:18px">${next?next.name:'—'}</div><div class="insight-sub">${next?`${next.center||'—'} — بعد ${dl(next.expiry)} يوم`: 'لا توجد تواريخ قادمة'}</div></div>
+  `;
+}
+function renderAlerts(){
+  // تعبئة فلتر المراكز
+  const mafEl=document.getElementById('maf-center');
+  if(mafEl && mafEl.options.length<=1){
+    getAllowedCentersForInput().forEach(c=>{const o=document.createElement('option');o.value=c.name||c;o.textContent=c.name||c;mafEl.appendChild(o);});
+  }
+  const cf  = document.getElementById('maf-center')?.value||'';
+  const tf  = document.getElementById('maf-type')?.value||'';
+  const sf  = document.getElementById('maf-status')?.value||'';
+  const alerts=allRecords()
+    .filter(r=> (!cf || r.center===cf) && (!tf || r.source===tf))
+    .map(r=>({...r,days:dl(r.expiry),risk:riskLevel(r)}))
+    .filter(r=>r.days===null || r.days<=Math.max(WARN,AJER_WARN))
+    .filter(r=>{
+      if(!sf) return true;
+      if(sf==='منتهي') return r.days===null || r.days<0;
+      if(sf==='وشك')  return r.days!==null && r.days>=0;
+      return true;
+    })
+    .sort((a,b)=>(a.days??-999)-(b.days??-999));
+  const high=alerts.filter(a=>a.risk.label==='عالي').length;
+  const expiredCount=alerts.filter(a=>a.days===null||a.days<0).length;
+  const warnCount=alerts.filter(a=>a.days!==null&&a.days>=0).length;
+  const filterLabel=cf?`📍 ${cf}`:'كل المراكز';
+  document.getElementById('alert-summary').innerHTML=`
+    <div class="insight-card"><div class="insight-title">📍 الفلتر الحالي</div><div class="insight-value" style="font-size:16px">${filterLabel}</div><div class="insight-sub">${tf||'كل الأنواع'}</div></div>
+    <div class="insight-card"><div class="insight-title">إجمالي التنبيهات</div><div class="insight-value">${alerts.length}</div><div class="insight-sub">${expiredCount} منتهي + ${warnCount} على وشك</div></div>
+    <div class="insight-card"><div class="insight-title">مخاطر عالية</div><div class="insight-value" style="color:var(--red)">${high}</div><div class="insight-sub">منتهي أو خلال 7 أيام</div></div>
+    <div class="insight-card"><div class="insight-title">نسبة الالتزام</div><div class="insight-value">${compliancePct()}%</div><div class="progress"><span style="width:${compliancePct()}%"></span></div></div>
+  `;
+  const box=document.getElementById('alerts-list');
+  if(!alerts.length){box.innerHTML='<div class="empty" style="grid-column:1/-1">لا توجد تنبيهات حالياً</div>';return;}
+  box.innerHTML=alerts.map(a=>{
+    const expired=a.days===null || a.days<0;
+    const due= a.days===null?'لا يوجد تاريخ انتهاء':(a.days<0?`منتهي منذ ${Math.abs(a.days)} يوم`:`متبقي ${a.days} يوم`);
+    return `<div class="alert-card ${expired?'expired':''}">
+      <div class="alert-head"><div><div class="alert-name">${a.name}</div><div class="alert-meta">${a.cat} — ${a.center||'—'} — ${a.company||''}</div></div><span class="${a.risk.cls}">${a.risk.label}</span></div>
+      <div class="alert-meta">تاريخ الانتهاء: ${fd(a.expiry)} | ${due}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">${canUserEdit()?`<button class="btn sm ghost" onclick="quickRenew('${a.source}',${a.idx})">تجديد سريع</button>`:''}<button class="btn sm ghost" onclick="copyAlertText('${a.name.replace(/'/g,"\\'")}', '${(a.center||'—').replace(/'/g,"\\'")}', '${due.replace(/'/g,"\\'")}')">نسخ رسالة</button></div>
+    </div>`;
+  }).join('');
+}
+function quickRenew(source,idx){
+  if(source==='licenses') openEditLic(idx);
+  if(source==='cleaning') openEditWorker('cleaning',idx);
+  if(source==='services') openEditWorker('services',idx);
+}
+function copyAlertText(name,center,due){
+  const msg=`تنبيه متابعة: ${name} - ${center} - ${due}. يرجى تحديث الحالة واتخاذ اللازم.`;
+  navigator.clipboard?.writeText(msg); toast('تم نسخ نص التنبيه','success');
+}
+
+function copyFullAlertReport(){
+  const cf = document.getElementById('maf-center')?.value||'';
+  const tf = document.getElementById('maf-type')?.value||'';
+  const sf = document.getElementById('maf-status')?.value||'';
+  const alerts = allRecords()
+    .filter(r => (!cf || r.center===cf) && (!tf || r.source===tf))
+    .map(r=>({...r, days:dl(r.expiry), risk:riskLevel(r)}))
+    .filter(r => r.days===null || r.days <= Math.max(WARN, AJER_WARN))
+    .filter(r=>{
+      if(!sf) return true;
+      if(sf==='منتهي') return r.days===null || r.days<0;
+      if(sf==='وشك')  return r.days!==null && r.days>=0;
+      return true;
+    })
+    .sort((a,b) => (a.days??-9999)-(b.days??-9999));
+
+  if(!alerts.length){ toast('لا توجد تنبيهات حالياً','info'); return; }
+
+  const today = new Date().toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'});
+
+  // تجميع حسب الفئة
+  const lics    = alerts.filter(a=>a.source==='licenses');
+  const workers = alerts.filter(a=>a.source!=='licenses');
+
+  function dueText(days){
+    if(days===null) return 'لا يوجد تاريخ';
+    if(days<0)  return `منتهي منذ ${Math.abs(days)} يوم`;
+    if(days===0) return 'ينتهي اليوم';
+    return `متبقي ${days} يوم`;
+  }
+
+  function sep(char, len){ return char.repeat(len); }
+
+  let lines = [];
+  lines.push('بسم الله الرحمن الرحيم');
+  lines.push('');
+  lines.push('تقرير تنبيهات الرخص والعمالة');
+  lines.push(`شركة عبد اللطيف جميل — منطقة المدينة المنورة`);
+  lines.push(`التاريخ: ${today}`);
+  lines.push(sep('─', 50));
+
+  // ── قسم الرخص
+  if(lics.length){
+    lines.push('');
+    lines.push(`📋 أولاً: الرخص والشهادات (${lics.length} سجل)`);
+    lines.push(sep('─', 40));
+    lics.forEach((r,i)=>{
+      lines.push(`${i+1}. ${r.name}`);
+      lines.push(`   المركز       : ${r.center||'—'}`);
+      lines.push(`   تاريخ الانتهاء: ${fd(r.expiry)}`);
+      lines.push(`   الحالة       : ${dueText(r.days)}`);
+      if(r.notes) lines.push(`   ملاحظات      : ${r.notes}`);
+      lines.push('');
+    });
+  }
+
+  // ── قسم العمال
+  if(workers.length){
+    lines.push('');
+    lines.push(`👷 ثانياً: إقامات العمال (${workers.length} سجل)`);
+    lines.push(sep('─', 40));
+    workers.forEach((r,i)=>{
+      lines.push(`${i+1}. ${r.name}`);
+      lines.push(`   المركز       : ${r.center||'—'}`);
+      lines.push(`   رقم الإقامة  : ${r.iqama||'—'}`);
+      lines.push(`   المهنة       : ${r.profession||'—'}`);
+      lines.push(`   الشركة       : ${r.company||'—'}`);
+      lines.push(`   تاريخ الانتهاء: ${fd(r.expiry)}`);
+      lines.push(`   الحالة       : ${dueText(r.days)}`);
+      lines.push('');
+    });
+  }
+
+  lines.push(sep('─', 50));
+  lines.push(`إجمالي التنبيهات: ${alerts.length} سجل`);
+  lines.push('يرجى اتخاذ الإجراءات اللازمة في أقرب وقت.');
+  lines.push('');
+  lines.push('شركة عبد اللطيف جميل — نظام متابعة الرخص والعمالة');
+
+  const msg = lines.join('\n');
+  navigator.clipboard?.writeText(msg)
+    .then(()=>toast('✅ تم نسخ التقرير الشامل — جاهز للإيميل','success'))
+    .catch(()=>toast('تعذّر النسخ، حاول مجدداً','error'));
+}
+function buildReports(){
+  // allRecords() مفلترة تلقائياً بصلاحية المستخدم
+  const all=allRecords();
+  const allowed=getUserAllowedCenters();
+  const filtLICS     = allowed ? LICS.filter(r=>allowed.includes(r.center))     : LICS;
+  const filtCLEANING = allowed ? CLEANING.filter(r=>allowed.includes(r.center)) : CLEANING;
+  const filtSERVICES = allowed ? SERVICES.filter(r=>allowed.includes(r.center)) : SERVICES;
+  const byCenter={}; all.forEach(r=>{byCenter[r.center||'غير محدد']=(byCenter[r.center||'غير محدد']||0)+1;});
+  const worst=Object.entries(byCenter).sort((a,b)=>b[1]-a[1])[0]||['—',0];
+  document.getElementById('reports-grid').innerHTML=`
+    <div class="insight-card"><div class="insight-title">إجمالي السجلات</div><div class="insight-value">${all.length}</div><div class="insight-sub">رخص + عمالة</div></div>
+    <div class="insight-card"><div class="insight-title">أكثر مركز يحتوي سجلات</div><div class="insight-value" style="font-size:20px">${worst?worst[0]:'—'}</div><div class="insight-sub">${worst?worst[1]:0} سجل</div></div>
+    <div class="insight-card"><div class="insight-title">حد التحذير</div><div class="insight-value">${WARN}</div><div class="insight-sub">يوم قبل الانتهاء</div></div>`;
+  renderTimeline(); renderAuditLog();
+}
+function renderTimeline(){
+  // تعبئة فلتر المراكز
+  const tlc = document.getElementById('tl-center');
+  if(tlc && tlc.options.length<=1){
+    getAllowedCentersForInput().forEach(c=>{const o=document.createElement('option');o.value=c.name||c;o.textContent=c.name||c;tlc.appendChild(o);});
+  }
+  const cf   = document.getElementById('tl-center')?.value||'';
+  const type = document.getElementById('tl-type')?.value||'';
+
+  // إظهار/إخفاء الأقسام حسب النوع
+  const showLic   = !type || type==='lic';
+  const showIqama = !type || type==='iqama';
+  const showAjer  = !type || type==='ajer';
+  const wLic  = document.getElementById('tl-lic-wrap');
+  const wIq   = document.getElementById('tl-iqama-wrap');
+  const wAjer = document.getElementById('tl-ajer-wrap');
+  if(wLic)   wLic.style.display   = showLic   ? '' : 'none';
+  if(wIq)    wIq.style.display    = showIqama ? '' : 'none';
+  if(wAjer)  wAjer.style.display  = showAjer  ? '' : 'none';
+
+  function buildSection(records, elId, emptyMsg){
+    const filtered = cf ? records.filter(r=>r.center===cf) : records;
+    const months={};
+    filtered.filter(r=>dl(r.expiry)!==null && dl(r.expiry)>=0 && dl(r.expiry)<=365)
+      .sort((a,b)=>dl(a.expiry)-dl(b.expiry))
+      .forEach(r=>{
+        const d=new Date(r.expiry);
+        const key=d.toLocaleDateString('ar-SA',{year:'numeric',month:'long'});
+        (months[key]||=[]).push(r);
+      });
+    const el=document.getElementById(elId); if(!el) return;
+    if(!Object.keys(months).length){el.innerHTML=`<div class="empty" style="grid-column:1/-1;margin-bottom:10px">${emptyMsg}</div>`;return;}
+    el.innerHTML=Object.entries(months).map(([m,items])=>`
+      <div class="month-card">
+        <div class="month-title">${m}</div>
+        ${items.map(i=>`<div class="month-item">${fd(i.expiry)} — ${i.name}</div>`).join('')}
+      </div>`).join('');
+  }
+
+  const all     = allRecords();
+  const workers = all.filter(r=>r.source==='cleaning'||r.source==='services');
+
+  if(showLic)   buildSection(all.filter(r=>r.source==='licenses'), 'expiry-timeline-lic', 'لا توجد رخص قادمة');
+  if(showIqama) buildSection(workers.map(r=>({...r,expiry:r.expiry})), 'expiry-timeline-iqama', 'لا توجد إقامات قادمة');
+  if(showAjer)  buildSection(workers.filter(r=>r.ajerExpiry).map(r=>({...r,expiry:r.ajerExpiry})), 'expiry-timeline-ajer', 'لا توجد شهادات أجير قادمة');
+}
+function getAudit(){return JSON.parse(localStorage.getItem('alj_audit')||'[]');}
+function addAudit(action,detail){const a=getAudit();const user=currentProfile?.name||currentUser?.email||'غير معروف';a.unshift({t:new Date().toISOString(),action,detail,user});localStorage.setItem('alj_audit',JSON.stringify(a.slice(0,100)));}
+function renderAuditLog(){
+  const a=getAudit(); const el=document.getElementById('audit-log');
+  if(!a.length){el.innerHTML='<div class="empty">لا يوجد سجل تغييرات بعد</div>';return;}
+  el.innerHTML=a.map(x=>`<div class="log-item"><div><div class="log-title">${x.action} <span style="font-size:11px;color:var(--accent);font-weight:600">— ${x.user||'غير معروف'}</span></div><div class="log-detail">${x.detail}</div></div><div class="log-time">${new Date(x.t).toLocaleString('ar-SA')}</div></div>`).join('');
+}
+function clearAuditLog(){localStorage.removeItem('alj_audit');renderAuditLog();toast('تم مسح سجل التغييرات','success');}
+function csvEscape(v){return '"'+String(v??'').replace(/"/g,'""')+'"';}
+function downloadText(filename,text,type='text/plain;charset=utf-8'){const blob=new Blob([text],{type});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();URL.revokeObjectURL(a.href);}
+
+
+// ════════ REAL EXCEL XLSX EXPORT ════════
+function exportRowsXLSX(filename, rows, sheetName='Data'){
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+
+  // Auto column width
+  const colWidths = rows[0].map((_, colIndex) => {
+    const maxLen = Math.max(...rows.map(r => String(r[colIndex] ?? '').length));
+    return { wch: Math.min(Math.max(maxLen + 2, 10), 40) };
+  });
+  ws['!cols'] = colWidths;
+
+  XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  XLSX.writeFile(wb, filename.endsWith('.xlsx') ? filename : filename + '.xlsx');
+}
+
+function exportAlertsExcel(kind){
+  let rows;
+  if(kind==='licenses'){
+    const center = document.getElementById('laf-center')?.value||'';
+    const status = document.getElementById('laf-status')?.value||'';
+    const q      = document.getElementById('laf-q')?.value?.trim()||'';
+    rows = getLicenseAlertRows()
+      .filter(r=>filterByPermission([r]).length>0)
+      .filter(r=>{
+        if(center && r.center!==center) return false;
+        if(status && !shortStatus(r.status).includes(status)) return false;
+        if(q && !String(r.name||'').includes(q) && !String(r.center||'').includes(q)) return false;
+        return true;
+      });
+  } else {
+    const center = document.getElementById('aaf-center')?.value||'';
+    const type   = document.getElementById('aaf-type')?.value||'';
+    const status = document.getElementById('aaf-status')?.value||'';
+    const q      = document.getElementById('aaf-q')?.value?.trim()||'';
+    rows = getAjerAlertRows()
+      .filter(r=>filterByPermission([r]).length>0)
+      .filter(r=>{
+        if(center && r.center!==center) return false;
+        if(type   && r.type!==type)     return false;
+        if(status && !shortStatus(r.status).includes(status)) return false;
+        if(q && ![r.name,r.iqama,r.company].some(x=>String(x||'').includes(q))) return false;
+        return true;
+      });
+  }
+
+  const header = kind==='licenses'
+    ? ['المركز','الرخصة / الشهادة','تاريخ الانتهاء','الأيام','الحالة','ملاحظات']
+    : ['النوع','المركز','العامل','رقم الإقامة','المهنة','الشركة','تاريخ الانتهاء','الأيام','الحالة'];
+
+  const body = rows.map(r => kind==='licenses'
+    ? [r.center,r.name,fdShort(r.expiry),r.days===null?'':r.days,shortStatus(r.status),r.notes||'']
+    : [r.type,r.center,r.name,r.iqama,r.profession||'',r.company||'',fdShort(r.expiry),r.days===null?'':r.days,shortStatus(r.status)]
+  );
+
+  exportRowsXLSX(
+    kind==='licenses' ? 'license-alerts.xlsx' : 'ajer-alerts.xlsx',
+    [header, ...body],
+    kind==='licenses' ? 'تنبيهات الرخص' : 'تنبيهات الإقامات وأجير'
+  );
+}
+
+
+function exportCurrentTabExcel(){
+  const active=document.querySelector('.tabbtn.active')?.textContent||'';
+  let rows=[];
+
+  if(active.includes('الرخص')){
+    // فلتر الرخص
+    const cf  = document.getElementById('lf-center')?.value||'';
+    const sf  = document.getElementById('lf-status')?.value||'';
+    const q   = document.getElementById('lf-q')?.value?.trim()||'';
+    const allowed = typeof getUserAllowedCenters==='function' ? getUserAllowedCenters() : null;
+    const data = LICS.filter(r=>{
+      if(allowed && !allowed.includes(r.center)) return false;
+      const s=st(r.expiry);
+      if(cf && r.center!==cf) return false;
+      if(sf==='ساري'    && !s.includes('ساري'))   return false;
+      if(sf==='على وشك' && !s.includes('وشك'))    return false;
+      if(sf==='منتهي'   && !s.includes('منتهي'))  return false;
+      if(q && !String(r.name||'').includes(q) && !String(r.center||'').includes(q)) return false;
+      return true;
+    }).sort((a,b)=>(a.center||'').localeCompare(b.center||'','ar')||((a.name||'').localeCompare(b.name||'','ar')));
+    rows=[
+      ['المركز','الرخصة / الشهادة','تاريخ الانتهاء (ميلادي)','تاريخ الانتهاء (هجري)','الأيام المتبقية','الحالة','ملاحظات'],
+      ...data.map(r=>[r.center,r.name,r.expiry||'—',r.hijri||'—',dl(r.expiry)??'—',st(r.expiry),r.notes||''])
+    ];
+
+  } else if(active.includes('النظافة')){
+    const cf   = document.getElementById('clf-center')?.value||'';
+    const iqSf = document.getElementById('clf-iq-status')?.value||'';
+    const ajSf = document.getElementById('clf-aj-status')?.value||'';
+    const q    = document.getElementById('clf-q')?.value?.trim()||'';
+    const allowed2 = typeof getUserAllowedCenters==='function' ? getUserAllowedCenters() : null;
+    const data = CLEANING.filter(r=>{
+      if(allowed2 && !allowed2.includes(r.center)) return false;
+      if(cf && r.center!==cf) return false;
+      if(iqSf && !stAjer(r.expiry).includes(iqSf)) return false;
+      if(ajSf && r.ajerExpiry && !stAjer(r.ajerExpiry).includes(ajSf)) return false;
+      if(q && ![r.name,r.iqama,r.company,r.center].some(x=>String(x||'').includes(q))) return false;
+      return true;
+    }).sort((a,b)=>(a.center||'').localeCompare(b.center||'','ar')||((a.name||'').localeCompare(b.name||'','ar')));
+    rows=[
+      ['المركز','الاسم','رقم الإقامة','المهنة','الشركة','تاريخ الإقامة','أيام الإقامة','حالة الإقامة','تاريخ أجير','أيام أجير','حالة أجير'],
+      ...data.map(r=>[r.center,r.name,r.iqama||'—',r.profession||'—',r.company||'—',r.expiry||'—',dl(r.expiry)??'—',stAjer(r.expiry),r.ajerExpiry||'—',r.ajerExpiry?dl(r.ajerExpiry)??'—':'—',r.ajerExpiry?stAjer(r.ajerExpiry):'—'])
+    ];
+
+  } else {
+    const cf   = document.getElementById('svf-center')?.value||'';
+    const iqSf = document.getElementById('svf-iq-status')?.value||'';
+    const ajSf = document.getElementById('svf-aj-status')?.value||'';
+    const q    = document.getElementById('svf-q')?.value?.trim()||'';
+    const allowed3 = typeof getUserAllowedCenters==='function' ? getUserAllowedCenters() : null;
+    const data = SERVICES.filter(r=>{
+      if(allowed3 && !allowed3.includes(r.center)) return false;
+      if(cf && r.center!==cf) return false;
+      if(iqSf && !stAjer(r.expiry).includes(iqSf)) return false;
+      if(ajSf && r.ajerExpiry && !stAjer(r.ajerExpiry).includes(ajSf)) return false;
+      if(q && ![r.name,r.iqama,r.company,r.center].some(x=>String(x||'').includes(q))) return false;
+      return true;
+    }).sort((a,b)=>(a.center||'').localeCompare(b.center||'','ar')||((a.name||'').localeCompare(b.name||'','ar')));
+    rows=[
+      ['المركز','الاسم','رقم الإقامة','المهنة','الشركة','تاريخ الإقامة','أيام الإقامة','حالة الإقامة','تاريخ أجير','أيام أجير','حالة أجير'],
+      ...data.map(r=>[r.center,r.name,r.iqama||'—',r.profession||'—',r.company||'—',r.expiry||'—',dl(r.expiry)??'—',stAjer(r.expiry),r.ajerExpiry||'—',r.ajerExpiry?dl(r.ajerExpiry)??'—':'—',r.ajerExpiry?stAjer(r.ajerExpiry):'—'])
+    ];
+  }
+
+  exportRowsXLSX('alj-current-tab.xlsx',rows);
+  addAudit('تصدير Excel','تم تصدير التبويب الحالي حسب الفلتر');
+}
+function exportMainAlertsExcel(){
+  const cf = document.getElementById('maf-center')?.value||'';
+  const tf = document.getElementById('maf-type')?.value||'';
+  const sf = document.getElementById('maf-status')?.value||'';
+  const rows=[
+    ['النوع','المركز','الاسم','تاريخ الانتهاء','الأيام المتبقية','المخاطر'],
+    ...allRecords()
+      .filter(r=>(!cf||r.center===cf)&&(!tf||r.source===tf))
+      .map(r=>({...r,days:dl(r.expiry),risk:riskLevel(r)}))
+      .filter(r=>r.days===null||r.days<=Math.max(WARN,AJER_WARN))
+      .filter(r=>{ if(!sf) return true; if(sf==='منتهي') return r.days===null||r.days<0; if(sf==='وشك') return r.days!==null&&r.days>=0; return true; })
+      .sort((a,b)=>(a.days??-999)-(b.days??-999))
+      .map(r=>[r.cat,r.center,r.name,fd(r.expiry),r.days===null?'—':r.days,r.risk.label])
+  ];
+  const label=(cf?cf:'كل المراكز')+(tf?'-'+tf:'');
+  exportRowsXLSX('alj-alerts-'+label+'.xlsx',rows);
+  addAudit('تصدير التنبيهات','تم تصدير ملف تنبيهات Excel - '+label);
+}
+function downloadBackup(){const data={version:'2.0',date:new Date().toISOString(),licenses:LICS,cleaning:CLEANING,services:SERVICES,centers:CENTERS,companies:COMPANIES,licenseTypes:LICTYPES,warnDays:WARN,audit:getAudit()};downloadText('alj-compliance-backup.json',JSON.stringify(data,null,2),'application/json;charset=utf-8');addAudit('نسخة احتياطية','تم تنزيل نسخة JSON');}
+function addMobileLabels(){document.querySelectorAll('table').forEach(table=>{const heads=[...table.querySelectorAll('thead th')].map(th=>th.textContent.trim());table.querySelectorAll('tbody tr').forEach(tr=>{[...tr.children].forEach((td,i)=>td.setAttribute('data-label',heads[i]||''));});});}
+
+
+function systemSelfCheck(){
+  const checks = [
+    ['Firebase SDK', !!window.firebase],
+    ['Firebase DB', !!db && !!cloudReady],
+    ['Auth module', !!(window.firebase && firebase.auth)],
+    ['Current user', !!currentUser],
+    ['Profile', !!currentProfile],
+    ['Licenses array', Array.isArray(LICS)],
+    ['Cleaning array', Array.isArray(CLEANING)],
+    ['Services array', Array.isArray(SERVICES)],
+  ];
+  const bad = checks.filter(x=>!x[1]).map(x=>x[0]);
+  console.table(checks.map(([name,ok])=>({check:name,status:ok?'OK':'FAILED'})));
+  if(typeof toast==='function'){
+    toast(bad.length ? 'فحص النظام: يوجد خلل في '+bad.join(', ') : 'فحص النظام: كل شيء أساسي يعمل', bad.length?'error':'success');
+  }
+  return {checks,bad};
+}
+
+// ════════ INIT ════════
+const tdEl=document.getElementById('today-date'); if(tdEl) tdEl.textContent=today.toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+// load() يُستدعى بعد تسجيل الدخول من hideLoginScreen → refreshAll()
+// لكن نحمّل الإعدادات مبكراً
+normalizeLicenseTypes();
+setTimeout(()=>{ if(!currentUser) showLoginScreen(); }, 1200);
+setTimeout(()=>{
+  if(cloudReady){
+    const d=document.createElement('div');
+    d.className='cloud-live';
+    d.innerHTML='☁️ Live Sync';
+    document.body.appendChild(d);
+  }
+},1200);
+setTimeout(()=>{renderLicenseAlerts();renderAjerAlerts();},0);
+</script>
+
+<!-- ═══════ AUTO-UPDATE SYSTEM ═══════ -->
+<script>
+// ↓ غيّر هذا الرقم في كل تحديث جديد للملف
+const APP_VERSION = '1.0.0';
+
+(function(){
+  const CHECK_INTERVAL = 2 * 60 * 1000; // كل دقيقتين
+
+  function checkForUpdate(){
+    // نجلب نفس الملف الحالي ونقرأ رقم الإصدار منه
+    fetch(location.href + '?_=' + Date.now(), {cache:'no-store'})
+      .then(r => r.text())
+      .then(html => {
+        const match = html.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/);
+        if(!match) return;
+        const serverVersion = match[1];
+        if(serverVersion !== APP_VERSION){
+          showUpdateToast();
+        }
+      })
+      .catch(()=>{}); // تجاهل أخطاء الشبكة
+  }
+
+  function showUpdateToast(){
+    // امنع التكرار
+    if(document.getElementById('update-toast')) return;
+
+    const toast = document.createElement('div');
+    toast.id = 'update-toast';
+    toast.innerHTML = `
+      <div style="
+        position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+        background:#1a1f36;border:1px solid #b8860b;border-radius:14px;
+        padding:14px 22px;color:#fff;font-family:inherit;font-size:14px;
+        z-index:99999;box-shadow:0 8px 32px rgba(0,0,0,.5);
+        display:flex;align-items:center;gap:14px;direction:rtl;min-width:280px;
+      ">
+        <span style="font-size:22px">🔄</span>
+        <div>
+          <div style="font-weight:700;color:#b8860b">يوجد تحديث جديد</div>
+          <div style="font-size:12px;opacity:.8;margin-top:2px">سيتم التحديث خلال <span id="ut-countdown">5</span> ثوانٍ</div>
+        </div>
+        <button onclick="location.reload(true)" style="
+          background:#b8860b;border:none;color:#0a0e1a;border-radius:8px;
+          padding:6px 14px;font-weight:700;cursor:pointer;font-size:13px;
+        ">الآن</button>
+      </div>`;
+    document.body.appendChild(toast);
+
+    // عداد تنازلي 5 ثواني
+    let count = 5;
+    const cd = document.getElementById('ut-countdown');
+    const timer = setInterval(()=>{
+      count--;
+      if(cd) cd.textContent = count;
+      if(count <= 0){
+        clearInterval(timer);
+        location.reload(true);
+      }
+    }, 1000);
+  }
+
+  // ابدأ الفحص بعد 30 ثانية من الفتح ثم كل CHECK_INTERVAL
+  setTimeout(()=>{
+    checkForUpdate();
+    setInterval(checkForUpdate, CHECK_INTERVAL);
+  }, 30000);
+
+})();
+</script>
+
+
+<!-- ══════════════════ LOGIN SCREEN ══════════════════ -->
+<div id="login-screen" style="display:flex">
+  <div class="login-box">
+    <form id="li-form" onsubmit="event.preventDefault();doLogin()" autocomplete="on">
+    <div class="login-logo">ALJ</div>
+    <div class="login-title">متابعة الرخص والعمالة</div>
+    <div class="login-sub">شركة عبد اللطيف جميل — منطقة المدينة المنورة</div>
+    <div class="login-field">
+      <label>البريد الإلكتروني</label>
+      <input type="email" id="li-email" name="email" autocomplete="email" placeholder="example@alj.com" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="login-field">
+      <label>كلمة المرور</label>
+      <input type="password" id="li-pass" name="password" autocomplete="current-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" id="li-btn" type="submit">دخول</button>
+    <div class="login-err" id="li-err"></div>
+    </form>
+  </div>
+</div>
+
+<!-- ══════════════════ USERS PAGE ══════════════════ -->
+<div class="container page" id="page-users" style="display:none">
+  <div class="sec-hd">
+    <div class="sec-title"><span class="dot"></span> إدارة المستخدمين والأدوار</div>
+    <div class="action-strip" style="margin:0">
+      <button class="tabbtn active" id="utab-users" onclick="switchUsersTab('users',this)">👥 المستخدمون</button>
+      <button class="tabbtn" id="utab-roles" onclick="switchUsersTab('roles',this)">🎭 الأدوار</button>
+    </div>
+  </div>
+
+  <!-- تبويب المستخدمين -->
+  <div id="upanel-users" style="margin-top:16px">
+    <div style="margin-bottom:12px"><button class="btn sm" onclick="openAddUser()">+ مستخدم جديد</button></div>
+    <div id="users-list"></div>
+  </div>
+
+  <!-- تبويب الأدوار -->
+  <div id="upanel-roles" style="margin-top:16px;display:none">
+    <div style="margin-bottom:12px"><button class="btn sm" onclick="openAddRole()">+ دور جديد</button></div>
+    <div id="roles-list"></div>
+  </div>
+</div>
+
+<!-- ══ USER MODAL ══ -->
+<div class="overlay" id="mo-user">
+  <div class="modal" style="max-width:520px">
+    <div class="mhd"><div class="mtitle" id="um-title">إضافة مستخدم</div><button class="mclose" onclick="cm('mo-user')">×</button></div>
+    <div class="mbody">
+      <div class="frow">
+        <div class="fg"><label class="flbl">الاسم *</label><input class="finp" id="um-name" placeholder="الاسم الكامل"></div>
+        <div class="fg"><label class="flbl">الرقم الوظيفي *</label><input class="finp" id="um-empid" placeholder="مثال: 12345"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="flbl">البريد الإلكتروني *</label><input class="finp" type="email" id="um-email" placeholder="example@alj.com"></div>
+        <div class="fg"><label class="flbl">كلمة المرور *</label><input class="finp" type="password" id="um-pass" placeholder="6 أحرف على الأقل"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="flbl">الدور *</label>
+          <select class="fselect" id="um-role" onchange="onRoleChange()">
+            <option value="admin">أدمن — صلاحيات كاملة</option>
+            <option value="region_manager">مدير منطقة</option>
+            <option value="center_manager">مدير مركز</option>
+            <option value="hr_manager">مدير شؤون إدارية</option>
+            <option value="hr_region_manager">مدير منطقة شؤون إدارية</option>
+          </select>
+        </div>
+        <div class="fg" id="um-region-wrap">
+          <label class="flbl">المنطقة <span style="font-size:11px;opacity:.6" id="um-region-hint"></span></label>
+          <!-- select للـ center scope -->
+          <select class="fselect" id="um-region" onchange="onRegionChange()" style="display:none">
+            <option value="">— اختر منطقة —</option>
+          </select>
+          <!-- checkboxes للـ region scope (متعددة) -->
+          <div id="um-regions-list" style="display:none;flex-wrap:wrap;gap:8px;margin-top:6px;padding:10px;border:1.5px solid #d1d5db;border-radius:10px;min-height:44px;background:#f8fafc"></div>
+        </div>
+      </div>
+      <div class="frow" id="um-center-row">
+        <div class="fg" style="grid-column:1/-1">
+          <label class="flbl">المراكز <span style="font-size:11px;opacity:.6">(يمكن اختيار أكثر من مركز)</span></label>
+          <div id="um-centers-list" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;padding:10px;border:1.5px solid #d1d5db;border-radius:10px;min-height:44px;background:#f8fafc"></div>
+        </div>
+      </div>
+      <input type="hidden" id="um-uid">
+    </div>
+    <div class="mfooter"><button class="btn" onclick="saveUser()">💾 حفظ</button><button class="btn ghost" onclick="cm('mo-user')">إلغاء</button></div>
+  </div>
+</div>
+
+
+<script>
+// ════════════════════════════════════════════════════
+//  AUTH & USERS SYSTEM
+// ════════════════════════════════════════════════════
+let auth = null;
+let currentUser = null;   // Firebase user
+let currentProfile = null; // profile from RTDB
+
+let ROLES = {
+  admin: { label:'أدمن', canEdit:true, scopeType:'all' },
+  // باقي الأدوار تُحمَّل من Firebase
+};
+
+// ── مراكز المستخدم المسموح بها (null = كل المراكز)
+function getUserAllowedCenters(){
+  if(!currentProfile) return null;
+  const scope = ROLES[currentProfile.role]?.scopeType || 'all';
+  if(scope === 'all') return null; // أدمن — كل شيء
+  if(scope === 'center'){
+    const centers = currentProfile.centers || (currentProfile.center ? [currentProfile.center] : []);
+    return centers.length ? centers : null;
+  }
+  if(scope === 'region'){
+    // دعم منطقة واحدة أو عدة مناطق
+    const userRegions = currentProfile.regions?.length
+      ? currentProfile.regions
+      : currentProfile.region
+        ? currentProfile.region.split(',').map(r=>r.trim()).filter(Boolean)
+        : [];
+    if(!userRegions.length) return null;
+    return CENTERS.filter(c=>userRegions.includes(c.region)).map(c=>c.name);
+  }
+  return null;
+}
+
+// المراكز المتاحة للإدخال حسب صلاحية المستخدم
+function getAllowedCentersForInput(){
+  const allowed = getUserAllowedCenters();
+  if(!allowed) return CENTERS;
+  return CENTERS.filter(c => allowed.includes(c.name||c));
+}
+
+// فلترة سجلات حسب صلاحية المستخدم
+function filterByPermission(records){
+  const allowed = getUserAllowedCenters();
+  if(!allowed) return records;
+  return records.filter(r => allowed.includes(r.center));
+}
+
+// ── تهيئة Auth بعد Firebase
+function initAuth(){
+  try{
+    if(window.firebase && firebase.apps?.length && typeof firebase.auth==='function'){
+      auth = firebase.auth();
+      auth.languageCode = 'ar';
+    }
+  }catch(e){ console.error('Firebase auth init:', e); }
+
+
+  const savedUid   = sessionStorage.getItem('alj_uid');
+  const savedEmail = sessionStorage.getItem('alj_email');
+  if(savedUid && savedEmail){
+    // أظهر شاشة تحميل بدل login عند التحديث
+    const ls = document.getElementById('login-screen');
+    if(ls){
+      ls.style.display = 'flex';
+      const box = ls.querySelector('.login-box');
+      if(box) box.innerHTML = '<div style="text-align:center;padding:40px"><div style="font-size:40px">⏳</div><div style="font-size:16px;font-weight:700;margin-top:16px;color:#1e293b">جاري تحميل النظام...</div></div>';
+    }
+    currentUser = { uid: savedUid, email: savedEmail };
+    loadUserProfile(savedUid).catch((e)=>{ console.error(e); location.reload(); });
+    return;
+  }
+
+  showLoginScreen();
+}
+
+async function loadUserProfile(uid){
+  // انتظر db فقط لو لم يتهيأ — عادةً يكون جاهزاً فوراً
+  let tries = 0;
+  while(!db && tries < 10){
+    await new Promise(r=>setTimeout(r,200));
+    tries++;
+  }
+  if(!db){
+    showLoginError('تعذّر الاتصال بقاعدة البيانات، تحقق من الإنترنت');
+    return;
+  }
+  try {
+    const snap = await db.ref('users/' + uid).once('value');
+    if(snap.exists()){
+      currentProfile = snap.val();
+      currentProfile.uid = uid;
+    } else {
+      currentProfile = { name:'Admin', role:'admin', email: currentUser?.email||'', uid };
+      await db.ref('users/' + uid).set(currentProfile);
+    }
+    onUserReady();
+  } catch(e) {
+    console.error('loadUserProfile error:', e);
+    showLoginError('خطأ في الاتصال بقاعدة البيانات');
+  }
+}
+
+function onUserReady(){
+  hideLoginScreen();
+  updateUserBadge();
+  applyPermissions();
+  const isAdmin = currentProfile?.role === 'admin';
+  // زر المستخدمين — أدمن فقط
+  const nb = document.getElementById('nav-users');
+  if(nb) nb.style.display = isAdmin ? '' : 'none';
+  // زر الإعدادات — أدمن فقط
+  const ns = document.getElementById('nav-settings');
+  if(ns) ns.style.display = isAdmin ? '' : 'none';
+}
+
+// ── Login / Logout
+async function doLogin(){
+  const email = document.getElementById('li-email').value.trim();
+  const pass  = document.getElementById('li-pass').value;
+  const btn   = document.getElementById('li-btn');
+  const err   = document.getElementById('li-err');
+  err.textContent = '';
+  if(!email || !pass){ err.textContent = 'الرجاء إدخال الإيميل وكلمة المرور'; return; }
+  btn.disabled = true; btn.textContent = 'جاري الدخول...';
+  try {
+    // استخدام REST API مباشرة — يعمل من أي مكان بدون قيود authDomain
+    const API_KEY = firebaseConfig.apiKey;
+    const res = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`,
+      { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ email, password:pass, returnSecureToken:true }) }
+    );
+    const data = await res.json();
+    if(data.error){
+      const msgs = {
+        'EMAIL_NOT_FOUND':    'البريد الإلكتروني غير مسجل',
+        'INVALID_PASSWORD':   'كلمة المرور غير صحيحة',
+        'INVALID_EMAIL':      'بريد إلكتروني غير صالح',
+        'TOO_MANY_ATTEMPTS_TRY_LATER': 'تم تجاوز عدد المحاولات، حاول لاحقاً',
+        'INVALID_LOGIN_CREDENTIALS': 'بيانات الدخول غير صحيحة',
+        'USER_DISABLED':      'هذا الحساب موقوف',
+        'OPERATION_NOT_ALLOWED': 'تسجيل الدخول بالبريد وكلمة المرور غير مفعّل في Firebase Authentication',
+        'API_KEY_INVALID': 'مفتاح Firebase API غير صحيح أو مقيّد',
+        'PROJECT_NOT_FOUND': 'مشروع Firebase غير موجود أو الإعدادات غير صحيحة',
+      };
+      const msg = data.error.message || '';
+      err.textContent = msgs[msg] || msgs[msg.split(' ')[0]] || 'بيانات الدخول غير صحيحة';
+      btn.disabled = false; btn.textContent = 'دخول';
+      return;
+    }
+    // نجاح — احفظ بيانات الجلسة
+    const uid = data.localId;
+    const idToken = data.idToken;
+    currentUser = { uid, email, getIdToken: async()=>idToken };
+    sessionStorage.setItem('alj_uid', uid);
+    sessionStorage.setItem('alj_email', email);
+    sessionStorage.setItem('alj_token', idToken);
+
+    await loadUserProfile(uid);
+  } catch(e) {
+    console.error('Login error:', e);
+    err.textContent = 'خطأ في الاتصال، تحقق من الإنترنت';
+    btn.disabled = false; btn.textContent = 'دخول';
+  }
+}
+
+function doLogout(){
+  // مسح الجلسة أولاً
+  sessionStorage.clear();
+  currentUser = null;
+  currentProfile = null;
+  _dashboardLoaded = false;
+
+  // إعادة تعيين زر الدخول والحقول
+  const btn = document.getElementById('li-btn');
+  const err = document.getElementById('li-err');
+  if(btn){ btn.disabled = false; btn.textContent = 'دخول'; }
+  if(err) err.textContent = '';
+  const emailEl = document.getElementById('li-email');
+  const passEl  = document.getElementById('li-pass');
+  if(emailEl) emailEl.value = '';
+  if(passEl)  passEl.value  = '';
+
+  // أظهر شاشة الدخول
+  const ls = document.getElementById('login-screen');
+  if(ls) ls.style.display = 'flex';
+  const hdr = document.getElementById('main-header');
+  if(hdr) hdr.style.display = 'none';
+  // أخفِ صفحة المستخدمين لو كانت ظاهرة
+  const pu = document.getElementById('page-users');
+  if(pu) pu.style.display = 'none';
+
+  if(auth) auth.signOut().catch(()=>{});
+}
+
+// ── UI
+function showLoginScreen(){
+  document.getElementById('login-screen').style.display = 'flex';
+  const hdr = document.getElementById('main-header');
+  if(hdr) hdr.style.display = 'none';
+  // إعادة تعيين زر الدخول
+  const btn = document.getElementById('li-btn');
+  if(btn){ btn.disabled = false; btn.textContent = 'دخول'; }
+  const err = document.getElementById('li-err');
+  if(err) err.textContent = '';
+}
+let _dashboardLoaded = false;
+function hideLoginScreen(){
+  document.getElementById('login-screen').style.display = 'none';
+  const hdr = document.getElementById('main-header');
+  if(hdr) hdr.style.display = '';
+
+  if(!_dashboardLoaded){
+    _dashboardLoaded = true;
+    load();
+    loadRolesFromDB();
+    startCloudListeners();
+    setTimeout(showCloudStatus, 600);
+    setTimeout(()=>reloadAjerFromFirebase(true), 3000);
+    setTimeout(guardAjerCloudData, 1000);
+  }
+
+  setTimeout(()=>{
+    const dashBtn = document.querySelector('.navbtn[onclick*="dashboard"]');
+    showPage('dashboard', dashBtn);
+    refreshAll();
+    applyPermissions();
+  }, 400);
+}
+function showLoginError(msg){ document.getElementById('li-err').textContent = msg; }
+
+function updateUserBadge(){
+  if(!currentProfile) return;
+  const role = ROLES[currentProfile.role];
+  document.getElementById('ub-name').textContent = currentProfile.name || currentProfile.email;
+  document.getElementById('ub-role').textContent = role?.label || currentProfile.role;
+}
+
+function showUserMenu(){
+  const name = currentProfile?.name || currentUser?.email || '';
+  const role = ROLES[currentProfile?.role]?.label || '';
+  const center = currentProfile?.centers?.join(', ') || currentProfile?.center || '';
+  const info = `${name}\n${role}${center ? ' — '+center : ''}\n\nتسجيل الخروج؟`;
+  if(confirm(info)) doLogout();
+}
+
+// ── تحقق من صلاحية التعديل
+function canUserEdit(){
+  if(!currentProfile) return false;
+  return ROLES[currentProfile.role]?.canEdit ?? false;
+}
+
+// ── Permissions
+function applyPermissions(){
+  if(!currentProfile) return;
+  const role = currentProfile.role;
+  const canEdit = ROLES[role]?.canEdit ?? false;
+  const scope   = ROLES[role]?.scopeType || 'all';
+
+  // إخفاء/إظهار أزرار الإضافة حسب الصلاحية
+  const addBtns = ['btn-add-lic','btn-add-clean','btn-add-serv'];
+  addBtns.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.style.display = canEdit ? '' : 'none';
+  });
+
+  // فلترة المراكز حسب الصلاحية
+  if(scope === 'center'){
+    const userCenters = currentProfile.centers || (currentProfile.center ? [currentProfile.center] : []);
+    if(userCenters.length === 1){
+      lockCenterFilter(userCenters[0]);
+    } else if(userCenters.length > 1){
+      lockMultiCenterFilter(userCenters);
+    }
+  } else if(scope === 'region' && currentProfile.region){
+    lockRegionFilter(currentProfile.region);
+  }
+}
+
+function lockCenterFilter(center){
+  // تثبيت كل فلاتر المراكز على المركز المحدد
+  ['lf-center','clf-center','svf-center','maf-center','tl-center'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.value = center;
+    el.disabled = true;
+  });
+  refreshAll();
+}
+
+function lockMultiCenterFilter(centers){
+  ['lf-center','clf-center','svf-center','maf-center','tl-center'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    [...el.options].forEach(o=>{ if(o.value && !centers.includes(o.value)) o.remove(); });
+    el.disabled = centers.length === 1;
+  });
+  refreshAll();
+}
+
+function lockRegionFilter(region){
+  const allowed = CENTERS.filter(c=>(c.region||'')===region).map(c=>c.name||c);
+  ['lf-center','clf-center','svf-center','maf-center','tl-center'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    // أزل الخيارات غير المسموح بها نهائياً
+    [...el.options].forEach(o=>{ if(o.value && !allowed.includes(o.value)) o.remove(); });
+  });
+  refreshAll();
+}
+
+// ════════════════════════════════════════════════════
+//  USERS MANAGEMENT (Admin only)
+// ════════════════════════════════════════════════════
+let usersCache = {};
+
+function goSettings(btn){
+  if(currentProfile?.role !== 'admin'){
+    toast('الإعدادات متاحة للأدمن فقط','error');
+    return;
+  }
+  showPage('settings', btn);
+}
+
+function go(page){
+  if(page==='users'){
+    if(currentProfile?.role !== 'admin') return; // أدمن فقط
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('page-users').style.display='block';
+    document.getElementById('nav-users')?.classList.add('active');
+    renderUsersList();
+  } else if(page==='home'){
+    showPage('dashboard', document.querySelector('.navbtn[onclick*="dashboard"]'));
+  } else {
+    const btn = document.querySelector(`.navbtn[onclick*="${page}"]`);
+    showPage(page, btn);
+  }
+}
+
+async function renderUsersList(){
+  if(currentProfile?.role !== 'admin') return;
+  const snap = await db.ref('users').once('value');
+  usersCache = snap.val() || {};
+  const el = document.getElementById('users-list');
+  const users = Object.entries(usersCache);
+  if(!users.length){ el.innerHTML='<div class="empty">لا يوجد مستخدمون</div>'; return; }
+  el.innerHTML = `
+    <table style="width:100%;border-collapse:collapse">
+      <thead><tr style="background:#e8eef5;font-size:13px">
+        <th style="padding:10px;text-align:right">الاسم</th>
+        <th style="padding:10px;text-align:right">الرقم الوظيفي</th>
+        <th style="padding:10px;text-align:right">الإيميل</th>
+        <th style="padding:10px;text-align:right">الدور</th>
+        <th style="padding:10px;text-align:right">المنطقة / المركز</th>
+        <th style="padding:10px;text-align:right">إجراءات</th>
+      </tr></thead>
+      <tbody>
+        ${users.map(([uid,u])=>`
+          <tr style="border-bottom:1px solid #e2e8f0;font-size:13px">
+            <td style="padding:10px;font-weight:700">${u.name||'—'}</td>
+            <td style="padding:10px">${u.empId||'—'}</td>
+            <td style="padding:10px;direction:ltr;text-align:right">${u.email||'—'}</td>
+            <td style="padding:10px"><span style="background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:20px;font-size:11px">${ROLES[u.role]?.label||u.role}</span></td>
+            <td style="padding:10px">
+              ${u.regions?.length ? u.regions.join(' | ') : u.region||'—'}
+              <br><span style='font-size:11px;opacity:.7'>${(u.centers||[u.center]).filter(Boolean).join(' | ')||''}</span>
+            </td>
+            <td style="padding:10px;display:flex;gap:6px">
+              <button class="btn sm ghost" onclick="openEditUser('${uid}')">✏️ تعديل</button>
+              ${uid!==currentUser.uid?`<button class="btn sm ghost" style="color:#dc2626" onclick="deleteUser('${uid}','${(u.name||'').replace(/'/g,"\'")}')">🗑️</button>`:''}
+            </td>
+          </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+function openAddUser(){
+  document.getElementById('um-title').textContent = 'إضافة مستخدم';
+  document.getElementById('um-uid').value = '';
+  document.getElementById('um-name').value = '';
+  document.getElementById('um-empid').value = '';
+  document.getElementById('um-email').value = '';
+  document.getElementById('um-pass').value = '';
+  document.getElementById('um-role').value = 'center_manager';
+  populateRegionSelect();
+  populateCentersByRegion('');
+  onRoleChange();
+  om('mo-user');
+}
+
+function openEditUser(uid){
+  const u = usersCache[uid];
+  if(!u) return;
+  document.getElementById('um-title').textContent = 'تعديل مستخدم';
+  document.getElementById('um-uid').value = uid;
+  document.getElementById('um-name').value = u.name||'';
+  document.getElementById('um-empid').value = u.empId||'';
+  document.getElementById('um-email').value = u.email||'';
+  document.getElementById('um-pass').value = '';
+  document.getElementById('um-role').value = u.role||'center_manager';
+  populateRegionSelect(u.region||'');
+  populateCentersByRegion(u.region||'', u.centers||(u.center?[u.center]:[]));
+  onRoleChange();
+  setTimeout(()=>{
+    const editScope = ROLES[u.role||'']?.scopeType||'all';
+    if(editScope==='center'){
+      document.getElementById('um-region').value = u.region||'';
+      populateCentersByRegion(u.region||'', u.centers||(u.center?[u.center]:[]));
+    } else if(editScope==='region'){
+      const savedRegions = u.regions?.length ? u.regions
+        : u.region ? u.region.split(',').map(r=>r.trim()).filter(Boolean) : [];
+      populateRegionsCheckboxes(savedRegions);
+    }
+  }, 50);
+  om('mo-user');
+}
+
+function getRegions(){
+  // جمع المناطق الفريدة من CENTERS
+  const regions = [...new Set(CENTERS.map(c=>c.region||'').filter(r=>r))].sort();
+  return regions;
+}
+
+function populateRegionSelect(selectedRegion=''){
+  const el = document.getElementById('um-region');
+  if(!el) return;
+  el.innerHTML = '<option value="">— اختر منطقة —</option>';
+  getRegions().forEach(r=>{
+    const o = document.createElement('option');
+    o.value = r; o.textContent = r;
+    if(r === selectedRegion) o.selected = true;
+    el.appendChild(o);
+  });
+}
+
+function populateRegionsCheckboxes(selectedRegions=[]){
+  const container = document.getElementById('um-regions-list');
+  if(!container) return;
+  const regions = getRegions();
+  if(!regions.length){
+    container.innerHTML = '<span style="font-size:12px;color:#94a3b8">لا توجد مناطق مضافة في الإعدادات</span>';
+    return;
+  }
+  container.innerHTML = regions.map(r=>`
+    <label style="display:flex;align-items:center;gap:5px;background:#fff;border:1px solid #d1dce8;border-radius:8px;padding:5px 10px;cursor:pointer;font-size:13px;font-weight:600">
+      <input type="checkbox" value="${r}" ${selectedRegions.includes(r)?'checked':''} style="accent-color:#b8860b;width:15px;height:15px">
+      ${r}
+    </label>`).join('');
+}
+
+function getSelectedRegions(){
+  return [...document.querySelectorAll('#um-regions-list input[type=checkbox]:checked')].map(cb=>cb.value);
+}
+
+function onRegionChange(){
+  const role_scope = ROLES[document.getElementById('um-role').value]?.scopeType || 'all';
+  const region = role_scope === 'region'
+    ? getSelectedRegions().join(',')
+    : document.getElementById('um-region').value;
+  const regions = role_scope === 'region' ? getSelectedRegions() : [];
+  populateCentersByRegion(region, []);
+}
+
+function populateCentersByRegion(region, selectedCenters=[]){
+  const container = document.getElementById('um-centers-list');
+  if(!container) return;
+  const selected = Array.isArray(selectedCenters) ? selectedCenters : (selectedCenters ? [selectedCenters] : []);
+  const filtered = region ? CENTERS.filter(c=>c.region===region) : CENTERS;
+  if(!filtered.length){
+    container.innerHTML = '<span style="font-size:12px;color:#94a3b8">لا توجد مراكز في هذه المنطقة</span>';
+    return;
+  }
+  container.innerHTML = filtered.map(c=>`
+    <label style="display:flex;align-items:center;gap:5px;background:#fff;border:1px solid #d1dce8;border-radius:8px;padding:5px 10px;cursor:pointer;font-size:13px;font-weight:600">
+      <input type="checkbox" value="${c.name}" ${selected.includes(c.name)?'checked':''} style="accent-color:#b8860b;width:15px;height:15px">
+      ${c.name}
+    </label>`).join('');
+}
+
+function getSelectedCenters(){
+  return [...document.querySelectorAll('#um-centers-list input[type=checkbox]:checked')].map(cb=>cb.value);
+}
+
+function onRoleChange(){
+  const role  = document.getElementById('um-role').value;
+  const scope = ROLES[role]?.scopeType || 'all';
+  const wrap  = document.getElementById('um-region-wrap');
+  const hint  = document.getElementById('um-region-hint');
+  const sel   = document.getElementById('um-region');
+  const chk   = document.getElementById('um-regions-list');
+
+  wrap.style.display = (scope==='region'||scope==='center') ? '' : 'none';
+  document.getElementById('um-center-row').style.display = scope==='center' ? '' : 'none';
+
+  if(scope==='center'){
+    if(sel) sel.style.display = '';
+    if(chk) chk.style.display = 'none';
+    if(hint) hint.textContent = '';
+    populateRegionSelect();
+    populateCentersByRegion('', []);
+  } else if(scope==='region'){
+    if(sel) sel.style.display = 'none';
+    if(chk) chk.style.display = 'flex';
+    if(hint) hint.textContent = '(يمكن اختيار أكثر من منطقة)';
+    populateRegionsCheckboxes();
+  }
+}
+
+async function saveUser(){
+  const uid    = document.getElementById('um-uid').value;
+  const name   = document.getElementById('um-name').value.trim();
+  const empId  = document.getElementById('um-empid').value.trim();
+  const email  = document.getElementById('um-email').value.trim();
+  const pass   = document.getElementById('um-pass').value;
+  const role      = document.getElementById('um-role').value;
+  const role_scope = ROLES[role]?.scopeType || 'all';
+  const regions   = role_scope === 'region' ? getSelectedRegions() : [];
+  const region    = role_scope === 'region'
+    ? regions.join(',')
+    : document.getElementById('um-region').value;
+  const centers = getSelectedCenters();
+  const center = centers[0]||'';
+
+  if(!name||!email){ toast('الرجاء تعبئة الاسم والإيميل','error'); return; }
+
+  try {
+    if(!uid){
+      // مستخدم جديد — أنشئ في Firebase Auth أولاً
+      if(!pass || pass.length < 6){ toast('كلمة المرور يجب أن تكون 6 أحرف على الأقل','error'); return; }
+      // نستخدم REST API لأن createUserWithEmailAndPassword تسجّل دخول تلقائي
+      const FIREBASE_API_KEY = 'AIzaSyBw94GNolE0yW5GbSDHp1pm2V9MpC1mO1c';
+      const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_API_KEY}`,{
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ email, password:pass, returnSecureToken:true })
+      });
+      const data = await res.json();
+      if(data.error){ toast('خطأ: ' + data.error.message,'error'); return; }
+      const newUid = data.localId;
+      await db.ref('users/' + newUid).set({ name, empId, email, role, region, regions, center, centers });
+      toast('تم إضافة المستخدم بنجاح ✅','success');
+    } else {
+      // تعديل — فقط البيانات في RTDB (كلمة المرور تتغير من Console)
+      const updates = { name, empId, email, role, region, regions, center, centers };
+      await db.ref('users/' + uid).update(updates);
+      if(pass && pass.length >= 6){
+        toast('ملاحظة: تغيير كلمة المرور يتم من Firebase Console','info');
+      }
+      toast('تم تحديث المستخدم ✅','success');
+    }
+    cm('mo-user');
+    renderUsersList();
+  } catch(e) {
+    toast('خطأ: ' + e.message,'error');
+  }
+}
+
+async function deleteUser(uid, name){
+  if(!confirm(`حذف المستخدم "${name}"؟ هذا لن يحذفه من Firebase Auth.`)) return;
+  await db.ref('users/' + uid).remove();
+  toast('تم الحذف','success');
+  renderUsersList();
+}
+
+
+// ════════════════════════════════════════════════════
+//  ROLES MANAGEMENT
+// ════════════════════════════════════════════════════
+
+function switchUsersTab(tab, btn){
+  document.getElementById('upanel-users').style.display = tab==='users' ? '' : 'none';
+  document.getElementById('upanel-roles').style.display = tab==='roles' ? '' : 'none';
+  document.querySelectorAll('#page-users .tabbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(tab==='roles') renderRolesList();
+}
+
+// تحميل الأدوار من Firebase
+async function loadRolesFromDB(){
+  if(!db) return;
+  try{
+    const snap = await db.ref('roles').once('value');
+    if(snap.exists()){
+      const saved = snap.val();
+      // دمج مع الأدوار الافتراضية
+      Object.entries(saved).forEach(([key, val])=>{
+        ROLES[key] = { label: val.label, canEdit: val.canEdit===true||val.canEdit==='true', scopeType: val.scopeType||'center' };
+      });
+    }
+  }catch(e){ console.warn('loadRolesFromDB:', e); }
+}
+
+function renderRolesList(){
+  const el = document.getElementById('roles-list');
+  if(!el) return;
+  const rows = Object.entries(ROLES).map(([key, r])=>{
+    const isAdmin = key === 'admin';
+    const scopeLabel = {all:'كل المراكز', region:'منطقة', center:'مركز'}[r.scopeType]||r.scopeType;
+    return `<tr style="border-bottom:1px solid #e2e8f0;font-size:13px">
+      <td style="padding:10px;font-weight:700">${r.label}</td>
+      <td style="padding:10px;direction:ltr;color:#64748b">${key}</td>
+      <td style="padding:10px"><span style="background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:20px;font-size:11px">${scopeLabel}</span></td>
+      <td style="padding:10px">${r.canEdit?'<span style="color:#16a34a">✅ تعديل</span>':'<span style="color:#dc2626">👁️ قراءة</span>'}</td>
+      <td style="padding:10px;display:flex;gap:6px">
+        ${!isAdmin?`<button class="btn sm ghost" onclick="openEditRole('${key}')">✏️</button>`:''}
+        ${!isAdmin?`<button class="btn sm ghost" style="color:#dc2626" onclick="deleteRole('${key}','${r.label}')">🗑️</button>`:'<span style="opacity:.5;font-size:11px">محمي</span>'}
+      </td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML = `<table style="width:100%;border-collapse:collapse">
+    <thead><tr style="background:#e8eef5;font-size:13px">
+      <th style="padding:10px;text-align:right">الاسم</th>
+      <th style="padding:10px;text-align:right">المفتاح</th>
+      <th style="padding:10px;text-align:right">النطاق</th>
+      <th style="padding:10px;text-align:right">الصلاحية</th>
+      <th style="padding:10px;text-align:right">إجراءات</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+
+  // حدّث select الأدوار في modal المستخدم
+  updateRoleSelect();
+}
+
+function updateRoleSelect(){
+  const sel = document.getElementById('um-role');
+  if(!sel) return;
+  const cur = sel.value;
+  sel.innerHTML = Object.entries(ROLES).map(([key,r])=>
+    `<option value="${key}" ${key===cur?'selected':''}>${r.label}</option>`
+  ).join('');
+}
+
+function openAddRole(){
+  document.getElementById('rm-title').textContent = 'إضافة دور جديد';
+  document.getElementById('rm-key').value = '';
+  document.getElementById('rm-label').value = '';
+  document.getElementById('rm-scope').value = 'center';
+  document.getElementById('rm-edit').value = 'true';
+  document.getElementById('rm-original-key').value = '';
+  document.getElementById('rm-key').disabled = false;
+  om('mo-role');
+}
+
+function openEditRole(key){
+  if(key === 'admin'){ toast('لا يمكن تعديل دور الأدمن','error'); return; }
+  const r = ROLES[key];
+  if(!r) return;
+  document.getElementById('rm-title').textContent = 'تعديل دور';
+  document.getElementById('rm-key').value = key;
+  document.getElementById('rm-key').disabled = false;
+  document.getElementById('rm-label').value = r.label;
+  document.getElementById('rm-scope').value = r.scopeType||'center';
+  document.getElementById('rm-edit').value = String(r.canEdit);
+  document.getElementById('rm-original-key').value = key;
+  om('mo-role');
+}
+
+async function saveRole(){
+  const key     = document.getElementById('rm-key').value.trim().replace(/\s+/g,'_');
+  const label   = document.getElementById('rm-label').value.trim();
+  const scope   = document.getElementById('rm-scope').value;
+  const canEdit = document.getElementById('rm-edit').value === 'true';
+  const origKey = document.getElementById('rm-original-key').value;
+
+  if(!key || !label){ toast('الرجاء تعبئة جميع الحقول','error'); return; }
+  if(/[^a-zA-Z0-9_]/.test(key)){ toast('المفتاح: حروف إنجليزية وأرقام وشرطة سفلية فقط','error'); return; }
+  if(key === 'admin'){ toast('لا يمكن استخدام مفتاح admin','error'); return; }
+
+  // لو تغيّر المفتاح — احذف القديم
+  if(origKey && origKey !== key){
+    delete ROLES[origKey];
+    if(db) await db.ref('roles/' + origKey).remove();
+  }
+
+  ROLES[key] = { label, canEdit, scopeType: scope };
+  if(db) await db.ref('roles/' + key).set({ label, canEdit, scopeType: scope });
+
+  cm('mo-role');
+  renderRolesList();
+  toast(`تم حفظ الدور "${label}" ✅`, 'success');
+}
+
+async function deleteRole(key, label){
+  if(key === 'admin'){ toast('لا يمكن حذف دور الأدمن','error'); return; }
+  if(!confirm(`حذف الدور "${label}"؟`)) return;
+  delete ROLES[key];
+  if(db) await db.ref('roles/' + key).remove();
+  renderRolesList();
+  toast('تم حذف الدور','success');
+}
+
+
+function copyLicAlertsReport(){
+  const center = document.getElementById('laf-center')?.value||'';
+  const status = document.getElementById('laf-status')?.value||'';
+  const q      = document.getElementById('laf-q')?.value?.trim()||'';
+
+  const allRows = getLicenseAlertRows().filter(r=>filterByPermission([r]).length>0);
+  const filtered = allRows.filter(r=>{
+    if(center && r.center!==center) return false;
+    if(status && !shortStatus(r.status).includes(status)) return false;
+    if(q && !String(r.name||'').includes(q) && !String(r.center||'').includes(q)) return false;
+    return true;
+  });
+
+  if(!filtered.length){ toast('لا توجد تنبيهات بهذا الفلتر','info'); return; }
+
+  const today = new Date().toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'});
+  function dueText(days){ if(days===null) return 'لا يوجد تاريخ'; if(days<0) return `منتهي منذ ${Math.abs(days)} يوم`; if(days===0) return 'ينتهي اليوم'; return `متبقي ${days} يوم`; }
+
+  let lines = [];
+  lines.push('تقرير تنبيهات الرخص والتراخيص');
+  lines.push(`شركة عبد اللطيف جميل — التاريخ: ${today}`);
+  if(center) lines.push(`المركز: ${center}`);
+  if(status) lines.push(`الحالة: ${status}`);
+  lines.push('─'.repeat(45));
+  filtered.forEach((r,i)=>{
+    lines.push(`${i+1}. ${r.name}`);
+    lines.push(`   المركز       : ${r.center||'—'}`);
+    lines.push(`   تاريخ الانتهاء: ${fd(r.expiry)}`);
+    lines.push(`   الحالة       : ${dueText(r.days)}`);
+    if(r.notes) lines.push(`   ملاحظات      : ${r.notes}`);
+    lines.push('');
+  });
+  lines.push('─'.repeat(45));
+  lines.push(`الإجمالي: ${filtered.length} سجل`);
+
+  navigator.clipboard?.writeText(lines.join('\n'))
+    .then(()=>toast('✅ تم نسخ تقرير الرخص','success'))
+    .catch(()=>toast('تعذّر النسخ','error'));
+}
+
+function copyAjerAlertsReport(){
+  const center = document.getElementById('aaf-center')?.value||'';
+  const type   = document.getElementById('aaf-type')?.value||'';
+  const status = document.getElementById('aaf-status')?.value||'';
+  const q      = document.getElementById('aaf-q')?.value?.trim()||'';
+
+  const allRows = getAjerAlertRows().filter(r=>filterByPermission([r]).length>0);
+  const filtered = allRows.filter(r=>{
+    if(center && r.center!==center) return false;
+    if(type   && r.type!==type)     return false;
+    if(status && !shortStatus(r.status).includes(status)) return false;
+    if(q && ![r.name,r.iqama,r.company].some(x=>String(x||'').includes(q))) return false;
+    return true;
+  });
+
+  if(!filtered.length){ toast('لا توجد تنبيهات بهذا الفلتر','info'); return; }
+
+  const today = new Date().toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'});
+  function dueText(days){ if(days===null) return 'لا يوجد تاريخ'; if(days<0) return `منتهي منذ ${Math.abs(days)} يوم`; if(days===0) return 'ينتهي اليوم'; return `متبقي ${days} يوم`; }
+
+  let lines = [];
+  lines.push('تقرير تنبيهات الإقامات وشهادات أجير');
+  lines.push(`شركة عبد اللطيف جميل — التاريخ: ${today}`);
+  if(center) lines.push(`المركز: ${center}`);
+  if(type)   lines.push(`النوع: ${type}`);
+  if(status) lines.push(`الحالة: ${status}`);
+  lines.push('─'.repeat(45));
+  filtered.forEach((r,i)=>{
+    lines.push(`${i+1}. ${r.name} (${r.type})`);
+    lines.push(`   المركز       : ${r.center||'—'}`);
+    lines.push(`   رقم الإقامة  : ${r.iqama||'—'}`);
+    lines.push(`   المهنة       : ${r.profession||'—'}`);
+    lines.push(`   الشركة       : ${r.company||'—'}`);
+    lines.push(`   تاريخ الانتهاء: ${fd(r.expiry)}`);
+    lines.push(`   الحالة       : ${dueText(r.days)}`);
+    lines.push('');
+  });
+  lines.push('─'.repeat(45));
+  lines.push(`الإجمالي: ${filtered.length} سجل`);
+
+  navigator.clipboard?.writeText(lines.join('\n'))
+    .then(()=>toast('✅ تم نسخ تقرير أجير','success'))
+    .catch(()=>toast('تعذّر النسخ','error'));
+}
+
+// ── Init
+window.addEventListener('load', ()=>{ initAuth(); });
+</script>
+
+</body>
+</html>
+
+<!-- ══ ROLE MODAL ══ -->
+<div class="overlay" id="mo-role">
+  <div class="modal" style="max-width:480px">
+    <div class="mhd"><div class="mtitle" id="rm-title">إضافة دور</div><button class="mclose" onclick="cm('mo-role')">×</button></div>
+    <div class="mbody">
+      <div class="frow">
+        <div class="fg"><label class="flbl">مفتاح الدور * <span style="font-size:11px;opacity:.6">(بالإنجليزي بدون مسافات)</span></label>
+          <input class="finp" id="rm-key" placeholder="مثال: branch_manager" dir="ltr">
+        </div>
+        <div class="fg"><label class="flbl">الاسم العربي *</label>
+          <input class="finp" id="rm-label" placeholder="مثال: مدير الفرع">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="flbl">النطاق *</label>
+          <select class="fselect" id="rm-scope">
+            <option value="all">كل المراكز (مثل الأدمن)</option>
+            <option value="region">منطقة محددة</option>
+            <option value="center" selected>مركز محدد</option>
+          </select>
+        </div>
+        <div class="fg"><label class="flbl">صلاحية التعديل</label>
+          <select class="fselect" id="rm-edit">
+            <option value="true">يقدر يضيف ويعدل ويحذف</option>
+            <option value="false">قراءة فقط</option>
+          </select>
+        </div>
+      </div>
+      <input type="hidden" id="rm-original-key">
+    </div>
+    <div class="mfooter">
+      <button class="btn" onclick="saveRole()">💾 حفظ</button>
+      <button class="btn ghost" onclick="cm('mo-role')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
