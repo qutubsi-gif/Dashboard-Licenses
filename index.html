@@ -3672,7 +3672,25 @@ async function renderUsersList(){
   const el = document.getElementById('users-list');
   const users = Object.entries(usersCache);
   if(!users.length){ el.innerHTML='<div class="empty">لا يوجد مستخدمون</div>'; return; }
-  el.innerHTML = `
+  const isMobile = window.innerWidth <= 768;
+  if(isMobile){
+    // بطاقات على الجوال
+    el.innerHTML = users.map(([uid,u])=>`
+      <div class="mob-card" style="margin-bottom:12px">
+        <div class="mob-card-name" style="font-size:15px;font-weight:800;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)">${u.name||'—'}</div>
+        <div class="mob-row"><span class="mob-lbl">الرقم الوظيفي</span><span>${u.empId||'—'}</span></div>
+        <div class="mob-row"><span class="mob-lbl">الإيميل</span><span style="direction:ltr;font-size:11px">${u.email||'—'}</span></div>
+        <div class="mob-row"><span class="mob-lbl">الدور</span><span style="background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:20px;font-size:11px">${ROLES[u.role]?.label||u.role}</span></div>
+        <div class="mob-row"><span class="mob-lbl">المنطقة</span><span>${u.regions?.length?u.regions.join(' | '):u.region||'—'}</span></div>
+        ${(u.centers||[u.center]).filter(Boolean).length?`<div class="mob-row"><span class="mob-lbl">المراكز</span><span style="font-size:12px">${(u.centers||[u.center]).filter(Boolean).join(' | ')}</span></div>`:''}
+        <div class="mob-acts" style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px;padding-top:8px;border-top:1px solid var(--border)">
+          <button class="btn sm ghost" onclick="openEditUser('${uid}')">✏️ تعديل</button>
+          ${uid!==currentUser.uid?`<button class="btn sm ghost" style="color:#dc2626" onclick="deleteUser('${uid}','${(u.name||'').replace(/'/g,"\'")}')">🗑️</button>`:''}
+        </div>
+      </div>`).join('');
+  } else {
+    // جدول على الكمبيوتر
+    el.innerHTML = `
     <table style="width:100%;border-collapse:collapse">
       <thead><tr style="background:#e8eef5;font-size:13px">
         <th style="padding:10px;text-align:right">الاسم</th>
@@ -3700,6 +3718,7 @@ async function renderUsersList(){
           </tr>`).join('')}
       </tbody>
     </table>`;
+  }
 }
 
 function openAddUser(){
@@ -3935,7 +3954,24 @@ function renderRolesList(){
     </tr>`;
   }).join('');
 
-  el.innerHTML = `<table style="width:100%;border-collapse:collapse">
+  const isMob = window.innerWidth <= 768;
+  if(isMob){
+    el.innerHTML = Object.entries(ROLES).map(([key,r])=>{
+      const isAdmin = key==='admin';
+      const scopeLabel = {all:'كل المراكز',region:'منطقة',center:'مركز'}[r.scopeType]||r.scopeType;
+      return `<div class="mob-card" style="margin-bottom:10px">
+        <div class="mob-card-name">${r.label}</div>
+        <div class="mob-row"><span class="mob-lbl">المفتاح</span><span style="direction:ltr;font-size:12px">${key}</span></div>
+        <div class="mob-row"><span class="mob-lbl">النطاق</span><span style="background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:20px;font-size:11px">${scopeLabel}</span></div>
+        <div class="mob-row"><span class="mob-lbl">الصلاحية</span><span>${r.canEdit?'<span style="color:#16a34a">✅ تعديل</span>':'<span style="color:#dc2626">👁️ قراءة</span>'}</span></div>
+        ${!isAdmin?`<div class="mob-acts" style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">
+          <button class="btn sm ghost" onclick="openEditRole('${key}')">✏️ تعديل</button>
+          <button class="btn sm ghost" style="color:#dc2626" onclick="deleteRole('${key}','${r.label}')">🗑️</button>
+        </div>`:'<div style="text-align:left;font-size:11px;opacity:.5;margin-top:6px">محمي</div>'}
+      </div>`;
+    }).join('');
+  } else {
+    el.innerHTML = `<table style="width:100%;border-collapse:collapse">
     <thead><tr style="background:#e8eef5;font-size:13px">
       <th style="padding:10px;text-align:right">الاسم</th>
       <th style="padding:10px;text-align:right">المفتاح</th>
@@ -3945,6 +3981,7 @@ function renderRolesList(){
     </tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
+  }
 
   // حدّث select الأدوار في modal المستخدم
   updateRoleSelect();
