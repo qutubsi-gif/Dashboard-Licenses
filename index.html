@@ -3679,19 +3679,19 @@ async function renderUsersList(){
       const regions = u.regions?.length ? u.regions.join('، ') : u.region||'—';
       const centers = (u.centers||[u.center]).filter(Boolean).join('، ')||'—';
       const safeN = (u.name||'').replace(/'/g,"\'");
-      return `<div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:14px;margin-bottom:12px">
-        <div style="font-size:15px;font-weight:800;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #e2e8f0">${u.name||'—'}</div>
-        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:13px"><span style="color:#64748b;font-weight:600">الرقم الوظيفي</span><span>${u.empId||'—'}</span></div>
-        <div style="padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:12px"><span style="color:#64748b;font-weight:600;display:block">الإيميل</span><span style="direction:ltr;display:block;margin-top:2px;word-break:break-all">${u.email||'—'}</span></div>
-        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:13px"><span style="color:#64748b;font-weight:600">الدور</span><span style="background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:20px;font-size:11px">${roleLabel}</span></div>
-        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:13px"><span style="color:#64748b;font-weight:600">المنطقة</span><span>${regions}</span></div>
-        <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12px"><span style="color:#64748b;font-weight:600">المراكز</span><span style="text-align:left;max-width:200px">${centers}</span></div>
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px;padding-top:8px;border-top:1px solid #e2e8f0">
+      return `<div class="mob-card">
+        <div class="mob-card-name">${u.name||'—'}</div>
+        <div class="mob-row"><span class="mob-lbl">الرقم الوظيفي</span><span class="mob-val">${u.empId||'—'}</span></div>
+        <div class="mob-row"><span class="mob-lbl">الإيميل</span><span class="mob-val" style="direction:ltr;font-size:11px;word-break:break-all">${u.email||'—'}</span></div>
+        <div class="mob-row"><span class="mob-lbl">الدور</span><span class="mob-val"><span style="background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:20px;font-size:11px">${roleLabel}</span></span></div>
+        <div class="mob-row"><span class="mob-lbl">المنطقة</span><span class="mob-val">${regions}</span></div>
+        <div class="mob-row"><span class="mob-lbl">المراكز</span><span class="mob-val">${centers}</span></div>
+        <div class="mob-acts">
           <button class="btn sm ghost" onclick="openEditUser('${uid}')">✏️ تعديل</button>
-          ${uid!==currentUser.uid?`<button class="btn sm ghost" style="color:#dc2626" onclick="deleteUser('${uid}','${safeN}')">🗑️ حذف</button>`:''}
+          ${uid!==currentUser.uid?`<button class="btn sm danger" onclick="deleteUser('${uid}','${safeN}')">🗑️</button>`:''}
         </div>
       </div>`;
-    }).join('');
+    }).join('') || '<div class="empty">لا يوجد مستخدمون</div>';
   } else {
     // جدول على الكمبيوتر
     el.innerHTML = `
@@ -3963,17 +3963,17 @@ function renderRolesList(){
     el.innerHTML = Object.entries(ROLES).map(([key,r])=>{
       const isAdmin = key==='admin';
       const scopeLabel = {all:'كل المراكز',region:'منطقة',center:'مركز'}[r.scopeType]||r.scopeType;
-      return `<div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:14px;margin-bottom:10px">
-        <div style="font-size:15px;font-weight:800;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #e2e8f0">${r.label}</div>
-        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:12px"><span style="color:#64748b;font-weight:600">المفتاح</span><span style="direction:ltr">${key}</span></div>
-        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:13px"><span style="color:#64748b;font-weight:600">النطاق</span><span style="background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:20px;font-size:11px">${scopeLabel}</span></div>
-        <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px"><span style="color:#64748b;font-weight:600">الصلاحية</span><span>${r.canEdit?'<span style="color:#16a34a">✅ تعديل</span>':'<span style="color:#dc2626">👁️ قراءة</span>'}</span></div>
-        ${!isAdmin?`<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px;padding-top:8px;border-top:1px solid #e2e8f0">
+      return `<div class="mob-card">
+        <div class="mob-card-name">${r.label}</div>
+        <div class="mob-row"><span class="mob-lbl">المفتاح</span><span class="mob-val" style="direction:ltr">${key}</span></div>
+        <div class="mob-row"><span class="mob-lbl">النطاق</span><span class="mob-val"><span style="background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:20px;font-size:11px">${scopeLabel}</span></span></div>
+        <div class="mob-row"><span class="mob-lbl">الصلاحية</span><span class="mob-val">${r.canEdit?'<span style="color:#16a34a">✅ تعديل</span>':'<span style="color:#dc2626">👁️ قراءة</span>'}</span></div>
+        ${!isAdmin?`<div class="mob-acts">
           <button class="btn sm ghost" onclick="openEditRole('${key}')">✏️ تعديل</button>
-          <button class="btn sm ghost" style="color:#dc2626" onclick="deleteRole('${key}','${r.label}')">🗑️ حذف</button>
-        </div>`:'<div style="color:#94a3b8;font-size:11px;margin-top:8px;text-align:left">🔒 محمي</div>'}
+          <button class="btn sm danger" onclick="deleteRole('${key}','${r.label}')">🗑️</button>
+        </div>`:'<div style="color:#94a3b8;font-size:11px;margin-top:8px">🔒 محمي</div>'}
       </div>`;
-    }).join('');
+    }).join('') || '<div class="empty">لا توجد أدوار</div>';
   } else {
     el.innerHTML = `<table style="width:100%;border-collapse:collapse">
     <thead><tr style="background:#e8eef5;font-size:13px">
