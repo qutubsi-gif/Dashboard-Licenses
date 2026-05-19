@@ -762,6 +762,88 @@ hr.div{border:none;border-top:1px solid var(--border);margin:14px 0;}
   .badge { font-size:11px; padding:2px 7px; }
 }
 
+
+/* ═══════════════════════════════
+   صفحات إضافية - جوال
+═══════════════════════════════ */
+@media(max-width:768px){
+
+  /* ── صفحة التنبيهات الرئيسية */
+  .alert-grid { grid-template-columns:1fr !important; gap:10px; }
+  .alert-card { padding:14px; }
+  .alert-card-grid { grid-template-columns:1fr 1fr !important; }
+  .alert-num { font-size:32px; }
+
+  /* ── صفحة التقارير */
+  #reports-grid { grid-template-columns:1fr !important; gap:10px; }
+  .report-card { padding:14px; }
+  .compliance-bar { height:12px; }
+
+  /* ── تنبيهات الرخص وأجير - جداول */
+  #lic-alert-tbody td, #ajer-alert-tbody td { font-size:11px; padding:5px 4px; }
+  #lic-alert-tbody tr, #ajer-alert-tbody tr { }
+  /* تحويل جداول التنبيهات لبطاقات */
+  .alert-twrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .alert-twrap table { min-width:480px; }
+
+  /* ── الإعدادات */
+  .settings-grid { grid-template-columns:1fr !important; }
+  .sitem { flex-wrap:wrap; gap:6px; }
+  .sname { font-size:13px; }
+  .sacts { flex-shrink:0; }
+  .warn-inputs { flex-direction:column; gap:8px; }
+  .warn-inputs input { width:100%; }
+
+  /* ── المستخدمون والأدوار */
+  #page-users .sec-hd { flex-direction:column; gap:8px; }
+  #users-list { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  #roles-list { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  #users-list table { min-width:520px; font-size:12px; }
+  #roles-list table { min-width:380px; font-size:12px; }
+  #users-list td, #roles-list td { padding:8px 6px; }
+  .upanel-btns { display:flex; flex-wrap:wrap; gap:6px; }
+
+  /* ── Timeline */
+  .timeline-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .tl-item { min-width:120px; }
+
+  /* ── Audit log */
+  .log-item { flex-direction:column; gap:4px; padding:10px; }
+  .log-time { font-size:10px; text-align:right; }
+  .log-title { font-size:13px; }
+  .log-detail { font-size:11px; }
+
+  /* ── Modal تعديل المستخدم */
+  #um-regions-list { gap:6px; }
+  #um-regions-list label { font-size:12px; padding:5px 8px; }
+  #um-centers-list label { font-size:12px; padding:5px 8px; }
+
+  /* ── شريط الإجراءات في كل الصفحات */
+  .action-strip { flex-wrap:wrap; gap:6px; }
+  .action-strip .btn, .action-strip .btn.ghost { 
+    font-size:11px; 
+    padding:7px 10px;
+    flex:1;
+    min-width:120px;
+    text-align:center;
+  }
+
+  /* ── فلاتر التنبيهات */
+  #page-alerts-lic .fbar,
+  #page-alerts-ajer .fbar { flex-wrap:wrap; gap:6px; }
+  
+  /* ── Live Sync badge */
+  .cloud-live { font-size:11px; padding:4px 8px; bottom:10px; left:10px; }
+
+  /* ── شريط التبويبات */
+  .tabs { overflow-x:auto; -webkit-overflow-scrolling:touch; flex-wrap:nowrap !important; }
+  .tabbtn { white-space:nowrap; flex-shrink:0; font-size:11px; }
+
+  /* ── صفحة الإعدادات - قسم الشركات والمهن */
+  .schd { flex-wrap:wrap; gap:6px; }
+  .sctitle { font-size:13px; }
+}
+
 </style>
 
 <!-- Firebase Realtime Database -->
