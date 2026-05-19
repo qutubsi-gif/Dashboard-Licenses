@@ -3058,7 +3058,7 @@ function systemSelfCheck(){
 }
 
 // ════════ INIT ════════
-const tdEl=document.getElementById('today-date'); if(tdEl) tdEl.textContent=today.toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+const tdEl=document.getElementById('today-date'); if(tdEl) tdEl.textContent=today.toLocaleDateString('en-GB',{weekday:'short',year:'numeric',month:'short',day:'numeric'});
 // load() يُستدعى بعد تسجيل الدخول من hideLoginScreen → refreshAll()
 // لكن نحمّل الإعدادات مبكراً
 normalizeLicenseTypes();
