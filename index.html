@@ -596,103 +596,164 @@ hr.div{border:none;border-top:1px solid var(--border);margin:14px 0;}
 #user-badge .ubrole{opacity:.7;font-size:11px;}
 
 
-/* ══════════════════ MOBILE RESPONSIVE ══════════════════ */
-@media(max-width:768px){
-  /* Header */
-  .header{padding:10px 12px;}
-  .htitle{font-size:16px;}
-  .hsub{font-size:11px;}
-  .hlogo{width:38px;height:38px;font-size:14px;}
-  
-  /* Nav buttons - scrollable */
-  .hactions{flex-wrap:nowrap;overflow-x:auto;gap:4px;padding-bottom:4px;-webkit-overflow-scrolling:touch;}
-  .navbtn{font-size:11px;padding:6px 10px;white-space:nowrap;flex-shrink:0;}
-  
-  /* KPI cards - 2 columns */
-  .kpi-grid{grid-template-columns:1fr 1fr !important;}
-  .kpi-value{font-size:28px;}
-  .kpi-label{font-size:11px;}
-  
-  /* Insights grid - 1 column */
-  .insights-grid{grid-template-columns:1fr !important;}
-  
-  /* Container padding */
-  .container{padding:12px;}
-  
-  /* Action strip - wrap */
-  .action-strip{flex-wrap:wrap;gap:6px;}
-  .action-strip .btn{font-size:12px;padding:7px 10px;}
-  
-  /* Filter bar - wrap */
-  .fbar{flex-wrap:wrap;gap:6px;}
-  .fsel,.fselect{font-size:12px;}
-  
-  /* Tables - horizontal scroll */
-  .twrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-  table{min-width:600px;}
-  td,th{padding:6px 5px;font-size:12px;}
-  
-  /* Alert cards - 1 column */
-  .alert-grid{grid-template-columns:1fr !important;}
-  .alert-card-grid{grid-template-columns:1fr !important;}
-  .alert-summary-grid{grid-template-columns:1fr 1fr !important;}
-  
-  /* Modal - full width */
-  .modal{max-width:100% !important;margin:8px;max-height:95vh;}
-  .frow{grid-template-columns:1fr !important;}
-  .mbody{padding:14px;}
-  
-  /* Login box */
-  .login-box{padding:24px 20px;margin:12px;}
-  .login-title{font-size:17px;}
-  
-  /* User badge */
-  #user-badge{padding:4px 8px;font-size:11px;}
-  
-  /* Tabs */
-  .tabbtn{font-size:11px;padding:6px 8px;}
-  
-  /* Section headers */
-  .sec-hd{flex-direction:column;align-items:flex-start;gap:8px;}
-  
-  /* Timeline */
-  .timeline{grid-template-columns:1fr 1fr !important;}
-  
-  /* Reports grid */
-  #reports-grid{grid-template-columns:1fr !important;}
-  
-  /* Users table */
-  #users-list table{min-width:500px;}
-  #roles-list table{min-width:400px;}
+
+
+
+/* ═══════════════════════════════════════════════
+   MOBILE RESPONSIVE - شاشات أقل من 768px
+   الكمبيوتر (768px+) لا يتأثر بأي من هذه الأنماط
+═══════════════════════════════════════════════ */
+
+/* ── بطاقات الجوال (مخفية على الكمبيوتر) */
+.mob-cards { display:none; }
+.mob-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:10px;
+  box-shadow:var(--card-shadow);
+}
+.mob-card-name {
+  font-size:15px;
+  font-weight:800;
+  color:var(--text);
+  margin-bottom:10px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+.mob-row {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:5px 0;
+  font-size:13px;
+  border-bottom:1px solid var(--border);
+  gap:8px;
+}
+.mob-row:last-of-type { border-bottom:none; }
+.mob-lbl {
+  color:var(--muted);
+  font-size:11px;
+  font-weight:700;
+  min-width:80px;
+  flex-shrink:0;
+}
+.mob-val { color:var(--text); text-align:left; word-break:break-word; }
+.mob-acts {
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+  margin-top:10px;
+  padding-top:8px;
+  border-top:1px solid var(--border);
 }
 
-@media(max-width:480px){
-  .kpi-grid{grid-template-columns:1fr 1fr !important;}
-  .kpi-value{font-size:24px;}
-  .timeline{grid-template-columns:1fr !important;}
-  .alert-summary-grid{grid-template-columns:1fr !important;}
-  .hactions{gap:3px;}
-  .navbtn{font-size:10px;padding:5px 8px;}
-}
-
-
-/* ══════ جداول الجوال ══════ */
 @media(max-width:768px){
-  /* إخفاء الجداول وإظهار البطاقات */
+
+  /* ── الجداول: مخفية على الجوال */
   .twrap { display:none !important; }
-  .mobile-cards { display:flex !important; flex-direction:column; gap:10px; }
+  
+  /* ── بطاقات الجوال: ظاهرة فقط */
+  .mob-cards { display:block !important; margin-top:10px; }
+
+  /* ── الهيدر */
+  .header { padding:8px 10px; gap:8px; flex-wrap:wrap; }
+  .hinfo .htitle { font-size:15px; }
+  .hinfo .hsub { font-size:10px; display:none; }
+  .hlogo { width:36px; height:36px; font-size:13px; flex-shrink:0; }
+
+  /* ── أزرار التنقل: تمرير أفقي */
+  .hactions {
+    width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    flex-wrap:nowrap !important;
+    gap:4px;
+    padding-bottom:2px;
+    justify-content:flex-start;
+  }
+  .hactions::-webkit-scrollbar { display:none; }
+  .navbtn {
+    font-size:11px !important;
+    padding:5px 9px !important;
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  #user-badge { flex-shrink:0; font-size:11px; padding:4px 8px; }
+  #user-badge .ubrole { display:none; }
+
+  /* ── الكونتينر */
+  .container { padding:10px; }
+
+  /* ── KPI كارت: 2×2 */
+  .kpi-grid {
+    grid-template-columns:1fr 1fr !important;
+    gap:8px !important;
+  }
+  .kpi-card { padding:14px 10px; }
+  .kpi-value { font-size:26px; }
+  .kpi-label { font-size:11px; }
+  .kpi-icon { font-size:22px; }
+
+  /* ── Insights */
+  .insights-grid { grid-template-columns:1fr 1fr !important; gap:8px !important; }
+  .insight-card { padding:12px; }
+  .insight-value { font-size:22px; }
+
+  /* ── Alert summary */
+  .alert-summary-grid { grid-template-columns:1fr 1fr !important; gap:8px !important; }
+
+  /* ── الفلاتر */
+  .fbar { flex-wrap:wrap; gap:6px; }
+  .fsel, .fselect { font-size:12px; min-width:0; flex:1; }
+  .finput, input.finput { font-size:12px; width:100%; }
+
+  /* ── شريط الأزرار */
+  .action-strip { flex-wrap:wrap; gap:6px; }
+  .action-strip .btn { font-size:11px; padding:6px 10px; }
+  .btn.ghost { font-size:11px; padding:6px 10px; }
+
+  /* ── التبويبات */
+  .tabbtn { font-size:11px; padding:6px 10px; }
+  
+  /* ── Modal */
+  .modal { max-width:100% !important; margin:6px !important; max-height:94vh; }
+  .frow { grid-template-columns:1fr !important; }
+  .mbody { padding:12px; }
+  .mfoot { padding:10px 12px; }
+
+  /* ── login */
+  .login-box { padding:22px 18px; margin:10px; }
+  .login-title { font-size:17px; }
+  .login-sub { font-size:12px; }
+
+  /* ── Alert cards */
+  .alert-grid { grid-template-columns:1fr !important; }
+  .alert-card-grid { grid-template-columns:1fr !important; }
+
+  /* ── Section headers */
+  .sec-hd { flex-direction:column; align-items:flex-start; gap:8px; }
+
+  /* ── Timeline */
+  .timeline { grid-template-columns:1fr !important; }
+  
+  /* ── Reports */
+  #reports-grid { grid-template-columns:1fr !important; }
+  
+  /* ── Settings */
+  .sgrid { grid-template-columns:1fr !important; }
+  
+  /* ── Users table */
+  #users-list, #roles-list { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  #users-list table, #roles-list table { min-width:500px; }
+
+  /* ── إخفاء العناصر الثانوية */
+  .alert-summary-sub { display:none; }
+  
+  /* ── الفهرس (badge) */
+  .badge { font-size:11px; padding:2px 7px; }
 }
-@media(min-width:769px){
-  .mobile-cards { display:none !important; }
-}
-/* بطاقة الجوال */
-.mob-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 14px; }
-.mob-card-title { font-size:14px; font-weight:800; color:var(--text); margin-bottom:8px; }
-.mob-card-row { display:flex; justify-content:space-between; align-items:center; padding:4px 0; border-bottom:1px solid var(--border); font-size:12px; }
-.mob-card-row:last-child { border-bottom:none; }
-.mob-card-label { color:var(--muted); font-size:11px; font-weight:700; }
-.mob-card-val { color:var(--text); text-align:left; direction:ltr; }
-.mob-card-acts { display:flex; gap:6px; justify-content:flex-end; margin-top:8px; padding-top:8px; border-top:1px solid var(--border); }
 
 </style>
 
@@ -771,7 +832,8 @@ window.addEventListener('unhandledrejection', function(e){
       <select class="fsel" id="lf-status" onchange="renderLic()"><option value="">كل الحالات</option><option value="ساري">ساري</option><option value="على وشك">على وشك</option><option value="منتهي">منتهي</option></select>
       <input class="finput" id="lf-q" placeholder="🔍 بحث في اسم الرخصة..." oninput="renderLic()">
     </div>
-    <div class="twrap lic-twrap"><table class="lic-table"><thead id="lic-thead"><tr><th>#</th><th>المركز</th><th>الرخصة / الشهادة</th><th>تاريخ الإنتهاء</th><th>الأيام المتبقية</th><th>الحالة</th><th>ملاحظات</th><th>إجراءات</th></tr></thead><tbody id="lic-tbody"></tbody></table></div>
+    <div class="mob-cards" id="lic-mob"></div>
+  <div class="twrap lic-twrap"><table class="lic-table"><thead id="lic-thead"><tr><th>#</th><th>المركز</th><th>الرخصة / الشهادة</th><th>تاريخ الإنتهاء</th><th>الأيام المتبقية</th><th>الحالة</th><th>ملاحظات</th><th>إجراءات</th></tr></thead><tbody id="lic-tbody"></tbody></table></div>
   <div class="mobile-cards" id="lic-mob-cards"></div>
   </div>
 
@@ -787,7 +849,8 @@ window.addEventListener('unhandledrejection', function(e){
       <select class="fsel" id="clf-aj-status" onchange="renderClean()"><option value="">أجير - كل الحالات</option><option value="ساري">أجير ساري</option><option value="على وشك">أجير على وشك</option><option value="منتهي">أجير منتهية</option></select>
       <input class="finput" id="clf-q" placeholder="🔍 اسم العامل أو رقم الإقامة..." oninput="renderClean()">
     </div>
-    <div class="twrap"><table><thead><tr><th style="width:30px">#</th><th>المركز</th><th>اسم العامل</th><th style="width:110px">رقم الإقامة</th><th style="width:100px">المهنة</th><th style="min-width:160px">الشركة</th><th style="width:100px">نهاية الإقامة</th><th style="width:55px">أيام</th><th style="width:80px">حالة</th><th style="width:100px">نهاية أجير</th><th style="width:55px">أيام</th><th style="width:80px">حالة</th><th style="width:80px">إجراءات</th></tr></thead><tbody id="clean-tbody" data-table="clean"></tbody></table></div>
+    <div class="mob-cards" id="clean-mob"></div>
+  <div class="twrap"><table><thead><tr><th style="width:30px">#</th><th>المركز</th><th>اسم العامل</th><th style="width:110px">رقم الإقامة</th><th style="width:100px">المهنة</th><th style="min-width:160px">الشركة</th><th style="width:100px">نهاية الإقامة</th><th style="width:55px">أيام</th><th style="width:80px">حالة</th><th style="width:100px">نهاية أجير</th><th style="width:55px">أيام</th><th style="width:80px">حالة</th><th style="width:80px">إجراءات</th></tr></thead><tbody id="clean-tbody" data-table="clean"></tbody></table></div>
   <div class="mobile-cards" id="clean-mob-cards"></div>
   </div>
 
@@ -803,7 +866,8 @@ window.addEventListener('unhandledrejection', function(e){
       <select class="fsel" id="svf-aj-status" onchange="renderServ()"><option value="">أجير - كل الحالات</option><option value="ساري">أجير ساري</option><option value="على وشك">أجير على وشك</option><option value="منتهي">أجير منتهية</option></select>
       <input class="finput" id="svf-q" placeholder="🔍 اسم العامل أو رقم الإقامة..." oninput="renderServ()">
     </div>
-    <div class="twrap"><table><thead><tr><th style="width:30px">#</th><th>المركز</th><th>اسم العامل</th><th style="width:110px">رقم الإقامة</th><th style="width:100px">المهنة</th><th style="min-width:160px">الشركة</th><th style="width:100px">نهاية الإقامة</th><th style="width:55px">أيام</th><th style="width:80px">حالة</th><th style="width:100px">نهاية أجير</th><th style="width:55px">أيام</th><th style="width:80px">حالة</th><th style="width:80px">إجراءات</th></tr></thead><tbody id="serv-tbody"></tbody></table></div>
+    <div class="mob-cards" id="serv-mob"></div>
+  <div class="twrap"><table><thead><tr><th style="width:30px">#</th><th>المركز</th><th>اسم العامل</th><th style="width:110px">رقم الإقامة</th><th style="width:100px">المهنة</th><th style="min-width:160px">الشركة</th><th style="width:100px">نهاية الإقامة</th><th style="width:55px">أيام</th><th style="width:80px">حالة</th><th style="width:100px">نهاية أجير</th><th style="width:55px">أيام</th><th style="width:80px">حالة</th><th style="width:80px">إجراءات</th></tr></thead><tbody id="serv-tbody"></tbody></table></div>
   <div class="mobile-cards" id="serv-mob-cards"></div>
   </div>
 </div>
@@ -2711,57 +2775,50 @@ function buildReports(){
 
 // ══════════════ MOBILE CARDS ══════════════
 function buildLicMobileCards(data){
-  const el = document.getElementById('lic-mob-cards');
+  const el = document.getElementById('lic-mob');
   if(!el) return;
-  el.innerHTML = data.map((r,i)=>{
+  el.innerHTML = data.map(r=>{
     const oi = LICS.findIndex(l=>l.name===r.name && l.center===r.center);
     const safeName = String(r.name||'').replace(/'/g,"\'");
     const days = dl(r.expiry);
-    const status = st(r.expiry);
-    const statusCls = status.includes('منتهي')?'dp r':status.includes('وشك')?'dp o':'dp g';
+    const sCls = r.status?.includes('منتهي')||days<0?'dp r':days<=WARN?'dp o':'dp g';
     return `<div class="mob-card">
-      <div class="mob-card-title">${r.name||'—'}</div>
-      <div class="mob-card-row"><span class="mob-card-label">المركز</span><span>${r.center||'—'}</span></div>
-      <div class="mob-card-row"><span class="mob-card-label">الانتهاء</span><span class="mob-card-val">${r.expiry||'—'}</span></div>
-      <div class="mob-card-row"><span class="mob-card-label">الأيام</span><span class="${statusCls}">${days===null?'—':days} يوم</span></div>
-      <div class="mob-card-row"><span class="mob-card-label">الحالة</span><span class="${statusCls}">${status}</span></div>
-      ${r.notes?`<div class="mob-card-row"><span class="mob-card-label">ملاحظات</span><span>${r.notes}</span></div>`:''}
-      ${canUserEdit()?`<div class="mob-card-acts">
+      <div class="mob-card-name">${r.name||'—'}</div>
+      <div class="mob-row"><span class="mob-lbl">المركز</span><span class="mob-val">${r.center||'—'}</span></div>
+      <div class="mob-row"><span class="mob-lbl">الانتهاء</span><span class="mob-val" dir="ltr">${r.expiry||'—'}</span></div>
+      <div class="mob-row"><span class="mob-lbl">الحالة</span><span class="${sCls}">${days===null?'—':days<0?`منتهي منذ ${Math.abs(days)} يوم`:`متبقي ${days} يوم`}</span></div>
+      ${r.notes?`<div class="mob-row"><span class="mob-lbl">ملاحظات</span><span class="mob-val">${r.notes}</span></div>`:''}
+      ${canUserEdit()?`<div class="mob-acts">
         <button class="btn sm ghost" onclick="openEditLic(${oi})">✏️ تعديل</button>
         <button class="btn sm danger" onclick="confDel('lic',${oi},'${safeName}')">🗑️</button>
       </div>`:''}
     </div>`;
-  }).join('');
+  }).join('') || '<div class="empty">لا توجد نتائج</div>';
 }
 
-function buildWorkerMobileCards(data, type, arr){
-  const mobId = type==='cleaning' ? 'clean-mob-cards' : 'serv-mob-cards';
-  const el = document.getElementById(mobId);
+function buildWorkerMobileCards(data, type){
+  const el = document.getElementById(type==='cleaning'?'clean-mob':'serv-mob');
   if(!el) return;
-  el.innerHTML = data.map((r,i)=>{
+  el.innerHTML = data.map(r=>{
     const safeIq = String(r.iqama||'').replace(/'/g,"\'");
     const safeName = String(r.name||'').replace(/'/g,"\'");
-    const iqDays = dl(r.expiry);
     const iqSt = stAjer(r.expiry);
-    const ajDays = r.ajerExpiry ? dl(r.ajerExpiry) : null;
-    const ajSt = r.ajerExpiry ? stAjer(r.ajerExpiry) : '—';
+    const ajSt = r.ajerExpiry ? stAjer(r.ajerExpiry) : null;
     const iqCls = iqSt.includes('منتهي')?'dp r':iqSt.includes('وشك')?'dp o':'dp g';
-    const ajCls = ajSt.includes('منتهي')?'dp r':ajSt.includes('وشك')?'dp o':'dp g';
+    const ajCls = ajSt?.includes('منتهي')?'dp r':ajSt?.includes('وشك')?'dp o':'dp g';
     return `<div class="mob-card">
-      <div class="mob-card-title">${r.name||'—'}</div>
-      <div class="mob-card-row"><span class="mob-card-label">المركز</span><span>${r.center||'—'}</span></div>
-      <div class="mob-card-row"><span class="mob-card-label">الإقامة</span><span class="mob-card-val">${r.iqama||'—'}</span></div>
-      <div class="mob-card-row"><span class="mob-card-label">الشركة</span><span>${r.company||'—'}</span></div>
-      <div class="mob-card-row"><span class="mob-card-label">إقامة تنتهي</span><span class="mob-card-val">${r.expiry||'—'}</span></div>
-      <div class="mob-card-row"><span class="mob-card-label">حالة الإقامة</span><span class="${iqCls}">${iqSt}</span></div>
-      ${r.ajerExpiry?`<div class="mob-card-row"><span class="mob-card-label">أجير ينتهي</span><span class="mob-card-val">${r.ajerExpiry}</span></div>
-      <div class="mob-card-row"><span class="mob-card-label">حالة أجير</span><span class="${ajCls}">${ajSt}</span></div>`:''}
-      ${canUserEdit()?`<div class="mob-card-acts">
-        <button class="btn sm ghost" onclick="openEditWorkerByIqama('${type}','${safeIq}')">✏️ تعديل</button>
+      <div class="mob-card-name">${r.name||'—'}</div>
+      <div class="mob-row"><span class="mob-lbl">المركز</span><span class="mob-val">${r.center||'—'}</span></div>
+      <div class="mob-row"><span class="mob-lbl">رقم الإقامة</span><span class="mob-val" dir="ltr">${r.iqama||'—'}</span></div>
+      <div class="mob-row"><span class="mob-lbl">الشركة</span><span class="mob-val">${r.company||'—'}</span></div>
+      <div class="mob-row"><span class="mob-lbl">حالة الإقامة</span><span class="${iqCls}">${iqSt}</span></div>
+      ${r.ajerExpiry?`<div class="mob-row"><span class="mob-lbl">حالة أجير</span><span class="${ajCls}">${ajSt}</span></div>`:''}
+      ${canUserEdit()?`<div class="mob-acts">
+        <button class="btn sm ghost" onclick="openEditWorkerByIqama('${type}','${safeIq}')">✏️</button>
         <button class="btn sm danger" onclick="confDelByIqama('${type}','${safeIq}','${safeName}')">🗑️</button>
       </div>`:''}
     </div>`;
-  }).join('');
+  }).join('') || '<div class="empty">لا توجد نتائج</div>';
 }
 
 function renderTimeline(){
