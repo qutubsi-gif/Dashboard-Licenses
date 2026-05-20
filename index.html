@@ -1517,6 +1517,16 @@ function normalizeCentersRegion(){
 // ════════ STATE ════════
 let LICS=[],CLEANING=[],SERVICES=[],CENTERS=[],COMPANIES=[],LICTYPES=[],PROFESSIONS=[],WARN=60,AJER_WARN=60;
 function load(){
+  // تنظيف localStorage لو فيه بيانات غلط
+  try{
+    const testLics = safeParseJSON(localStorage.getItem('alj_lics'), []);
+    const testCenters = safeParseJSON(localStorage.getItem('alj_centers'), []);
+    const centerNames = testCenters.map(c=>c.name||c).filter(Boolean);
+    if(centerNames.length && testLics.some(r=>r.center && !centerNames.includes(r.center) && r.center.includes('@'))){
+      localStorage.removeItem('alj_lics');
+      console.log('Cleared bad LICS from localStorage');
+    }
+  }catch(e){}
   LICS     =safeParseJSON(localStorage.getItem('alj_lics'), D_LICS.map(r=>({...r})));
   CLEANING =safeParseJSON(localStorage.getItem('alj_cleaning'), D_CLEANING.map(r=>({...r})));
   SERVICES =safeParseJSON(localStorage.getItem('alj_services'), D_SERVICES.map(r=>({...r})));
@@ -1759,7 +1769,6 @@ function pf(id,arr,k='center'){
   const allowed = getUserAllowedCenters ? getUserAllowedCenters() : null;
   const centerNames = CENTERS.map(c=>c.name||c).filter(Boolean);
   let vals = [...new Set(arr.map(r=>r[k]).filter(Boolean))];
-  if(id==='lf-center') console.log('pf lf-center vals before filter:', vals, 'CENTERS:', centerNames);
   // تأكد إن القيم مراكز حقيقية (تصفية أي بيانات غلط)
   if(k==='center' && centerNames.length) vals = vals.filter(v=>centerNames.includes(v));
   const filtered = allowed ? vals.filter(v=>allowed.includes(v)) : vals;
