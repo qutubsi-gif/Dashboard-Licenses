@@ -1395,7 +1395,10 @@ function applyCloudValue(localKey,value){
         }
       }
       localStorage.setItem(localKey,JSON.stringify(arr));
-      if(localKey==="alj_lics") LICS=arr;
+      if(localKey==="alj_lics"){
+        // تصفية أي سجل center قيمته إيميل أو غير موجود في المراكز
+        LICS=arr.filter(r=>r.center && !String(r.center).includes('@'));
+      }
       if(localKey==="alj_cleaning") CLEANING=arr;
       if(localKey==="alj_services") SERVICES=arr;
       if(localKey==="alj_centers") CENTERS=arr;
@@ -1527,7 +1530,7 @@ function load(){
       console.log('Cleared bad LICS from localStorage');
     }
   }catch(e){}
-  LICS     =safeParseJSON(localStorage.getItem('alj_lics'), D_LICS.map(r=>({...r})));
+  LICS     =safeParseJSON(localStorage.getItem('alj_lics'), D_LICS.map(r=>({...r}))).filter(r=>r.center && !String(r.center).includes('@'));
   CLEANING =safeParseJSON(localStorage.getItem('alj_cleaning'), D_CLEANING.map(r=>({...r})));
   SERVICES =safeParseJSON(localStorage.getItem('alj_services'), D_SERVICES.map(r=>({...r})));
   CENTERS  =safeParseJSON(localStorage.getItem('alj_centers'), D_CENTERS.map(r=>({...r})));
