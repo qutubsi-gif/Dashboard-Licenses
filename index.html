@@ -1759,6 +1759,7 @@ function pf(id,arr,k='center'){
   const allowed = getUserAllowedCenters ? getUserAllowedCenters() : null;
   const centerNames = CENTERS.map(c=>c.name||c).filter(Boolean);
   let vals = [...new Set(arr.map(r=>r[k]).filter(Boolean))];
+  if(id==='lf-center') console.log('pf lf-center vals before filter:', vals, 'CENTERS:', centerNames);
   // تأكد إن القيم مراكز حقيقية (تصفية أي بيانات غلط)
   if(k==='center' && centerNames.length) vals = vals.filter(v=>centerNames.includes(v));
   const filtered = allowed ? vals.filter(v=>allowed.includes(v)) : vals;
