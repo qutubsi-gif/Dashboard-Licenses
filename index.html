@@ -4162,7 +4162,24 @@ function copyAjerAlertsReport(){
 }
 
 // ── Init
-window.addEventListener('load', ()=>{ initAuth(); });
+window.addEventListener('load', ()=>{
+  initAuth();
+  // امسح حقول البحث بعد Chrome Autofill
+  setTimeout(()=>{
+    ['lf-q','clf-q','svf-q','laf-q','aaf-q'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el && el.value && el.value.includes('@')) el.value = '';
+    });
+  }, 500);
+  // مسح متكرر للتأكد
+  setTimeout(()=>{
+    ['lf-q','clf-q','svf-q','laf-q','aaf-q'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el && el.value && el.value.includes('@')) el.value = '';
+    });
+    refreshAll();
+  }, 1500);
+});
 </script>
 
 
