@@ -918,7 +918,7 @@ window.addEventListener('unhandledrejection', function(e){
     <div class="fbar">
       <select class="fsel" id="lf-center" onchange="renderLic();buildKPI();buildInsights()"><option value="">كل المراكز</option></select>
       <select class="fsel" id="lf-status" onchange="renderLic()"><option value="">كل الحالات</option><option value="ساري">ساري</option><option value="على وشك">على وشك</option><option value="منتهي">منتهي</option></select>
-      <div id="lf-q-wrap"></div>
+      <input class="finput" id="lf-q" autocomplete="off" name="search-lic-x" type="search" placeholder="🔍 بحث في اسم الرخصة..." oninput="renderLic()" style="flex:1;min-width:200px">
     </div>
     <div class="mob-cards" id="lic-mob"></div>
   <div class="twrap lic-twrap"><table class="lic-table"><thead id="lic-thead"><tr><th>#</th><th>المركز</th><th>الرخصة / الشهادة</th><th>تاريخ الإنتهاء</th><th>الأيام المتبقية</th><th>الحالة</th><th>ملاحظات</th><th>إجراءات</th></tr></thead><tbody id="lic-tbody"></tbody></table></div>
@@ -3566,6 +3566,11 @@ function hideLoginScreen(){
   setTimeout(()=>{
     const dashBtn = document.querySelector('.navbtn[onclick*="dashboard"]');
     showPage('dashboard', dashBtn);
+    // مسح أي autofill في حقول البحث
+    ['lf-q','clf-q','svf-q','laf-q','aaf-q'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.value = '';
+    });
     refreshAll();
     applyPermissions();
   }, 400);
@@ -4164,24 +4169,7 @@ function copyAjerAlertsReport(){
 // ── Init
 window.addEventListener('load', ()=>{
   initAuth();
-  // بناء حقول البحث ديناميكياً لمنع Chrome Autofill
-  setTimeout(()=>{
-    const searches = [
-      {wrap:'lf-q-wrap', id:'lf-q', ph:'🔍 بحث في اسم الرخصة...', fn:'renderLic()'},
-    ];
-    searches.forEach(({wrap,id,ph,fn})=>{
-      const w = document.getElementById(wrap);
-      if(!w) return;
-      const inp = document.createElement('input');
-      inp.className = 'finput';
-      inp.id = id;
-      inp.placeholder = ph;
-      inp.setAttribute('autocomplete','off');
-      inp.setAttribute('type','text');
-      inp.oninput = ()=>eval(fn);
-      w.appendChild(inp);
-    });
-  }, 800);
+  // حقول البحث في HTML مباشرة
 });
 </script>
 
