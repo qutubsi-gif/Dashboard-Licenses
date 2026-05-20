@@ -1757,7 +1757,10 @@ function pf(id,arr,k='center'){
   const s=document.getElementById(id);const cur=s.value;
   s.innerHTML=s.options[0].outerHTML;
   const allowed = getUserAllowedCenters ? getUserAllowedCenters() : null;
-  const vals = [...new Set(arr.map(r=>r[k]).filter(Boolean))];
+  const centerNames = CENTERS.map(c=>c.name||c).filter(Boolean);
+  let vals = [...new Set(arr.map(r=>r[k]).filter(Boolean))];
+  // تأكد إن القيم مراكز حقيقية (تصفية أي بيانات غلط)
+  if(k==='center' && centerNames.length) vals = vals.filter(v=>centerNames.includes(v));
   const filtered = allowed ? vals.filter(v=>allowed.includes(v)) : vals;
   filtered.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;if(v===cur)o.selected=true;s.appendChild(o);});
 }
