@@ -856,6 +856,31 @@ button[onclick*="captureAlertPageImage"]{
   min-width:130px;
 }
 
+
+/* ===== V72 LICENSE SEARCH REMOVED SAFELY ===== */
+#tc-lic .fbar{
+  align-items:center !important;
+}
+
+
+/* ===== V73 WORKERS TABLE RESTORE ===== */
+#tc-clean table,#tc-serv table{width:100% !important;}
+.worker-actions{
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  gap:4px !important;
+}
+.worker-actions .iconbtn{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:28px !important;
+  height:28px !important;
+  min-width:28px !important;
+  padding:0 !important;
+}
+
 </style>
 
 <!-- Firebase Realtime Database -->
@@ -931,7 +956,6 @@ window.addEventListener('unhandledrejection', function(e){
     <div class="fbar">
       <select class="fsel" id="lf-center" onchange="renderLic();buildKPI();buildInsights()"><option value="">كل المراكز</option></select>
       <select class="fsel" id="lf-status" onchange="renderLic()"><option value="">كل الحالات</option><option value="ساري">ساري</option><option value="على وشك">على وشك</option><option value="منتهي">منتهي</option></select>
-      <input class="finput" id="lf-q" autocomplete="off" name="search-lic-x" type="search" placeholder="" oninput="renderLic()" inputmode="search">
     </div>
     <div class="mob-cards" id="lic-mob"></div>
   <div class="twrap lic-twrap"><table class="lic-table"><thead id="lic-thead"><tr><th>#</th><th>المركز</th><th>الرخصة / الشهادة</th><th>تاريخ الإنتهاء</th><th>الأيام المتبقية</th><th>الحالة</th><th>ملاحظات</th><th>إجراءات</th></tr></thead><tbody id="lic-tbody"></tbody></table></div>
@@ -1892,168 +1916,148 @@ function buildKPI(){
 // ════════ RENDER LICENSES ════════
 
 function renderLic(){
-  const allowed=typeof getUserAllowedCenters==='function'?getUserAllowedCenters():null;
-  const LICS_FILTERED = allowed ? LICS.filter(r=>allowed.includes(r.center)) : LICS;
-  const cf=document.getElementById('lf-center').value;
-  const sf=document.getElementById('lf-status').value;
-  const q=document.getElementById('lf-q').value.trim();
+  const center=document.getElementById('lf-center')?.value||'';
+  const status=document.getElementById('lf-status')?.value||'';
 
-  const data=LICS_FILTERED.filter((r)=>{
-    const s=st(r.expiry);
-    if(cf && r.center!==cf) return false;
-    if(sf==='ساري' && !String(s).includes('ساري')) return false;
-    if((sf==='على وشك'||sf==='وشك') && !String(s).includes('وشك')) return false;
-    if(sf==='منتهي' && !String(s).includes('منتهي')) return false;
-    if(q && !String(r.name||'').includes(q) && !String(r.center||'').includes(q) && !String(r.notes||'').includes(q)) return false;
+  const data=filterByPermission(LICS).filter(r=>{
+    const ss=shortStatus(st(r.expiry));
+    if(center&&r.center!==center)return false;
+    if(status&&ss!==status)return false;
     return true;
-  }).sort((a,b)=>{
-    const cc=(a.center||'').localeCompare(b.center||'','ar');
-    if(cc!==0) return cc;
-    return (a.name||'').localeCompare(b.name||'','ar');
   });
 
-  document.getElementById('lic-count').textContent=data.length+' سجل';
-  buildLicMobileCards(data);
+  const cnt=document.getElementById('lic-count');
+  if(cnt)cnt.textContent=data.length+' سجل';
+
   const tb=document.getElementById('lic-tbody');
+  if(!tb)return;
 
   if(!data.length){
-    tb.innerHTML='<tr><td colspan="8" class="empty">لا توجد نتائج — تأكد من مسح الفلاتر</td></tr>';
+    tb.innerHTML='<tr><td colspan="8" class="empty">لا توجد نتائج</td></tr>';
     return;
   }
 
   tb.innerHTML=data.map((r,i)=>{
-    const oi=LICS.findIndex(l=>l.name===r.name && l.center===r.center);
-    const d=dl(r.expiry);
-    const s=st(r.expiry);
-    const statusText=(typeof shortStatus==='function')?shortStatus(s):s;
-    const daysHtml=(typeof shortDays==='function')?shortDays(d):dh(d);
-    const dateText=(typeof fdShort==='function')?fdShort(r.expiry):fd(r.expiry);
-    const safeName=String(r.name||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    const oi=LICS.indexOf(r);
+    const days=dl(r.expiry);
+    const statusVal=st(r.expiry);
+    const ss=shortStatus(statusVal);
+    const notes=(r.notes&&String(r.notes).trim())?String(r.notes):'—';
     return `
       <tr>
-        <td class="lic-num"><span class="rn">${i+1}</span></td>
-        <td class="lic-center"><span class="cname">${r.center||'—'}</span></td>
-        <td class="lic-name wname">${r.name||"—"}</td>
-        <td class="lic-date">${dateText}</td>
-        <td class="lic-days">${daysHtml}</td>
-        <td class="lic-status"><span class="sbadge ${sc(s)}">${statusText}</span></td>
-        <td class="lic-notes">${r.notes||'—'}</td>
-        <td class="lic-actions">
+        <td data-label="#"><span class="rn">${i+1}</span></td>
+        <td data-label="المركز"><span class="cname">${r.center||'—'}</span></td>
+        <td data-label="الرخصة"><span class="lic-name">${r.name||'—'}</span></td>
+        <td data-label="تاريخ الإنتهاء">${fdShort(r.expiry)}</td>
+        <td data-label="الأيام">${shortDays(days)}</td>
+        <td data-label="الحالة"><span class="sbadge ${sc(statusVal)}">${ss}</span></td>
+        <td data-label="ملاحظات" class="lic-notes">${notes}</td>
+        <td data-label="إجراءات" class="lic-actions">
           <div class="lic-actions-box">
-            ${canUserEdit()?`<button class="btn sm ghost iconbtn" title="تعديل" onclick="openEditLic(${oi})">✏️</button>
-            <button class="btn sm danger iconbtn" title="حذف" onclick="confDel('lic',${oi},'${safeName}')">🗑️</button>`:''}
+            <button class="btn sm ghost iconbtn" title="تعديل" onclick="openEditLic(${oi})">✏️</button>
+            <button class="btn sm danger iconbtn" title="حذف" onclick="confDel('lic',${oi},'${String(r.name||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">🗑️</button>
           </div>
         </td>
       </tr>`;
   }).join('');
 }
 
-// ════════ RENDER WORKERS ════════
 
+function renderWorkerTableSafeV73(type){
+  const isCleaning = type === 'cleaning';
+  const dataSource = isCleaning ? CLEANING : SERVICES;
+  const centerId = isCleaning ? 'clf-center' : 'svf-center';
+  const iqStatusId = isCleaning ? 'clf-iq-status' : 'svf-iq-status';
+  const ajStatusId = isCleaning ? 'clf-aj-status' : 'svf-aj-status';
+  const qId = isCleaning ? 'clf-q' : 'svf-q';
+  const tbodyId = isCleaning ? 'clean-tbody' : 'serv-tbody';
+  const countId = isCleaning ? 'clean-count' : 'serv-count';
 
-// ════════ RENDER WORKERS - FIXED ════════
-function workerStatus(dateValue){
-  return stAjer(dateValue); // alias for stAjer
-}
+  const allowed = typeof getUserAllowedCenters === 'function' ? getUserAllowedCenters() : null;
+  let rows = Array.isArray(dataSource) ? dataSource : [];
+  if(allowed) rows = rows.filter(r => allowed.includes(r.center));
 
-function workerDaysHtml(n){
-  if(typeof shortDaysAjer === 'function') return shortDaysAjer(n);
-  if(typeof shortDays === 'function') return shortDays(n);
-  if(n === null) return '<span class="dp r">—</span>';
-  if(n < 0) return `<span class="dp r">${n}</span>`;
-  if(n <= (typeof AJER_WARN !== 'undefined' ? AJER_WARN : 60)) return `<span class="dp o">${n}</span>`;
-  return `<span class="dp g">${n}</span>`;
-}
+  const center = document.getElementById(centerId)?.value || '';
+  const iqFilter = document.getElementById(iqStatusId)?.value || '';
+  const ajFilter = document.getElementById(ajStatusId)?.value || '';
+  const q = (document.getElementById(qId)?.value || '').trim();
 
-function renderW(type){
-  const isClean = type === 'cleaning';
-  const source = isClean ? CLEANING : SERVICES;
-  const rawArr = fbToArray(source);
-  const allowed = typeof getUserAllowedCenters==='function'?getUserAllowedCenters():null;
-  // لا تعدّل CLEANING/SERVICES الأصلية — استخدم نسخة مفلترة للعرض فقط
-  const arr = allowed ? rawArr.filter(r=>allowed.includes(r.center)) : rawArr;
+  const filtered = rows.filter(r=>{
+    const iqS = typeof shortStatus === 'function' ? shortStatus(stAjer(r.expiry)) : stAjer(r.expiry);
+    const ajS = typeof shortStatus === 'function' ? shortStatus(stAjer(r.ajerExpiry)) : stAjer(r.ajerExpiry);
 
-  const tbId = isClean ? 'clean-tbody' : 'serv-tbody';
-  const countId = isClean ? 'clean-count' : 'serv-count';
-  const centerId  = isClean ? 'clf-center'    : 'svf-center';
-  const iqStatId  = isClean ? 'clf-iq-status' : 'svf-iq-status';
-  const ajStatId  = isClean ? 'clf-aj-status' : 'svf-aj-status';
-  const qId       = isClean ? 'clf-q'         : 'svf-q';
-
-  const cf   = document.getElementById(centerId)?.value  || '';
-  const iqSf = document.getElementById(iqStatId)?.value  || '';
-  const ajSf = document.getElementById(ajStatId)?.value  || '';
-  const q    = (document.getElementById(qId)?.value || '').trim();
-
-  const data = arr.filter(r=>{
-    const iqStatus = shortStatus(stAjer(r.expiry));
-    const ajStatus = r.ajerExpiry ? shortStatus(stAjer(r.ajerExpiry)) : '';
-
-    if(cf && r.center !== cf) return false;
-    if(iqSf && iqStatus !== iqSf) return false;
-    if(ajSf && ajStatus !== ajSf) return false;
-
+    if(center && r.center !== center) return false;
+    if(iqFilter && iqS !== iqFilter) return false;
+    if(ajFilter && ajS !== ajFilter) return false;
     if(q){
-      const haystack=[r.name,r.iqama,r.profession,r.company,r.center].map(x=>String(x||'')).join(' ');
-      if(!haystack.includes(q)) return false;
+      const hay = [
+        r.name, r.iqama, r.profession, r.company, r.center
+      ].map(x=>String(x||'')).join(' ');
+      if(!hay.includes(q)) return false;
     }
     return true;
+  }).sort((a,b)=>{
+    const cc = String(a.center||'').localeCompare(String(b.center||''),'ar');
+    if(cc !== 0) return cc;
+    return String(a.name||'').localeCompare(String(b.name||''),'ar');
   });
 
   const countEl = document.getElementById(countId);
-  if(countEl) countEl.textContent = data.length + ' عامل';
-  buildWorkerMobileCards(data, type, arr);
+  if(countEl) countEl.textContent = filtered.length + ' سجل';
 
-  // سورت: أولاً المركز ثم الاسم
-  data.sort((a,b)=>{
-    const cc=(a.center||'').localeCompare(b.center||'','ar');
-    if(cc!==0) return cc;
-    return (a.name||'').localeCompare(b.name||'','ar');
-  });
-
-  const tb = document.getElementById(tbId);
+  const tb = document.getElementById(tbodyId);
   if(!tb) return;
 
-  if(!data.length){
-    tb.innerHTML = `<tr><td colspan="13" class="empty">لا توجد نتائج — عدد السجلات المقروءة من Firebase: ${arr.length}</td></tr>`;
+  if(!filtered.length){
+    tb.innerHTML = '<tr><td colspan="13" class="empty">لا توجد نتائج</td></tr>';
     return;
   }
 
-  tb.innerHTML = data.map((r,i)=>{
-    // استخدم رقم الإقامة كمعرف بدل الـ index لتجنب مشاكل الفلترة
-    const safeIqama = String(r.iqama||'').replace(/'/g,"\'");
+  tb.innerHTML = filtered.map((r,i)=>{
+    const originalIndex = dataSource.indexOf(r);
     const iqDays = dl(r.expiry);
-    const iqStatus = stAjer(r.expiry);
     const ajDays = dl(r.ajerExpiry);
-    const ajStatus = r.ajerExpiry ? stAjer(r.ajerExpiry) : '';
-    const safeNameForJs = String(r.name||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    const iqStatus = stAjer(r.expiry);
+    const ajStatus = stAjer(r.ajerExpiry);
+    const iqShort = typeof shortStatus === 'function' ? shortStatus(iqStatus) : iqStatus;
+    const ajShort = typeof shortStatus === 'function' ? shortStatus(ajStatus) : ajStatus;
+    const iqDaysHtml = typeof shortDays === 'function' ? shortDays(iqDays) : dh(iqDays);
+    const ajDaysHtml = typeof shortDays === 'function' ? shortDays(ajDays) : dh(ajDays);
+    const safeName = String(r.name||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
 
     return `
       <tr>
         <td data-label="#"><span class="rn">${i+1}</span></td>
-        <td data-label="المركز"><span class="cname">${safeText(r.center)}</span></td>
-        <td class="wname" data-label="اسم العامل">${safeText(r.name)}</td>
-        <td data-label="رقم الإقامة"><span class="iq">${safeText(r.iqama)}</span></td>
-        <td data-label="المهنة">${safeText(r.profession)}</td>
-        <td class="wcompany" data-label="الشركة">${safeText(r.company)}</td>
+        <td data-label="المركز"><span class="cname">${r.center||'—'}</span></td>
+        <td data-label="اسم العامل" class="wname">${r.name||'—'}</td>
+        <td data-label="رقم الإقامة"><span class="iq">${r.iqama||'—'}</span></td>
+        <td data-label="المهنة">${r.profession||'—'}</td>
+        <td data-label="الشركة">${r.company||'—'}</td>
         <td data-label="نهاية الإقامة">${fdShort(r.expiry)}</td>
-        <td data-label="أيام">${workerDaysHtml(iqDays)}</td>
-        <td data-label="حالة"><span class="sbadge ${sc(iqStatus)}">${shortStatus(iqStatus)}</span></td>
+        <td data-label="أيام">${iqDaysHtml}</td>
+        <td data-label="حالة"><span class="sbadge ${sc(iqStatus)}">${iqShort}</span></td>
         <td data-label="نهاية أجير">${fdShort(r.ajerExpiry)}</td>
-        <td data-label="أيام">${workerDaysHtml(ajDays)}</td>
-        <td data-label="حالة"><span class="sbadge ${sc(ajStatus)}">${shortStatus(ajStatus)}</span></td>
+        <td data-label="أيام">${ajDaysHtml}</td>
+        <td data-label="حالة"><span class="sbadge ${sc(ajStatus)}">${ajShort}</span></td>
         <td data-label="إجراءات">
           <div class="worker-actions">
-            ${canUserEdit()?`<button class="btn sm ghost iconbtn" title="تعديل" onclick="openEditWorkerByIqama('${type}','${safeIqama}')">✏️</button>
-            <button class="btn sm danger iconbtn" title="حذف" onclick="confDelByIqama('${type}','${safeIqama}','${safeNameForJs}')">🗑️</button>`:''}
+            <button class="btn sm ghost iconbtn" title="تعديل" onclick="openEditWorker('${type}',${originalIndex})">✏️</button>
+            <button class="btn sm danger iconbtn" title="حذف" onclick="confDel('${type}',${originalIndex},'${safeName}')">🗑️</button>
           </div>
         </td>
       </tr>`;
   }).join('');
 }
 
-function renderClean(){ renderW('cleaning'); }
-function renderServ(){ renderW('services'); }
+function renderClean(){
+  renderWorkerTableSafeV73('cleaning');
+}
+
+function renderServ(){
+  renderWorkerTableSafeV73('services');
+}
+
+
 
 // ════════ LICENSE CRUD ════════
 function openAddLic(){
@@ -3077,7 +3081,7 @@ function exportCurrentTabExcel(){
     // فلتر الرخص
     const cf  = document.getElementById('lf-center')?.value||'';
     const sf  = document.getElementById('lf-status')?.value||'';
-    const q   = document.getElementById('lf-q')?.value?.trim()||'';
+    const q   = document.getElementById()?.value?.trim()||'';
     const allowed = typeof getUserAllowedCenters==='function' ? getUserAllowedCenters() : null;
     const data = LICS.filter(r=>{
       if(allowed && !allowed.includes(r.center)) return false;
@@ -3179,7 +3183,7 @@ function systemSelfCheck(){
 
 
 // ════════ V65 SEARCH FIELDS CLEAN + NO EMAIL ════════
-const SEARCH_FIELD_IDS_V65 = ['lf-q','clf-q','svf-q','maf-q','laf-q','aaf-q','tl-q'];
+const SEARCH_FIELD_IDS_V65 = ['clf-q','svf-q','maf-q','laf-q','aaf-q','tl-q'];
 
 function isSearchFieldV65(el){
   return el && SEARCH_FIELD_IDS_V65.includes(el.id);
@@ -3739,7 +3743,7 @@ function hideLoginScreen(){
     const dashBtn = document.querySelector('.navbtn[onclick*="dashboard"]');
     showPage('dashboard', dashBtn);
     // مسح أي autofill في حقول البحث
-    ['lf-q','clf-q','svf-q','laf-q','aaf-q'].forEach(id=>{
+    ['clf-q','svf-q','laf-q','aaf-q'].forEach(id=>{
       const el = document.getElementById(id);
       if(el) el.value = '';
     });
