@@ -881,6 +881,72 @@ button[onclick*="captureAlertPageImage"]{
   padding:0 !important;
 }
 
+
+/* ===== V74 LICENSE MOBILE CARDS FIX ===== */
+#lic-mob{
+  display:none;
+}
+.lic-actions-box{
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  gap:4px !important;
+}
+@media (max-width: 768px){
+  #tc-lic .twrap{
+    display:none !important;
+  }
+  #lic-mob{
+    display:block !important;
+    margin-top:12px;
+  }
+  #lic-mob .mob-card{
+    display:block !important;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:14px;
+    margin:10px 0;
+    box-shadow:0 8px 22px rgba(15,23,42,.08);
+  }
+  #lic-mob .mob-card-name{
+    font-size:16px;
+    font-weight:900;
+    color:var(--text);
+    margin-bottom:10px;
+  }
+  #lic-mob .mob-row{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:7px 0;
+    border-top:1px dashed rgba(148,163,184,.35);
+  }
+  #lic-mob .mob-lbl{
+    color:var(--muted);
+    font-weight:800;
+  }
+  #lic-mob .mob-val{
+    color:var(--text);
+    font-weight:800;
+    text-align:left;
+  }
+  #lic-mob .mob-actions{
+    display:flex;
+    gap:8px;
+    justify-content:flex-start;
+    margin-top:12px;
+  }
+}
+@media (min-width: 769px){
+  #tc-lic .twrap{
+    display:block;
+  }
+  #lic-mob{
+    display:none !important;
+  }
+}
+
 </style>
 
 <!-- Firebase Realtime Database -->
@@ -1915,19 +1981,63 @@ function buildKPI(){
 
 // ════════ RENDER LICENSES ════════
 
-function renderLic(){
-  const center=document.getElementById('lf-center')?.value||'';
-  const status=document.getElementById('lf-status')?.value||'';
+function buildLicMobileCards(data){
+  const el = document.getElementById('lic-mob');
+  if(!el) return;
 
-  const data=filterByPermission(LICS).filter(r=>{
-    const ss=shortStatus(st(r.expiry));
-    if(center&&r.center!==center)return false;
-    if(status&&ss!==status)return false;
+  const rows = Array.isArray(data) ? data : [];
+  if(!rows.length){
+    el.innerHTML = '<div class="empty">لا توجد نتائج</div>';
+    return;
+  }
+
+  el.innerHTML = rows.map(r=>{
+    const idx = LICS.indexOf(r);
+    const safeName = String(r.name || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    const d = dl(r.expiry);
+    const s = st(r.expiry);
+    const statusText = typeof shortStatus === 'function' ? shortStatus(s) : s;
+    const daysText = typeof shortDays === 'function' ? shortDays(d) : dh(d);
+    const cls = String(s).includes('منتهي') ? 'dp r' : String(s).includes('وشك') ? 'dp o' : 'dp g';
+    const notes = (r.notes && String(r.notes).trim()) ? String(r.notes) : '—';
+
+    return `<div class="mob-card lic-mob-card">
+      <div class="mob-card-name">${r.name || '—'}</div>
+      <div class="mob-row"><span class="mob-lbl">المركز</span><span class="mob-val">${r.center || '—'}</span></div>
+      <div class="mob-row"><span class="mob-lbl">تاريخ الانتهاء</span><span class="mob-val">${fdShort(r.expiry)}</span></div>
+      <div class="mob-row"><span class="mob-lbl">الأيام</span><span class="mob-val">${daysText}</span></div>
+      <div class="mob-row"><span class="mob-lbl">الحالة</span><span class="${cls}">${statusText}</span></div>
+      <div class="mob-row"><span class="mob-lbl">ملاحظات</span><span class="mob-val">${notes}</span></div>
+      <div class="mob-actions">
+        <button class="btn sm ghost" onclick="openEditLic(${idx})">✏️ تعديل</button>
+        <button class="btn sm danger" onclick="confDel('lic',${idx},'${safeName}')">🗑️ حذف</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderLic(){
+  const allowed=typeof getUserAllowedCenters==='function'?getUserAllowedCenters():null;
+  const LICS_FILTERED = allowed ? LICS.filter(r=>allowed.includes(r.center)) : LICS;
+  const cf=document.getElementById('lf-center')?.value||'';
+  const sf=document.getElementById('lf-status')?.value||'';
+
+  const data=LICS_FILTERED.filter((r)=>{
+    const s=st(r.expiry);
+    const ss=typeof shortStatus==='function'?shortStatus(s):s;
+    if(cf && r.center!==cf) return false;
+    if(sf && ss!==sf && !String(s).includes(sf)) return false;
     return true;
+  }).sort((a,b)=>{
+    const cc=(a.center||'').localeCompare(b.center||'','ar');
+    if(cc!==0) return cc;
+    return (a.name||'').localeCompare(b.name||'','ar');
   });
 
-  const cnt=document.getElementById('lic-count');
-  if(cnt)cnt.textContent=data.length+' سجل';
+  const countEl=document.getElementById('lic-count');
+  if(countEl) countEl.textContent=data.length+' سجل';
+
+  buildLicMobileCards(data);
 
   const tb=document.getElementById('lic-tbody');
   if(!tb)return;
@@ -1939,23 +2049,25 @@ function renderLic(){
 
   tb.innerHTML=data.map((r,i)=>{
     const oi=LICS.indexOf(r);
-    const days=dl(r.expiry);
-    const statusVal=st(r.expiry);
-    const ss=shortStatus(statusVal);
+    const d=dl(r.expiry);
+    const s=st(r.expiry);
+    const statusText=(typeof shortStatus==='function')?shortStatus(s):s;
+    const daysHtml=(typeof shortDays==='function')?shortDays(d):dh(d);
     const notes=(r.notes&&String(r.notes).trim())?String(r.notes):'—';
+    const safeName=String(r.name||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     return `
       <tr>
         <td data-label="#"><span class="rn">${i+1}</span></td>
         <td data-label="المركز"><span class="cname">${r.center||'—'}</span></td>
-        <td data-label="الرخصة"><span class="lic-name">${r.name||'—'}</span></td>
+        <td data-label="الرخصة / الشهادة">${r.name||'—'}</td>
         <td data-label="تاريخ الإنتهاء">${fdShort(r.expiry)}</td>
-        <td data-label="الأيام">${shortDays(days)}</td>
-        <td data-label="الحالة"><span class="sbadge ${sc(statusVal)}">${ss}</span></td>
+        <td data-label="الأيام المتبقية">${daysHtml}</td>
+        <td data-label="الحالة"><span class="sbadge ${sc(s)}">${statusText}</span></td>
         <td data-label="ملاحظات" class="lic-notes">${notes}</td>
         <td data-label="إجراءات" class="lic-actions">
           <div class="lic-actions-box">
             <button class="btn sm ghost iconbtn" title="تعديل" onclick="openEditLic(${oi})">✏️</button>
-            <button class="btn sm danger iconbtn" title="حذف" onclick="confDel('lic',${oi},'${String(r.name||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">🗑️</button>
+            <button class="btn sm danger iconbtn" title="حذف" onclick="confDel('lic',${oi},'${safeName}')">🗑️</button>
           </div>
         </td>
       </tr>`;
