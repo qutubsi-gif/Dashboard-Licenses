@@ -947,6 +947,77 @@ button[onclick*="captureAlertPageImage"]{
   }
 }
 
+
+/* ===== V75 LICENSE MOBILE CARDS HARD FIX ===== */
+@media (max-width: 768px){
+  #tc-lic .twrap,
+  #tc-lic .lic-twrap{
+    display:none !important;
+  }
+  #tc-lic #lic-mob,
+  #tc-lic #lic-mob-cards,
+  #lic-mob,
+  #lic-mob-cards{
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    height:auto !important;
+    max-height:none !important;
+    overflow:visible !important;
+    margin-top:12px !important;
+  }
+  #lic-mob .mob-card,
+  #lic-mob-cards .mob-card{
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    background:#fff !important;
+    border:1px solid var(--border) !important;
+    border-radius:16px !important;
+    padding:14px !important;
+    margin:10px 0 !important;
+    box-shadow:0 8px 22px rgba(15,23,42,.08) !important;
+  }
+  #lic-mob .mob-card-name,
+  #lic-mob-cards .mob-card-name{
+    font-size:16px !important;
+    font-weight:900 !important;
+    color:var(--text) !important;
+    margin-bottom:10px !important;
+  }
+  #lic-mob .mob-row,
+  #lic-mob-cards .mob-row{
+    display:flex !important;
+    justify-content:space-between !important;
+    gap:10px !important;
+    padding:7px 0 !important;
+    border-top:1px dashed rgba(148,163,184,.35) !important;
+  }
+  #lic-mob .mob-lbl,
+  #lic-mob-cards .mob-lbl{
+    color:var(--muted) !important;
+    font-weight:800 !important;
+  }
+  #lic-mob .mob-val,
+  #lic-mob-cards .mob-val{
+    color:var(--text) !important;
+    font-weight:800 !important;
+    text-align:left !important;
+  }
+  #lic-mob .mob-actions,
+  #lic-mob-cards .mob-actions{
+    display:flex !important;
+    gap:8px !important;
+    justify-content:flex-start !important;
+    margin-top:12px !important;
+  }
+}
+@media (min-width: 769px){
+  #lic-mob,#lic-mob-cards{
+    display:none !important;
+  }
+}
+
 </style>
 
 <!-- Firebase Realtime Database -->
@@ -1982,38 +2053,38 @@ function buildKPI(){
 // ════════ RENDER LICENSES ════════
 
 function buildLicMobileCards(data){
-  const el = document.getElementById('lic-mob');
-  if(!el) return;
+  const targets = ['lic-mob','lic-mob-cards']
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+
+  if(!targets.length) return;
 
   const rows = Array.isArray(data) ? data : [];
-  if(!rows.length){
-    el.innerHTML = '<div class="empty">لا توجد نتائج</div>';
-    return;
-  }
-
-  el.innerHTML = rows.map(r=>{
-    const idx = LICS.indexOf(r);
+  const cards = rows.length ? rows.map((r,idx)=>{
+    const oi = LICS.indexOf(r) >= 0 ? LICS.indexOf(r) : idx;
     const safeName = String(r.name || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    const d = dl(r.expiry);
-    const s = st(r.expiry);
-    const statusText = typeof shortStatus === 'function' ? shortStatus(s) : s;
-    const daysText = typeof shortDays === 'function' ? shortDays(d) : dh(d);
-    const cls = String(s).includes('منتهي') ? 'dp r' : String(s).includes('وشك') ? 'dp o' : 'dp g';
+    const days = dl(r.expiry);
+    const statusRaw = st(r.expiry);
+    const statusText = (typeof shortStatus === 'function') ? shortStatus(statusRaw) : statusRaw;
+    const daysText = days===null ? '—' : (days<0 ? `منتهي منذ ${Math.abs(days)} يوم` : `متبقي ${days} يوم`);
+    const cls = String(statusRaw).includes('منتهي') || days < 0 ? 'dp r' : String(statusRaw).includes('وشك') ? 'dp o' : 'dp g';
     const notes = (r.notes && String(r.notes).trim()) ? String(r.notes) : '—';
 
     return `<div class="mob-card lic-mob-card">
       <div class="mob-card-name">${r.name || '—'}</div>
       <div class="mob-row"><span class="mob-lbl">المركز</span><span class="mob-val">${r.center || '—'}</span></div>
       <div class="mob-row"><span class="mob-lbl">تاريخ الانتهاء</span><span class="mob-val">${fdShort(r.expiry)}</span></div>
-      <div class="mob-row"><span class="mob-lbl">الأيام</span><span class="mob-val">${daysText}</span></div>
+      <div class="mob-row"><span class="mob-lbl">الأيام</span><span class="${cls}">${daysText}</span></div>
       <div class="mob-row"><span class="mob-lbl">الحالة</span><span class="${cls}">${statusText}</span></div>
       <div class="mob-row"><span class="mob-lbl">ملاحظات</span><span class="mob-val">${notes}</span></div>
       <div class="mob-actions">
-        <button class="btn sm ghost" onclick="openEditLic(${idx})">✏️ تعديل</button>
-        <button class="btn sm danger" onclick="confDel('lic',${idx},'${safeName}')">🗑️ حذف</button>
+        <button class="btn sm ghost" onclick="openEditLic(${oi})">✏️ تعديل</button>
+        <button class="btn sm danger" onclick="confDel('lic',${oi},'${safeName}')">🗑️ حذف</button>
       </div>
     </div>`;
-  }).join('');
+  }).join('') : '<div class="empty">لا توجد نتائج</div>';
+
+  targets.forEach(el => { el.innerHTML = cards; });
 }
 
 function renderLic(){
@@ -2073,7 +2144,6 @@ function renderLic(){
       </tr>`;
   }).join('');
 }
-
 
 function renderWorkerTableSafeV73(type){
   const isCleaning = type === 'cleaning';
@@ -3441,6 +3511,23 @@ async function captureAlertPageImage(pageId, filePrefix){
   }
 }
 
+
+
+// ════════ V75 MOBILE LICENSE RENDER SAFETY ════════
+function ensureLicenseMobileCardsV75(){
+  try{
+    if(window.innerWidth <= 768 && typeof renderLic === 'function'){
+      const b1=document.getElementById('lic-mob');
+      const b2=document.getElementById('lic-mob-cards');
+      if((b1&&!b1.innerHTML.trim()) || (b2&&!b2.innerHTML.trim())) renderLic();
+    }
+  }catch(e){console.warn('ensureLicenseMobileCardsV75', e);}
+}
+window.addEventListener('load', ensureLicenseMobileCardsV75);
+document.addEventListener('DOMContentLoaded', ensureLicenseMobileCardsV75);
+setTimeout(ensureLicenseMobileCardsV75,500);
+setTimeout(ensureLicenseMobileCardsV75,1500);
+setInterval(ensureLicenseMobileCardsV75,2500);
 
 // ════════ INIT ════════
 const tdEl=document.getElementById('today-date'); if(tdEl){
