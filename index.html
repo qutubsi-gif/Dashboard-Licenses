@@ -844,6 +844,12 @@ hr.div{border:none;border-top:1px solid var(--border);margin:14px 0;}
   .sctitle { font-size:13px; }
 }
 
+
+/* ===== V66 SCREENSHOT BUTTONS ===== */
+button[onclick*="captureAlertPageImage"]{
+  border-color:rgba(37,99,235,.25) !important;
+}
+
 </style>
 
 <!-- Firebase Realtime Database -->
@@ -867,6 +873,7 @@ window.addEventListener('unhandledrejection', function(e){
 
 <!-- SheetJS XLSX -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" crossorigin="anonymous"></script>
 
 </head>
 <body>
@@ -1034,6 +1041,7 @@ window.addEventListener('unhandledrejection', function(e){
       <span class="badge" id="lic-alert-count">—</span>
       <button class="btn sm ghost" onclick="renderLicenseAlerts()">↻ تحديث</button>
       <button class="btn sm ghost" onclick="exportAlertsExcel('licenses')">⬇️ تصدير Excel</button>
+      <button class="btn sm ghost" onclick="captureAlertPageImage('page-alerts-lic','تنبيهات-الرخص')">📸 تصوير الشاشة</button>
       <button class="btn sm ghost" onclick="copyLicAlertsReport()">📋 نسخ تقرير</button>
     </div>
   </div>
@@ -1078,6 +1086,7 @@ window.addEventListener('unhandledrejection', function(e){
       <span class="badge" id="ajer-alert-count">—</span>
       <button class="btn sm ghost" onclick="renderAjerAlerts()">↻ تحديث</button>
       <button class="btn sm ghost" onclick="exportAlertsExcel('ajer')">⬇️ تصدير Excel</button>
+      <button class="btn sm ghost" onclick="captureAlertPageImage('page-alerts-ajer','تنبيهات-الاقامات-واجير')">📸 تصوير الشاشة</button>
       <button class="btn sm ghost" onclick="copyAjerAlertsReport()">📋 نسخ تقرير</button>
     </div>
   </div>
@@ -3241,6 +3250,67 @@ window.addEventListener('load', ()=>{
 setTimeout(()=>{ clearSearchFieldsV65(); setupSearchGuardsV65(); }, 300);
 setTimeout(()=>{ clearSearchFieldsV65(); setupSearchGuardsV65(); }, 1200);
 setInterval(setupSearchGuardsV65, 2000);
+
+
+// ════════ V67 ALERT PAGES SCREENSHOT DOWNLOAD ONLY ════════
+
+async function captureAlertPageImage(pageId, filePrefix){
+  const page = document.getElementById(pageId);
+  if(!page){
+    if(typeof toast === 'function') toast('لم يتم العثور على الصفحة','error');
+    return;
+  }
+
+  if(typeof html2canvas === 'undefined'){
+    if(typeof toast === 'function') toast('مكتبة التصوير لم يتم تحميلها','error');
+    return;
+  }
+
+  try{
+    if(typeof toast === 'function') toast('جاري تجهيز الصورة...', 'info');
+
+    const oldOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'visible';
+
+    const captureButtons = page.querySelectorAll('button[onclick*="captureAlertPageImage"]');
+    captureButtons.forEach(btn => btn.dataset.oldDisplay = btn.style.display || '');
+    captureButtons.forEach(btn => btn.style.display = 'none');
+
+    const canvas = await html2canvas(page, {
+      backgroundColor: '#f0f4f8',
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      logging: false,
+      scrollX: 0,
+      scrollY: -window.scrollY,
+      windowWidth: document.documentElement.scrollWidth,
+      windowHeight: page.scrollHeight
+    });
+
+    captureButtons.forEach(btn => btn.style.display = btn.dataset.oldDisplay || '');
+    document.body.style.overflow = oldOverflow;
+
+    const today = new Date().toISOString().slice(0,10);
+    const fileName = `${filePrefix}-${today}.png`;
+
+    // تحميل مباشر فقط — بدون مشاركة تلقائية حتى لا تتكرر الصورة
+    const url = canvas.toDataURL('image/png', 0.95);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    if(typeof toast === 'function') toast('تم تحميل صورة التنبيهات', 'success');
+
+  }catch(e){
+    console.error('captureAlertPageImage failed', e);
+    if(typeof toast === 'function') toast('تعذر تصوير الصفحة','error');
+  }
+}
+
 
 // ════════ INIT ════════
 const tdEl=document.getElementById('today-date'); if(tdEl){
