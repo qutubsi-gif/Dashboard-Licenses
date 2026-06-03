@@ -850,6 +850,12 @@ button[onclick*="captureAlertPageImage"]{
   border-color:rgba(37,99,235,.25) !important;
 }
 
+
+/* ===== V68 AJER ALERT GROUP FILTER ===== */
+#aaf-company-type{
+  min-width:130px;
+}
+
 </style>
 
 <!-- Firebase Realtime Database -->
@@ -1115,6 +1121,11 @@ window.addEventListener('unhandledrejection', function(e){
       <option value="">كل الأنواع</option>
       <option value="إقامة">إقامة</option>
       <option value="أجير">أجير</option>
+    </select>
+    <select class="fsel" id="aaf-company-type" onchange="renderAjerAlerts()">
+      <option value="">كل أجير</option>
+      <option value="cleaning">أجير نظافة</option>
+      <option value="services">أجير خدمات</option>
     </select>
     <select class="fsel" id="aaf-status" onchange="renderAjerAlerts()">
       <option value="">كل الحالات</option>
@@ -2341,11 +2352,11 @@ function getAjerAlertRows(){
   [...CLEANING.map(r=>({...r,group:'cleaning'})),...SERVICES.map(r=>({...r,group:'services'}))].forEach((r,i)=>{
     const iqDays=dl(r.expiry), iqStatus=stAjer(r.expiry);
     if(isAlertStatus(iqStatus)){
-      all.push({type:'إقامة',center:r.center,name:r.name,iqama:r.iqama,profession:r.profession||'—',company:r.company,expiry:r.expiry,days:iqDays,status:iqStatus});
+      all.push({type:'إقامة',group:r.group,center:r.center,name:r.name,iqama:r.iqama,profession:r.profession||'—',company:r.company,expiry:r.expiry,days:iqDays,status:iqStatus});
     }
     const ajDays=dl(r.ajerExpiry), ajStatus=stAjer(r.ajerExpiry);
     if(isAlertStatus(ajStatus)){
-      all.push({type:'أجير',center:r.center,name:r.name,iqama:r.iqama,profession:r.profession||'—',company:r.company,expiry:r.ajerExpiry,days:ajDays,status:ajStatus});
+      all.push({type:'أجير',group:r.group,center:r.center,name:r.name,iqama:r.iqama,profession:r.profession||'—',company:r.company,expiry:r.ajerExpiry,days:ajDays,status:ajStatus});
     }
   });
   return all.sort(alertSort);
@@ -2405,6 +2416,7 @@ function renderLicenseAlerts(){
 function renderAjerAlerts(){
   const center=document.getElementById('aaf-center')?.value||'';
   const type=document.getElementById('aaf-type')?.value||'';
+  const companyType=document.getElementById('aaf-company-type')?.value||'';
   const status=document.getElementById('aaf-status')?.value||'';
   const q=(document.getElementById('aaf-q')?.value||'').trim();
 
@@ -2413,6 +2425,7 @@ function renderAjerAlerts(){
     const ss=shortStatus(r.status);
     if(center&&r.center!==center)return false;
     if(type&&r.type!==type)return false;
+    if(companyType&&r.group!==companyType)return false;
     if(status&&ss!==status)return false;
     if(q&&!r.name.includes(q)&&!String(r.iqama).includes(q)&&!(r.profession||'').includes(q)&&!(r.company||'').includes(q))return false;
     return true;
@@ -2434,22 +2447,23 @@ function renderAjerAlerts(){
     const high=ss==='منتهي';
     const cls=high?'high':'warning';
     const risk=high?'عالي':'على وشك';
+    const groupLabel=r.group==='cleaning'?'أجير نظافة':'أجير خدمات';
     const daysText=r.days===null?'—':(r.days<0?`منتهي منذ ${Math.abs(r.days)} يوم`:`متبقي ${r.days} يوم`);
-    const msg=`تنبيه: ${r.type} للعامل ${r.name} - ${r.center} - الشركة: ${r.company||'—'} - الحالة: ${ss} - تاريخ الانتهاء: ${fdShort(r.expiry)} - ${daysText}`;
+    const msg=`تنبيه: ${r.type} للعامل ${r.name} - ${groupLabel} - ${r.center} - الشركة: ${r.company||'—'} - الحالة: ${ss} - تاريخ الانتهاء: ${fdShort(r.expiry)} - ${daysText}`;
     return `
       <div class="alert-card ${cls}">
         <div class="risk">${risk}</div>
         <div class="alert-card-title">${r.name}</div>
         <div class="alert-card-meta">
           <span class="alert-tag">${r.type}</span>
+          <span class="alert-tag">${groupLabel}</span>
           <span>${r.center} - ${r.company||'—'}</span>
         </div>
         <div class="alert-card-line">رقم الإقامة: ${r.iqama||'—'} | المهنة: ${r.profession||'—'}</div>
         <div class="alert-card-line">تاريخ الانتهاء: ${fdShort(r.expiry)} | <span class="alert-card-days">${daysText}</span></div>
         <div class="alert-card-line">الحالة: <span class="sbadge ${sc(r.status)}">${ss}</span></div>
         <div class="alert-card-actions">
-          <button class="btn sm ghost" onclick="copyText('${msg.replace(/'/g,"\\'")}')">نسخ رسالة</button>
-          <button class="btn sm" onclick="openAddWorker('${r.type==='إقامة'?'cleaning':'services'}')">إضافة / تحديث</button>
+          <button class="btn sm ghost" onclick="copyText('${msg.replace(/'/g,"\\'")}')">📋 نسخ</button>
         </div>
       </div>`;
   }).join('');
